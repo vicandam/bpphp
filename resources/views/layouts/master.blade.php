@@ -56,7 +56,7 @@
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Account pages</h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('settings') ? 'active bg-gradient-dark text-white' : 'text-dark' }}" href="{{ route('settings') }}">
+                <a class="nav-link {{ request()->routeIs('account') ? 'active bg-gradient-dark text-white' : 'text-dark' }}" href="{{ route('account') }}">
                     <i class="material-symbols-rounded opacity-5">person</i>
                     <span class="nav-link-text ms-1">Account</span>
                 </a>
@@ -107,7 +107,7 @@
                         </a>
                     </li>
                     <li class="nav-item d-flex align-items-center">
-                        <a href="../pages/sign-in.html" class="nav-link text-body font-weight-bold px-0">
+                        <a href="{{route('account')}}" class="nav-link text-body font-weight-bold px-0">
                             <i class="material-symbols-rounded">account_circle</i>
                         </a>
                     </li>

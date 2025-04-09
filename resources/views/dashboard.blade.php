@@ -155,7 +155,6 @@
 
                         @if(isset($meta['nextPageUrl']))
                             <div class="mt-4 text-center">
-
                                 <a href="{{ route('dashboard', ['startAfter' => $meta['startAfter'], 'startAfterId' => $meta['startAfterId']]) }}" class="btn btn-icon btn-3 btn-secondary" type="button">
                                     <span class="btn-inner--icon">
                                         <i class="material-symbols-rounded">first_page</i>

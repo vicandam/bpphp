@@ -36,9 +36,9 @@ class DashboardController extends Controller
         return view('contacts.create');
     }
 
-    public function settings()
+    public function account()
     {
         $user = Auth::user();
-        return view('profile.settings', compact('user'));
+        return view('profile.account', compact('user'));
     }
 }

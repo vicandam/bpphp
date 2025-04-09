@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/contacts/create', [DashboardController::class, 'create'])->name('contacts.create');
 
-    Route::get('/settings', [DashboardController::class, 'settings'])->name('settings');
+    Route::get('/account', [DashboardController::class, 'account'])->name('account');
 
     Route::post('/contacts', [GHLContactController::class, 'store'])->name('contacts.store');
 });
