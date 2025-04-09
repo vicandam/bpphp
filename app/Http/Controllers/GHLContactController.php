@@ -52,6 +52,7 @@ class GHLContactController extends Controller
             'firstName' => $request->firstName,
             'lastName' => $request->lastName,
             'email' => $request->email,
+            'phone' => $request->phone,
             'locationId' => $user->ghl_location_id, // important!
         ]);
 

@@ -13,21 +13,51 @@ class GHLService
         $this->apiKey = $apiKey;
     }
 
-    public function getContacts($locationId)
+    public function getContacts1($locationId, $startAfter = null, $startAfterId = null)
     {
-        $response = Http::withHeaders([
-            'Authorization' => "Bearer {$this->apiKey}",
-            'Content-Type' => 'application/json',
-        ])->get("https://rest.gohighlevel.com/v1/contacts/", [
-            'locationId' => $locationId
-        ]);
+        $queryParams = [
+            'locationId' => $locationId,
+        ];
 
-        if ($response->successful()) {
-            return $response->json(); // has "contacts" key
+        if ($startAfter) {
+            $queryParams['startAfter'] = $startAfter;
         }
 
-        return ['contacts' => []];
+        if ($startAfterId) {
+            $queryParams['startAfterId'] = $startAfterId;
+        }
+
+        $response = Http::withToken($this->apiKey)
+            ->get("https://rest.gohighlevel.com/v1/contacts", $queryParams);
+
+        return $response->json();
     }
+    public function getContacts($locationId, $startAfter = null, $startAfterId = null, $search = null)
+    {
+        $url = "https://rest.gohighlevel.com/v1/contacts";
+
+        $queryParams = [
+            'locationId' => $locationId
+        ];
+
+        if ($startAfter) {
+            $queryParams['startAfter'] = $startAfter;
+        }
+
+        if ($startAfterId) {
+            $queryParams['startAfterId'] = $startAfterId;
+        }
+
+        if ($search) {
+            $queryParams['query'] = $search; // this triggers actual search in GHL
+        }
+
+        $response = Http::withToken($this->apiKey)
+            ->get($url, $queryParams);
+
+        return $response->json();
+    }
+
 
     public function getContactById($id)
     {

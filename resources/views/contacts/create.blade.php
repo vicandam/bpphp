@@ -27,6 +27,11 @@
                                 <input type="email" class="form-control" name="email" required>
                             </div>
 
+                            <div class="input-group input-group-static mb-4">
+                                <label>Phone </label>
+                                <input type="text" class="form-control" id="phone" name="phone">
+                            </div>
+
                             <button type="submit" class="btn btn-primary">Add Contact</button>
                             <a href="{{ route('dashboard') }}" class="btn btn-secondary">Cancel</a>
                         </form>

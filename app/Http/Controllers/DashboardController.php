@@ -8,19 +8,28 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
-
         $contacts = [];
+        $meta = [];
 
         if ($user->ghl_api_key && $user->ghl_location_id) {
             $ghl = new GHLService($user->ghl_api_key);
-            $contacts = $ghl->getContacts($user->ghl_location_id)['contacts'] ?? [];
+
+            $startAfter = $request->query('startAfter');
+            $startAfterId = $request->query('startAfterId');
+            $search = $request->query('search');
+
+            $response = $ghl->getContacts($user->ghl_location_id, $startAfter, $startAfterId, $search);
+
+            $contacts = $response['contacts'] ?? [];
+            $meta = $response['meta'] ?? [];
         }
 
-        return view('dashboard', compact('contacts'));
+        return view('dashboard', compact('contacts', 'meta'));
     }
+
 
     public function create()
     {

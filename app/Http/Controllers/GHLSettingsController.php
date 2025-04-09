@@ -20,6 +20,6 @@ class GHLSettingsController extends Controller
             'ghl_location_id' => $request->ghl_location_id,
         ]);
 
-        return redirect()->back()->with('status', 'GHL Settings updated successfully!');
+        return redirect()->back()->with('status', 'settings-updated');
     }
 }
