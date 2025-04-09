@@ -32,8 +32,8 @@
                                 <input type="text" class="form-control" id="phone" name="phone">
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Add Contact</button>
-                            <a href="{{ route('dashboard') }}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn bg-gradient-dark">Add Contact</button>
+                            <a href="{{ route('dashboard') }}" class="btn bg-gradient-primary">Cancel</a>
                         </form>
                     </div>
                 </div>

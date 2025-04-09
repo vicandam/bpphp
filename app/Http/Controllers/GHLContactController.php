@@ -23,19 +23,44 @@ class GHLContactController extends Controller
 
     public function update(Request $request, $id)
     {
+        // Validate other fields
         $request->validate([
             'firstName' => 'nullable|string',
             'lastName' => 'nullable|string',
             'email' => 'nullable|email',
+            'phone' => ['nullable', 'regex:/^\+?[0-9]{10,15}$/'], // Validate phone format
         ]);
 
+        // Sanitize and format phone number
+        $phone = $request->phone;
+        if ($phone) {
+            // Remove non-numeric characters
+            $phone = preg_replace('/[^0-9]/', '', $phone);
+
+            // If it starts with a country code (e.g., +63), ensure it's formatted correctly
+            if (strlen($phone) == 11 && substr($phone, 0, 1) !== '+') {
+                $phone = '+63' . substr($phone, 1); // Assuming it's a PH number, modify if needed
+            }
+        }
+
+        // Prepare data for updating the contact
+        $data = $request->only('firstName', 'lastName', 'email');
+        if ($phone) {
+            $data['phone'] = $phone; // Only add the phone if it's valid
+        }
+
+        // Get the user and update the contact
         $user = Auth::user();
         $ghl = new GHLService($user->ghl_api_key);
 
-        $ghl->updateContact($id, $request->only('firstName', 'lastName', 'email'));
+        // Update contact in GoHighLevel
+        $ghl->updateContact($id, $data);
 
+        // Return success message
         return redirect()->route('dashboard')->with('status', 'Contact updated!');
     }
+
+
 
     public function store(Request $request)
     {

@@ -14,21 +14,29 @@
                             @method('PUT')
                             <div class="input-group input-group-static mb-4">
                                 <label>First Name</label>
-                                <input type="text" name="firstName" value="{{ old('firstName', $contact['firstName']) }}" class="form-control">
+                                <input type="text" name="firstName" value="{{ old('firstName', $contact['firstName']??'') }}" class="form-control">
                             </div>
 
                             <div class="input-group input-group-static mb-4">
                                 <label>Last Name</label>
-                                <input type="text" class="form-control" name="lastName" value="{{ old('lastName', $contact['lastName']) }}">
+                                <input type="text" class="form-control" name="lastName" value="{{ old('lastName', $contact['lastName']??'') }}">
                             </div>
 
                             <div class="input-group input-group-static mb-4">
                                 <label>Email</label>
-                                <input type="email" name="email" value="{{ old('email', $contact['email']) }}" class="form-control">
+                                <input type="email" name="email" value="{{ old('email', $contact['email']??'') }}" class="form-control">
                             </div>
 
-                            <button type="submit" class="btn btn-secondary btn-lg">Save</button>
-                            <a href="{{route('dashboard')}}" class="btn btn-danger btn-lg">Cancel</a>
+{{--                            <div class="input-group input-group-static mb-4">--}}
+{{--                                <label>Phone</label>--}}
+{{--                                <input type="tel" name="phone" value="{{ old('phone', $contact['phone'] ?? '') }}" class="form-control"--}}
+{{--                                       pattern="^\+?[0-9]{10,15}$" placeholder="Enter phone number" required>--}}
+{{--                                <small class="form-text text-muted">Please enter a valid phone number (e.g., +639171234567).</small>--}}
+{{--                            </div>--}}
+
+
+                            <button type="submit" class="btn bg-gradient-dark">Save</button>
+                            <a href="{{route('dashboard')}}" class="btn bg-gradient-danger">Cancel</a>
                         </form>
                     </div>
                 </div>
