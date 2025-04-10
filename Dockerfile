@@ -30,15 +30,13 @@ RUN chown -R www-data:www-data /var/www \
 # Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Run Laravel setup commands
-RUN php artisan key:generate \
-    && php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache \
-    && php artisan migrate --force
-
 # Expose port used by Laravel and Render
 EXPOSE 10000
 
-# Start Laravel's built-in server
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=10000"]
+# Run Laravel setup commands
+CMD php artisan key:generate && \
+    php artisan migrate --force && \
+    php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache && \
+    php artisan serve --host=0.0.0.0 --port=10000
