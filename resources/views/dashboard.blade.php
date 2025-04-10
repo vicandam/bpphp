@@ -152,33 +152,34 @@
                             </tbody>
                         </table>
 
-
                         @if(isset($meta['nextPageUrl']))
-                            <div class="mt-4 text-center">
-                                <a href="{{ route('dashboard', ['startAfter' => $meta['startAfter'], 'startAfterId' => $meta['startAfterId']]) }}" class="btn btn-icon btn-3 btn-secondary" type="button">
+                            @if(isset($meta['nextPageUrl']))
+                                <div class="mt-4 text-center">
+                                    <a href="{{ route('dashboard', ['startAfter' => $meta['startAfter'], 'startAfterId' => $meta['startAfterId']]) }}" class="btn btn-icon btn-3 btn-secondary" type="button">
                                     <span class="btn-inner--icon">
                                         <i class="material-symbols-rounded">first_page</i>
                                     </span>
-                                    <span class="btn-inner--text">Go Back To Page 1</span>
-                                </a>
-
-                                @if(isset($meta['nextPageUrl']))
-                                    <a href="{{ route('dashboard', ['startAfter' => $meta['startAfter'], 'startAfterId' => $meta['startAfterId'], 'search' => request('search')]) }}"
-                                       class="btn btn-info">
-                                        Load More Contacts
+                                        <span class="btn-inner--text">Go Back To Page 1</span>
                                     </a>
-                                @endif
 
-                            </div>
-                        @else
-                            <div class="mt-4 text-center">
-                                <a href="{{ route('dashboard', ['startAfter' => $meta['startAfter'], 'startAfterId' => $meta['startAfterId']]) }}" class="btn btn-icon btn-3 btn-secondary" type="button">
+                                    @if(isset($meta['nextPageUrl']))
+                                        <a href="{{ route('dashboard', ['startAfter' => $meta['startAfter'], 'startAfterId' => $meta['startAfterId'], 'search' => request('search')]) }}"
+                                           class="btn btn-info">
+                                            Load More Contacts
+                                        </a>
+                                    @endif
+
+                                </div>
+                            @else
+                                <div class="mt-4 text-center">
+                                    <a href="{{ route('dashboard', ['startAfter' => $meta['startAfter'], 'startAfterId' => $meta['startAfterId']]) }}" class="btn btn-icon btn-3 btn-secondary" type="button">
                                     <span class="btn-inner--icon">
                                         <i class="material-symbols-rounded">first_page</i>
                                     </span>
-                                    <span class="btn-inner--text">Go Back To Page 1</span>
-                                </a>
-                            </div>
+                                        <span class="btn-inner--text">Go Back To Page 1</span>
+                                    </a>
+                                </div>
+                            @endif
                         @endif
 
                     </div>

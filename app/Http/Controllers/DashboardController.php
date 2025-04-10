@@ -26,7 +26,7 @@ class DashboardController extends Controller
             $contacts = $response['contacts'] ?? [];
             $meta = $response['meta'] ?? [];
         }
-
+//dd($meta);
         return view('dashboard', compact('contacts', 'meta'));
     }
 
