@@ -6,6 +6,7 @@ WORKDIR /var/www
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
+    npm \
     git \
     curl \
     zip \
@@ -29,6 +30,10 @@ RUN chown -R www-data:www-data /var/www \
 
 # Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
+
+# Install Node dependencies and build assets
+RUN npm install
+RUN npm run build
 
 # Expose port used by Laravel and Render
 EXPOSE 10000
