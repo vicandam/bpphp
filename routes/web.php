@@ -46,7 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/account', [DashboardController::class, 'account'])->name('account');
 
-    Route::put('/user/password', [CustomPasswordController::class, 'update'])->middleware(['auth'])->name('password.update');
+//    Route::put('/user/password', [CustomPasswordController::class, 'update'])->middleware(['auth'])->name('password.update');
 });
 
 require __DIR__.'/auth.php';
