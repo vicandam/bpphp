@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomPasswordController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GHLContactController;
 use App\Http\Controllers\GHLSettingsController;
@@ -27,10 +28,6 @@ Route::get('/', function () {
 });
 
 
-//Route::get('/dashboard', function () {
-//    return view('dashboard');
-//})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -48,6 +45,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/contacts', [GHLContactController::class, 'store'])->name('contacts.store');
 
     Route::get('/account', [DashboardController::class, 'account'])->name('account');
+
+    Route::put('/user/password', [CustomPasswordController::class, 'update'])->middleware(['auth'])->name('password.update');
 });
 
 require __DIR__.'/auth.php';
