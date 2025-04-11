@@ -163,8 +163,11 @@
                                 @endif
 
                                 @if(isset($meta['startAfter']) && isset($meta['startAfterId']))
-                                    <a href="{{ route('dashboard', ['startAfter' => $meta['startAfter'], 'startAfterId' => $meta['startAfterId'], 'search' => request('search')]) }}"
-                                       class="btn btn-info">
+                                    <a href="{{ route('dashboard', [
+                                        'startAfter' => $meta['startAfter'] ?? '',
+                                        'startAfterId' => $meta['startAfterId'] ?? '',
+                                        'search' => request('search')
+                                    ]) }}" class="btn btn-info">
                                         Load More Contacts
                                     </a>
                                 @endif
@@ -172,8 +175,10 @@
                         @else
                             <div class="mt-4 text-center">
                                 @if(isset($meta['startAfter']) && isset($meta['startAfterId']))
-                                    <a href="{{ route('dashboard', ['startAfter' => $meta['startAfter'], 'startAfterId' => $meta['startAfterId']]) }}"
-                                       class="btn btn-icon btn-3 btn-secondary" type="button">
+                                    <a href="{{ route('dashboard', [
+                                        'startAfter' => $meta['startAfter'] ?? '',
+                                        'startAfterId' => $meta['startAfterId'] ?? ''
+                                    ]) }}" class="btn btn-icon btn-3 btn-secondary" type="button">
                                         <span class="btn-inner--icon">
                                             <i class="material-symbols-rounded">first_page</i>
                                         </span>
@@ -182,6 +187,7 @@
                                 @endif
                             </div>
                         @endif
+
                     </div>
                 </div>
             </div>
