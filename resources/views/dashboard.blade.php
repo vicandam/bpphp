@@ -84,7 +84,7 @@
                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tags</th>
                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Last Activity</th>
                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Created</th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+{{--                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>--}}
                             </tr>
                             </thead>
                             <tbody>
@@ -139,11 +139,13 @@
                                             @csrf
                                             @method('DELETE')
 
-                                            <a href="{{ route('contacts.edit', $contact['id']) }}" class="btn btn-outline-secondary text-xs" data-toggle="tooltip" title="Edit contact">
-                                                Edit
+                                            <a href="{{ route('contacts.edit', $contact['id']) }}" class="text-secondary font-weight-bold text-xs me-2" data-toggle="tooltip" data-original-title="Edit user">
+                                                <i class="material-symbols-rounded text-sm me-1">edit</i> Edit
                                             </a>
 
-                                            <button type="submit" class="btn btn-primary btn-sm delete-button">Delete</button>
+                                            <button type="submit" class="delete-button text-secondary font-weight-bold text-xs bg-transparent border-0" data-toggle="tooltip" data-original-title="Delete user">
+                                                <i class="material-symbols-rounded text-sm me-1">delete</i> Delete
+                                            </button>
                                         </form>
 
                                     </td>
