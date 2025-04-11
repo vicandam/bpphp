@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link rel="icon" type="image/png" href="https://storage.googleapis.com/msgsndr/v6hkvrNYYD7kTkFhxFUK/media/67abed8f4325e1c21e66b608.x-icon">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
