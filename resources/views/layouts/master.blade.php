@@ -19,7 +19,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('themes/material-dashboard/assets/img/apple-icon.png') }}">
-    <link rel="icon" type="image/png" href="{{ asset('themes/material-dashboard/assets/img/favicon.png') }}">
+    <link rel="icon" type="image/png" href="https://storage.googleapis.com/msgsndr/v6hkvrNYYD7kTkFhxFUK/media/67abed8f4325e1c21e66b608.x-icon">
 
     <!-- Fonts and Icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900">
@@ -31,7 +31,7 @@
     <!-- Material Dashboard Core CSS -->
     <link id="pagestyle" href="{{ asset('themes/material-dashboard/assets/css/material-dashboard.css?v=3.2.0') }}" rel="stylesheet">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js']) {{-- optional: keep Laravel assets --}}
+{{--    @vite(['resources/css/app.css', 'resources/js/app.js']) --}}{{-- optional: keep Laravel assets --}}
     @stack('css')
 </head>
 

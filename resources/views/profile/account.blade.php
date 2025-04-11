@@ -62,19 +62,19 @@
                             <div class="input-group input-group-static mb-4">
                                 <label>Current Password</label>
                                 <input type="password" class="form-control" name="current_password" required>
-                                <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
+                                <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2 text-danger" />
                             </div>
 
                             <div class="input-group input-group-static mb-4">
                                 <label>New Password</label>
                                 <input type="password" class="form-control" name="password">
-                                <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
+                                <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2 text-danger" />
                             </div>
 
                             <div class="input-group input-group-static mb-4">
                                 <label>Confirm Password</label>
                                 <input type="password" class="form-control" name="password_confirmation">
-                                <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
+                                <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2 text-danger" />
                             </div>
 
                             <button type="submit" class="btn bg-gradient-dark">Save</button>
