@@ -23,6 +23,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'ghl_api_key',
         'ghl_location_id',
+        'last_login_at'
     ];
 
     /**
