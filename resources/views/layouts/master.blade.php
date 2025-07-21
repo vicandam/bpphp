@@ -37,10 +37,10 @@
 
 <body class="g-sidenav-show  bg-gray-100">
 <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-radius-lg fixed-start ms-2  bg-white my-2" id="sidenav-main">
-    <div class="sidenav-header">
+    <div class="sidenav-header text-center">
         <i class="fas fa-times p-3 cursor-pointer text-dark opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand px-4 py-3 m-0" href="/">
-            <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/v6hkvrNYYD7kTkFhxFUK/media/67ab18974325e14228650176.png" class="navbar-brand-img" width="100" height="100" alt="main_logo">
+            <img src="{{asset('themes/material-dashboard/assets/img/logos/branding/bpphp.png')}}" class="navbar-brand-img" width="100" height="100" alt="main_logo">
         </a>
     </div>
     <hr class="horizontal dark mt-0 mb-2">
@@ -128,12 +128,12 @@
                             © <script>
                                 document.write(new Date().getFullYear())
                             </script>
-                        </div> VIRTULAB IN. All Rights Reserved.
+                        </div> BPPHP. All Rights Reserved.
                     </div>
                     <div class="col-lg-6">
                         <ul class="nav nav-footer justify-content-center justify-content-lg-end">
                             <li class="nav-item">
-                                <a href="https://www.virtulab.in" class="nav-link text-muted" target="_blank">www.virtulab.in</a>
+                                <a href="https://bpphp.fun/" class="nav-link text-muted" target="_blank">www.bpphp.fun</a>
                             </li>
                         </ul>
                     </div>
