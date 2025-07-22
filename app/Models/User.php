@@ -70,6 +70,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'bpp_points_balance' => 'decimal:2',
     ];
 
+    public function isAdmin(): bool
+    {
+        return $this->is_admin == 1;
+    }
+
+    public function isMarketingAgent(): bool
+    {
+        return $this->is_marketing_agent == 1;
+    }
+
     /**
      * Get the membership type that the user belongs to.
      */

@@ -71,6 +71,16 @@ class SponsorController extends Controller
     }
 
     /**
+     * Display the specified sponsor.
+     */
+    public function show(Sponsor $sponsor)
+    {
+        // Load the 'referredBy' relationship to display the referrer's name in the view
+        $sponsor->load('referredBy');
+        return view('sponsors.show', compact('sponsor'));
+    }
+
+    /**
      * Show the form for editing the specified sponsor.
      */
     public function edit(Sponsor $sponsor)

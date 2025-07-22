@@ -21,6 +21,10 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('themes/material-dashboard/assets/img/apple-icon.png') }}">
     <link rel="icon" type="image/png" href="https://storage.googleapis.com/msgsndr/v6hkvrNYYD7kTkFhxFUK/media/67abed8f4325e1c21e66b608.x-icon">
 
+    <title>
+        BPPHP Fun - @yield('title', 'Dashboard')
+    </title>
+
     <!-- Fonts and Icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900">
     <link href="{{ asset('themes/material-dashboard/assets/css/nucleo-icons.css') }}" rel="stylesheet">
@@ -52,6 +56,108 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('users.show') && Auth::id() == request()->route('user')->id ? 'active bg-gradient-primary' : 'text-dark' }}" href="{{ route('users.show', Auth::user()) }}">
+                    <i class="material-symbols-rounded opacity-5">person</i>
+                    <span class="nav-link-text ms-1">My Profile</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ is_active_route('tickets.*') }}" href="{{ route('tickets.index') }}">
+                    <i class="material-symbols-rounded opacity-5">confirmation_number</i>
+                    <span class="nav-link-text ms-1">My Tickets</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ is_active_route('investments.*') }}" href="{{ route('investments.index') }}">
+                    <i class="material-symbols-rounded opacity-5">trending_up</i>
+                    <span class="nav-link-text ms-1">My Investments</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ is_active_route('referrals.*') }}" href="{{ route('referrals.my') }}">
+                    <i class="material-symbols-rounded opacity-5">group_add</i>
+                    <span class="nav-link-text ms-1">My Referrals</span>
+                </a>
+            </li>
+
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Public Pages</h6>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ is_active_route(['events.index']) }}" href="{{ route('events.index') }}">
+                    <i class="material-symbols-rounded opacity-5">event</i>
+                    <span class="nav-link-text ms-1">Events</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ is_active_route('film_projects.*') }}" href="{{ route('film_projects.index') }}">
+                    <i class="material-symbols-rounded opacity-5">movie</i>
+                    <span class="nav-link-text ms-1">Film Projects</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ is_active_route('business_partners.*') }}" href="{{ route('business_partners.index') }}">
+                    <i class="material-symbols-rounded opacity-5">handshake</i>
+                    <span class="nav-link-text ms-1">Business Partners</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ is_active_route(['donations.create']) }}" href="{{ route('donations.create') }}">
+                    <i class="material-symbols-rounded opacity-5">volunteer_activism</i>
+                    <span class="nav-link-text ms-1">Make a Donation</span>
+                </a>
+            </li>
+
+            @if(Auth::user() && Auth::user()->is_admin) {{-- Assuming an 'is_admin' column on User model --}}
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Admin pages</h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ is_active_route('membership-types.*') }}" href="{{ route('membership-types.index') }}">
+                    <i class="material-symbols-rounded opacity-5">badge</i>
+                    <span class="nav-link-text ms-1">Membership Types</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ is_active_route('admin.events.*') }}" href="{{ route('events.create') }}">
+                    <i class="material-symbols-rounded opacity-5">event_note</i>
+                    <span class="nav-link-text ms-1">Manage Events</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('account') ? 'active bg-gradient-dark text-white' : 'text-dark' }}" href="{{ route('account') }}">
+                    <i class="material-symbols-rounded opacity-5">theaters</i>
+                    <span class="nav-link-text ms-1">Manage Film Projects</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ is_active_route('sponsors.*') }}" href="{{ route('sponsors.index') }}">
+                    <i class="material-symbols-rounded opacity-5">attach_money</i>
+                    <span class="nav-link-text ms-1">Manage Sponsors</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('account') ? 'active bg-gradient-dark text-white' : 'text-dark' }}" href="{{ route('account') }}">
+                    <i class="material-symbols-rounded opacity-5">receipt_long</i>
+                    <span class="nav-link-text ms-1">Manage Payouts</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ is_active_route(['donations.index', 'donations.edit','donations.show']) }}" href="{{ route('donations.index') }}">
+                    <i class="material-symbols-rounded opacity-5">favorite</i>
+                    <span class="nav-link-text ms-1">Manage Donations</span>
+                </a>
+            </li>
+            @endif
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Account pages</h6>
             </li>

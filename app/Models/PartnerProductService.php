@@ -9,6 +9,8 @@ class PartnerProductService extends Model
 {
     use HasFactory;
 
+    protected $table = 'partner_products_services';
+
     /**
      * The attributes that are mass assignable.
      *
