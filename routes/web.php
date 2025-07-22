@@ -14,6 +14,7 @@ use App\Http\Controllers\MembershipTypeController;
 use App\Http\Controllers\PartnerProductServiceController;
 use App\Http\Controllers\PayoutController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PublicEventController;
 use App\Http\Controllers\ReferralController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\TicketController;
@@ -75,8 +76,8 @@ Route::post('/register', [RegisteredUserController::class, 'store'])->middleware
 
 
 // Publicly accessible routes for events and film projects
-Route::get('/events', [EventController::class, 'index'])->name('events.index');
-Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+Route::get('/public/events', [PublicEventController::class, 'index'])->name('public.events.index');
+Route::get('/public/events/{event}', [PublicEventController::class, 'show'])->name('public.events.show');
 
 Route::get('/film-projects', [FilmProjectController::class, 'index'])->name('film_projects.index');
 Route::get('/film-projects/{filmProject}', [FilmProjectController::class, 'show'])->name('film_projects.show');
@@ -119,6 +120,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('membership-types', MembershipTypeController::class);
 
     // Events (Admin CRUD)
+    Route::get('/admin/events', [EventController::class, 'index'])->name('events.index');
+    Route::get('/admin/events/{event}', [EventController::class, 'show'])->name('events.show');
     Route::get('/admin/events/create', [EventController::class, 'create'])->name('events.create');
     Route::post('/admin/events', [EventController::class, 'store'])->name('events.store');
     Route::get('/admin/events/{event}/edit', [EventController::class, 'edit'])->name('events.edit');

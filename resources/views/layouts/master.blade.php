@@ -90,7 +90,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {{ is_active_route(['events.index']) }}" href="{{ route('events.index') }}">
+                <a class="nav-link {{ is_active_route('public.events.*') }}" href="{{ route('public.events.index') }}">
                     <i class="material-symbols-rounded opacity-5">event</i>
                     <span class="nav-link-text ms-1">Events</span>
                 </a>
@@ -128,7 +128,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ is_active_route('admin.events.*') }}" href="{{ route('events.create') }}">
+                <a class="nav-link {{ is_active_route('events.*') }}" href="{{ route('events.index') }}">
                     <i class="material-symbols-rounded opacity-5">event_note</i>
                     <span class="nav-link-text ms-1">Manage Events</span>
                 </a>
@@ -146,7 +146,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('account') ? 'active bg-gradient-dark text-white' : 'text-dark' }}" href="{{ route('account') }}">
+                <a class="nav-link {{ is_active_route('payouts.*') }}" href="{{ route('payouts.index') }}">
                     <i class="material-symbols-rounded opacity-5">receipt_long</i>
                     <span class="nav-link-text ms-1">Manage Payouts</span>
                 </a>
@@ -223,6 +223,44 @@
     </nav>
 
     <div class="container-fluid py-2">
+        <!-- Flash Messages -->
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible text-white" role="alert">
+                <span class="text-sm">{{ session('success') }}</span>
+                <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible text-white" role="alert">
+                <span class="text-sm">{{ session('error') }}</span>
+                <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+        @if (session('info'))
+            <div class="alert alert-info alert-dismissible text-white" role="alert">
+                <span class="text-sm">{{ session('info') }}</span>
+                <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible text-white" role="alert">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+
 
         @yield('content')
 

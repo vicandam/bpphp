@@ -105,7 +105,7 @@
                         Keep an eye on exciting events!
                     </p>
                     {{-- You can display a list of upcoming events here --}}
-                    <a href="{{ route('events.index') }}" class="btn btn-sm bg-gradient-primary mt-3">View All Events</a>
+                    <a href="{{ route('public.events.index') }}" class="btn btn-sm bg-gradient-primary mt-3">View All Events</a>
                 </div>
             </div>
         </div>
