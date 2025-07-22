@@ -17,17 +17,17 @@
                         @csrf
                         @method('PUT')
 
-                        <div class="input-group input-group-outline my-3">
+                        <div class="input-group input-group-outline is-filled my-3">
                             <label class="form-label">Film Project Title</label>
                             <input type="text" class="form-control" name="title" value="{{ old('title', $filmProject->title) }}" required>
                         </div>
 
-                        <div class="input-group input-group-outline my-3">
+                        <div class="input-group input-group-outline is-filled my-3">
                             <label class="form-label">Description</label>
                             <textarea class="form-control" name="description" rows="5">{{ old('description', $filmProject->description) }}</textarea>
                         </div>
 
-                        <div class="input-group input-group-outline my-3">
+                        <div class="input-group input-group-outline is-filled my-3">
                             <label class="form-label">Status</label>
                             <select class="form-control" name="status" required>
                                 <option value="">-- Select Status --</option>
@@ -38,12 +38,12 @@
                             </select>
                         </div>
 
-                        <div class="input-group input-group-outline my-3">
+                        <div class="input-group input-group-outline is-filled my-3">
                             <label class="form-label">Target Fund Amount (PHP)</label>
                             <input type="number" step="0.01" class="form-control" name="target_fund_amount" value="{{ old('target_fund_amount', $filmProject->target_fund_amount) }}">
                         </div>
 
-                        <div class="input-group input-group-outline my-3">
+                        <div class="input-group input-group-outline is-filled my-3">
                             <label class="form-label">Total Net Theatrical Ticket Sales (PHP)</label>
                             <input type="number" step="0.01" class="form-control" name="total_net_theatrical_ticket_sales" value="{{ old('total_net_theatrical_ticket_sales', $filmProject->total_net_theatrical_ticket_sales) }}">
                         </div>

@@ -25,15 +25,18 @@
                             <textarea class="form-control" name="description" rows="5">{{ old('description') }}</textarea>
                         </div>
 
-                        <div class="input-group input-group-outline my-3">
-                            <label class="form-label">Status</label>
-                            <select class="form-control" name="status" required>
-                                <option value="">-- Select Status --</option>
-                                <option value="Pre-production" {{ old('status') == 'Pre-production' ? 'selected' : '' }}>Pre-production</option>
-                                <option value="Production" {{ old('status') == 'Production' ? 'selected' : '' }}>Production</option>
-                                <option value="Post-production" {{ old('status') == 'Post-production' ? 'selected' : '' }}>Post-production</option>
-                                <option value="Released" {{ old('status') == 'Released' ? 'selected' : '' }}>Released</option>
-                            </select>
+
+                        <div class="form-group my-3">
+                            <label for="status" class="form-label">Status</label>
+                            <div class="input-group input-group-outline">
+                                <select class="form-control" name="status" id="status" required>
+                                    <option value="">-- Select Status --</option>
+                                    <option value="Pre-production" {{ old('status') == 'Pre-production' ? 'selected' : '' }}>Pre-production</option>
+                                    <option value="Production" {{ old('status') == 'Production' ? 'selected' : '' }}>Production</option>
+                                    <option value="Post-production" {{ old('status') == 'Post-production' ? 'selected' : '' }}>Post-production</option>
+                                    <option value="Released" {{ old('status') == 'Released' ? 'selected' : '' }}>Released</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div class="input-group input-group-outline my-3">

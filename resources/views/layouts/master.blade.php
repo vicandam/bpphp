@@ -97,7 +97,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {{ is_active_route('film_projects.*') }}" href="{{ route('film_projects.index') }}">
+                <a class="nav-link {{ is_active_route('public.film_projects.*') }}" href="{{ route('public.film_projects.index') }}">
                     <i class="material-symbols-rounded opacity-5">movie</i>
                     <span class="nav-link-text ms-1">Film Projects</span>
                 </a>
@@ -134,7 +134,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('account') ? 'active bg-gradient-dark text-white' : 'text-dark' }}" href="{{ route('account') }}">
+                <a class="nav-link {{ is_active_route('film_projects.*') }}" href="{{ route('film_projects.index') }}">
                     <i class="material-symbols-rounded opacity-5">theaters</i>
                     <span class="nav-link-text ms-1">Manage Film Projects</span>
                 </a>
@@ -354,6 +354,8 @@
 <script src="{{ asset('themes/material-dashboard/assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
 <script src="{{ asset('themes/material-dashboard/assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
 <script src="{{ asset('themes/material-dashboard/assets/js/plugins/chartjs.min.js') }}"></script>
+<script src="{{ asset('custom_js/floating-textareas.js') }}"></script>
+
 <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {

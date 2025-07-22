@@ -17,12 +17,12 @@
                         @csrf
                         <p class="text-muted mb-4">Minimum investment amount is ₱10,000 for 1 share.</p>
 
-                        <div class="input-group input-group-outline my-3">
+                        <div class="input-group input-group-outline is-filled my-3">
                             <label class="form-label">Investment Amount (PHP)</label>
                             <input type="number" step="0.01" class="form-control" name="investment_amount" value="{{ old('investment_amount') }}" required min="10000">
                         </div>
 
-                        <div class="input-group input-group-outline my-3">
+                        <div class="input-group input-group-outline is-filled my-3">
                             <label class="form-label">Select Film Project (Optional)</label>
                             <select class="form-control" name="film_project_id" id="film_project_id">
                                 <option value="">-- Select Film Project --</option>
@@ -32,7 +32,7 @@
                             </select>
                         </div>
 
-                        <div class="input-group input-group-outline my-3">
+                        <div class="input-group input-group-outline is-filled my-3">
                             <label class="form-label">Select Event (Optional)</label>
                             <select class="form-control" name="event_id" id="event_id">
                                 <option value="">-- Select Event --</option>
@@ -43,7 +43,7 @@
                         </div>
                         <p class="text-muted text-sm mt-n2 mb-3">Please select either a Film Project OR an Event, not both.</p>
 
-                        <div class="input-group input-group-outline my-3">
+                        <div class="input-group input-group-outline is-filled my-3">
                             <label class="form-label">Referred By (Optional)</label>
                             <select class="form-control" name="referred_by_user_id" id="referred_by_user_id">
                                 <option value="">-- Select Referrer (Marketing Agent/Catalyst) --</option>

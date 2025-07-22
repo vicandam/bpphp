@@ -19,40 +19,40 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="input-group input-group-outline my-3">
+                                <div class="input-group input-group-outline is-filled my-3">
                                     <label class="form-label">Event Name</label>
                                     <input type="text" class="form-control" name="name" value="{{ old('name', $event->name) }}" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="input-group input-group-outline my-3">
+                                <div class="input-group input-group-outline is-filled my-3">
                                     <label class="form-label">Ticket Price</label>
                                     <input type="number" step="0.01" class="form-control" name="ticket_price" value="{{ old('ticket_price', $event->ticket_price) }}" required>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="input-group input-group-outline my-3">
+                        <div class="input-group input-group-outline is-filled my-3">
                             <label class="form-label">Description</label>
                             <textarea class="form-control" name="description" rows="5">{{ old('description', $event->description) }}</textarea>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="input-group input-group-outline my-3">
+                                <div class="input-group input-group-outline is-filled my-3">
                                     <label class="form-label">Event Date</label>
                                     <input type="date" class="form-control" name="event_date" value="{{ old('event_date', $event->event_date ? $event->event_date->format('Y-m-d') : '') }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="input-group input-group-outline my-3">
+                                <div class="input-group input-group-outline is-filled my-3">
                                     <label class="form-label">Event Time</label>
                                     <input type="time" class="form-control" name="event_time" value="{{ old('event_time', $event->event_time ? $event->event_time->format('H:i') : '') }}">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="input-group input-group-outline my-3">
+                        <div class="input-group input-group-outline is-filled my-3">
                             <label class="form-label">Venue</label>
                             <input type="text" class="form-control" name="venue" value="{{ old('venue', $event->venue) }}">
                         </div>

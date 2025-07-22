@@ -15,6 +15,7 @@ use App\Http\Controllers\PartnerProductServiceController;
 use App\Http\Controllers\PayoutController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicEventController;
+use App\Http\Controllers\PublicFilmProjectController;
 use App\Http\Controllers\ReferralController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\TicketController;
@@ -79,8 +80,8 @@ Route::post('/register', [RegisteredUserController::class, 'store'])->middleware
 Route::get('/public/events', [PublicEventController::class, 'index'])->name('public.events.index');
 Route::get('/public/events/{event}', [PublicEventController::class, 'show'])->name('public.events.show');
 
-Route::get('/film-projects', [FilmProjectController::class, 'index'])->name('film_projects.index');
-Route::get('/film-projects/{filmProject}', [FilmProjectController::class, 'show'])->name('film_projects.show');
+Route::get('/film-projects', [PublicFilmProjectController::class, 'index'])->name('public.film_projects.index');
+Route::get('/film-projects/{filmProject}', [PublicFilmProjectController::class, 'show'])->name('public.film_projects.show');
 
 // Publicly accessible for viewing business partners and their products/services
 Route::get('/business-partners', [BusinessPartnerController::class, 'index'])->name('business_partners.index');
@@ -148,6 +149,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Film Projects (Admin CRUD)
     Route::get('/admin/film-projects/create', [FilmProjectController::class, 'create'])->name('film_projects.create');
+    Route::get('/admin/film-projects', [FilmProjectController::class, 'index'])->name('film_projects.index');
+    Route::get('/admin/film-projects/{filmProject}', [FilmProjectController::class, 'show'])->name('film_projects.show');
     Route::post('/admin/film-projects', [FilmProjectController::class, 'store'])->name('film_projects.store');
     Route::get('/admin/film-projects/{filmProject}/edit', [FilmProjectController::class, 'edit'])->name('film_projects.edit');
     Route::put('/admin/film-projects/{filmProject}', [FilmProjectController::class, 'update'])->name('film_projects.update');

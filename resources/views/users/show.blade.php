@@ -116,7 +116,7 @@
                         <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                             <div class="d-flex align-items-center">
                                 <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                                    <i class="material-icons opacity-10">confirmation_number</i>
+                                    <i class="material-symbols-rounded opacity-10">confirmation_number</i>
                                 </div>
                                 <div class="d-flex flex-column">
                                     <h6 class="mb-1 text-dark text-sm">Tickets Purchased</h6>
@@ -124,13 +124,13 @@
                                 </div>
                             </div>
                             <div class="d-flex">
-                                <a href="{{ route('tickets.index') }}" class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="material-icons text-sm">arrow_forward</i></a>
+                                <a href="{{ route('tickets.index') }}" class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="material-symbols-rounded text-sm">arrow_forward</i></a>
                             </div>
                         </li>
                         <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                             <div class="d-flex align-items-center">
                                 <div class="icon icon-shape icon-sm me-3 bg-gradient-primary shadow text-center">
-                                    <i class="material-icons opacity-10">trending_up</i>
+                                    <i class="material-symbols-rounded opacity-10">trending_up</i>
                                 </div>
                                 <div class="d-flex flex-column">
                                     <h6 class="mb-1 text-dark text-sm">Investments Made</h6>
@@ -138,13 +138,13 @@
                                 </div>
                             </div>
                             <div class="d-flex">
-                                <a href="{{ route('investments.index') }}" class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="material-icons text-sm">arrow_forward</i></a>
+                                <a href="{{ route('investments.index') }}" class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="material-symbols-rounded opacity-10 text-sm">arrow_forward</i></a>
                             </div>
                         </li>
                         <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                             <div class="d-flex align-items-center">
                                 <div class="icon icon-shape icon-sm me-3 bg-gradient-success shadow text-center">
-                                    <i class="material-icons opacity-10">group_add</i>
+                                    <i class="material-symbols-rounded opacity-10">group_add</i>
                                 </div>
                                 <div class="d-flex flex-column">
                                     <h6 class="mb-1 text-dark text-sm">Members Referred</h6>
@@ -152,13 +152,13 @@
                                 </div>
                             </div>
                             <div class="d-flex">
-                                <a href="{{ route('referrals.my') }}" class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="material-icons text-sm">arrow_forward</i></a>
+                                <a href="{{ route('referrals.my') }}" class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="material-symbols-rounded text-sm">arrow_forward</i></a>
                             </div>
                         </li>
                         <li class="list-group-item border-0 d-flex justify-content-between ps-0 border-radius-lg">
                             <div class="d-flex align-items-center">
                                 <div class="icon icon-shape icon-sm me-3 bg-gradient-info shadow text-center">
-                                    <i class="material-icons opacity-10">receipt_long</i>
+                                    <i class="material-symbols-rounded opacity-10">receipt_long</i>
                                 </div>
                                 <div class="d-flex flex-column">
                                     <h6 class="mb-1 text-dark text-sm">Total Payouts</h6>
