@@ -44,11 +44,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    $contacts = [];
-    $meta = [];
-
-    return view('dashboard', compact('contacts', 'meta'));
-
+    return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -111,6 +107,10 @@ Route::middleware('auth')->group(function () {
     // Donations (user can create)
     Route::get('/donations/create', [DonationController::class, 'create'])->name('donations.create');
     Route::post('/donations', [DonationController::class, 'store'])->name('donations.store');
+
+    //Route::post('/ui-preferences', [UserController::class, 'updateUiPreferences'])->middleware('auth');
+    Route::post('/ui-preferences', [UserController::class, 'updateUIPreferences'])->name('ui.preferences.update');
+
 });
 
 

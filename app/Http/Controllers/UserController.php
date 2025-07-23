@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Referral;
+use App\Models\UiPreference;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -144,4 +145,44 @@ class UserController extends Controller
         }
         return back()->with('info', $user->name . ' is already a Golden Hearts Awardee.');
     }
+
+    public function updateUiPreferences(Request $request)
+    {
+//        $request->validate([
+//            'sidebar_color' => 'required|string',
+//            'sidenav_type' => 'required|string',
+//            'navbar_fixed' => 'required|boolean',
+//            'theme_mode' => 'required|string',
+//        ]);
+
+
+        $user = auth()->user();
+
+        if ($request->type == 'sidenav_type') {
+            UiPreference::updateOrCreate(
+                ['user_id' => $user->id],
+                [
+                    //'sidebar_color' => $request->sidebar_color,
+                    'sidenav_type' => $request->sidenav_color,
+                    //'navbar_fixed' => $request->navbar_fixed,
+                    //'theme_mode' => $request->theme_mode,
+                ]
+            );
+        }
+
+        return response()->json(['status' => 'success']);
+    }
+    public function updateUIPreferencesOld(Request $request)
+    {
+        $request->validate([
+            'sidebar_color' => 'nullable|string',
+        ]);
+
+        auth()->user()->update([
+            'sidebar_color' => $request->sidebar_color,
+        ]);
+
+        return response()->json(['message' => 'Preferences updated']);
+    }
+
 }

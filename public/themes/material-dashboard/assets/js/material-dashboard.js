@@ -149,7 +149,7 @@ function sidebarColor(a) {
 // Set Sidebar Type
 function sidebarType(a) {
   var parent = a.parentElement.children;
-  var color = a.getAttribute("data-class");
+  var color = 'bg-gradient-dark'; //a.getAttribute("data-class");
   var body = document.querySelector("body");
   var bodyWhite = document.querySelector("body:not(.dark-version)");
   var bodyDark = body.classList.contains('dark-version');

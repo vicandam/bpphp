@@ -84,16 +84,6 @@
                                             </form>
                                         @endif
                                         @endif
-                                        @if(Auth::user() && Auth::user()->is_admin)
-                                            <a href="{{ route('business_partners.products_services.edit', [$businessPartner, $productService]) }}" class="text-secondary font-weight-bold text-xs ms-2" data-toggle="tooltip" data-original-title="Edit Product/Service">
-                                                Edit
-                                            </a>
-                                            <form action="{{ route('business_partners.products_services.destroy', [$businessPartner, $productService]) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-link text-danger text-gradient px-3 mb-0" onclick="return confirm('Are you sure you want to delete this product/service?')">Delete</button>
-                                            </form>
-                                        @endif
                                     </div>
                                 </li>
                             @endforeach

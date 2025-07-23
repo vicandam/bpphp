@@ -80,6 +80,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->is_marketing_agent == 1;
     }
 
+    public function uiPreference()
+    {
+        return $this->hasOne(UIPreference::class);
+    }
+
     /**
      * Get the membership type that the user belongs to.
      */

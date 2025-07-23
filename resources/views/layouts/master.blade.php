@@ -41,7 +41,7 @@
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
-<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-radius-lg fixed-start ms-2  bg-white my-2" id="sidenav-main">
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-radius-lg fixed-start ms-2  {{ $uiPreference->sidenav_type ?? 'bg-white' }} my-2" id="sidenav-main">
     <div class="sidenav-header text-center">
         <i class="fas fa-times p-3 cursor-pointer text-dark opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand px-4 py-3 m-0" href="/">
@@ -383,10 +383,10 @@
         <hr class="horizontal dark my-1">
         <div class="card-body pt-sm-3 pt-0">
             <!-- Sidebar Backgrounds -->
-            <div>
+            <div class="d-none">
                 <h6 class="mb-0">Sidebar Colors</h6>
             </div>
-            <a href="javascript:void(0)" class="switch-trigger background-color">
+            <a href="javascript:void(0)" class="switch-trigger background-color d-none">
                 <div class="badge-colors my-2 text-start">
                     <span class="badge filter bg-gradient-primary" data-color="primary" onclick="sidebarColor(this)"></span>
                     <span class="badge filter bg-gradient-dark active" data-color="dark" onclick="sidebarColor(this)"></span>
@@ -402,32 +402,35 @@
                 <p class="text-sm">Choose between different sidenav types.</p>
             </div>
             <div class="d-flex">
-                <button class="btn bg-gradient-dark px-3 mb-2" data-class="bg-gradient-dark" onclick="sidebarType(this)">Dark</button>
-                <button class="btn bg-gradient-dark px-3 mb-2 ms-2" data-class="bg-transparent" onclick="sidebarType(this)">Transparent</button>
-                <button class="btn bg-gradient-dark px-3 mb-2  active ms-2" data-class="bg-white" onclick="sidebarType(this)">White</button>
+                <button class="btn bg-gradient-dark px-3 mb-2 {{ $uiPreference->sidenav_type === 'bg-gradient-dark' ? 'active':'' }}" data-class="bg-gradient-dark" id="sidebar-dark" onclick="updateSidebarType('bg-gradient-dark')">Dark</button>
+                <button class="btn bg-gradient-dark px-3 mb-2 ms-2 {{ $uiPreference->sidenav_type === 'bg-transparent' ? 'active':'' }}" data-class="bg-transparent" id="sidebar-transparent" onclick="updateSidebarType('bg-transparent')">Transparent</button>
+                <button class="btn bg-gradient-dark px-3 mb-2  ms-2 {{ $uiPreference->sidenav_type === 'bg-white' ? 'active':'' }}" data-class="bg-white" id="sidebar-white" onclick="updateSidebarType('bg-white')">White</button>
             </div>
             <p class="text-sm d-xl-none d-block mt-2">You can change the sidenav type just on desktop view.</p>
             <!-- Navbar Fixed -->
-            <div class="mt-3 d-flex">
+            <div class="mt-3 d-flex d-none">
                 <h6 class="mb-0">Navbar Fixed</h6>
                 <div class="form-check form-switch ps-0 ms-auto my-auto">
                     <input class="form-check-input mt-1 ms-auto" type="checkbox" id="navbarFixed" onclick="navbarFixed(this)">
                 </div>
             </div>
             <hr class="horizontal dark my-3">
-            <div class="mt-2 d-flex">
+            <div class="mt-2 d-flex d-none">
                 <h6 class="mb-0">Light / Dark</h6>
                 <div class="form-check form-switch ps-0 ms-auto my-auto">
                     <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version" onclick="darkMode(this)">
                 </div>
             </div>
-            <hr class="horizontal dark my-sm-4">
+            <hr class="horizontal dark my-sm-4 d-none">
         </div>
     </div>
 </div>
 <!--   Core JS Files   -->
 <script src="{{ asset('themes/material-dashboard/assets/js/core/popper.min.js') }}"></script>
 <script src="{{ asset('themes/material-dashboard/assets/js/core/bootstrap.min.js') }}"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script src="{{ asset('themes/material-dashboard/assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
 <script src="{{ asset('themes/material-dashboard/assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
 <script src="{{ asset('themes/material-dashboard/assets/js/plugins/chartjs.min.js') }}"></script>
@@ -442,10 +445,55 @@
         Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
 </script>
+
 <!-- Github buttons -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="{{asset('themes/material-dashboard/assets/js/material-dashboard.min.js?v=3.2.0')}}"></script>
+
+<script>
+    function updateSidebarType(sidenav_type) {
+        initUserPref(sidenav_type);
+
+        // Save the new sidebar color
+        const data = {
+            type: 'sidenav_type',
+            sidenav_color: sidenav_type,
+            _token: '{{ csrf_token() }}'
+        };
+
+        $.ajax({
+            url: '{{ route("ui.preferences.update") }}',
+            type: 'POST',
+            data: data,
+            success: function (res) {
+                console.log('Sidebar preference saved.');
+            },
+            error: function (err) {
+                console.error('Failed to save sidebar preference', err);
+            }
+        });
+    }
+
+
+    // Auto trigger sidebar preference on page load
+    $(document).ready(function () {
+        initUserPref();
+    });
+
+    function initUserPref(sidenav_type) {
+        // Get the preference from Laravel (default to 'bg-white' if none)
+        const sidebarTypePref = sidenav_type ?? @json($uiPreference->sidenav_type ?? 'bg-white');
+
+        // Find the matching button using data-class
+        const matchedButton = document.querySelector(`button[data-class="${sidebarTypePref}"]`);
+
+        // Trigger sidebarType if button is found
+        if (matchedButton) {
+            sidebarType(matchedButton);
+        }
+    }
+</script>
 
 @stack('scripts')
 </body>
