@@ -52,7 +52,7 @@
                             <textarea class="form-control" name="agreement_details" rows="5">{{ old('agreement_details', $businessPartner->agreement_details) }}</textarea>
                         </div>
 
-                        <div class="input-group input-group-outline my-3">
+                        <div class="input-group input-group-outline is-filled my-3">
                             <label class="form-label">Referred By (Marketing Agent/Catalyst)</label>
                             <select class="form-control" name="referred_by_user_id">
                                 <option value="">-- Select User (Optional) --</option>

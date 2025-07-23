@@ -31,6 +31,7 @@
     <link href="{{ asset('themes/material-dashboard/assets/css/nucleo-svg.css') }}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <!-- Material Dashboard Core CSS -->
     <link id="pagestyle" href="{{ asset('themes/material-dashboard/assets/css/material-dashboard.css?v=3.2.0') }}" rel="stylesheet">
@@ -51,7 +52,7 @@
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }}" href="{{ route('dashboard') }}">
+                <a class="nav-link {{ request()->routeIs('dashboard') ? 'active bg-gradient-primary text-white' : 'text-dark' }}" href="{{ route('dashboard') }}">
                     <i class="material-symbols-rounded opacity-5">dashboard</i>
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
@@ -104,7 +105,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {{ is_active_route('business_partners.*') }}" href="{{ route('business_partners.index') }}">
+                <a class="nav-link {{ is_active_route('public.business_partners.*') }}" href="{{ route('public.business_partners.index') }}">
                     <i class="material-symbols-rounded opacity-5">handshake</i>
                     <span class="nav-link-text ms-1">Business Partners</span>
                 </a>
@@ -149,6 +150,12 @@
                 <a class="nav-link {{ is_active_route('payouts.*') }}" href="{{ route('payouts.index') }}">
                     <i class="material-symbols-rounded opacity-5">receipt_long</i>
                     <span class="nav-link-text ms-1">Manage Payouts</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ is_active_route('business_partners.*') }}" href="{{ route('business_partners.index') }}">
+                    <i class="material-symbols-rounded opacity-5">supervisor_account</i>
+                    <span class="nav-link-text ms-1">Manage Business Partners</span>
                 </a>
             </li>
             <li class="nav-item">

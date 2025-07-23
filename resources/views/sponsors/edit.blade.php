@@ -54,7 +54,7 @@
 
                         <div class="form-group my-3">
                             <label class="form-label">Referred By (Marketing Agent/Catalyst)</label>
-                            <div class="input-group input-group-outline my-3 {{isset($users) ? 'is-filled' : ''}}">
+                            <div class="input-group input-group-outline is-filled my-3 {{isset($users) ? 'is-filled' : ''}}">
                                 <select class="form-control" name="referred_by_user_id">
                                     <option value="">-- Select User (Optional) --</option>
                                     @foreach($users as $user)

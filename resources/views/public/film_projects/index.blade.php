@@ -57,7 +57,7 @@
                                             <span class="text-secondary text-xs font-weight-bold">₱{{ number_format($project->total_net_theatrical_ticket_sales, 2) }}</span>
                                         </td>
                                         <td class="align-middle">
-                                            <a href="{{ route('film_projects.show', $project) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="View Film Project">
+                                            <a href="{{ route('public.film_projects.show', $project) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="View Film Project">
                                                 View
                                             </a>
                                         </td>

@@ -9,9 +9,6 @@
                 <div class="card-header pb-0">
                     <div class="d-flex align-items-center">
                         <h5 class="mb-0">{{ $filmProject->title }}</h5>
-                        @if(Auth::user() && Auth::user()->is_admin)
-                            <a href="{{ route('film_projects.edit', $filmProject) }}" class="btn btn-primary btn-sm ms-auto">Edit Film Project</a>
-                        @endif
                     </div>
                 </div>
                 <div class="card-body px-0 pb-2">

@@ -1,23 +1,23 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const textareas = document.querySelectorAll('.input-group textarea.form-control');
+    const fields = document.querySelectorAll('.input-group .form-control');
 
-    textareas.forEach(textarea => {
-        const parent = textarea.closest('.input-group');
+    fields.forEach(field => {
+        const parent = field.closest('.input-group');
 
-        if (textarea.value.trim() !== '') {
+        if (field.value.trim() !== '') {
             parent.classList.add('is-filled');
         }
 
-        textarea.addEventListener('input', function () {
-            if (textarea.value.trim() !== '') {
+        field.addEventListener('input', function () {
+            if (field.value.trim() !== '') {
                 parent.classList.add('is-filled');
             } else {
                 parent.classList.remove('is-filled');
             }
         });
 
-        textarea.addEventListener('blur', function () {
-            if (textarea.value.trim() === '') {
+        field.addEventListener('blur', function () {
+            if (field.value.trim() === '') {
                 parent.classList.remove('is-filled');
             }
         });

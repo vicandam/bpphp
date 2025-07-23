@@ -65,7 +65,7 @@
                                 <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                                     <div class="d-flex align-items-center">
                                         <div class="icon icon-shape icon-sm me-3 bg-gradient-success shadow text-center">
-                                            <i class="material-icons opacity-10">person</i>
+                                            <i class="material-symbols-rounded opacity-10">person</i>
                                         </div>
                                         <div class="d-flex flex-column">
                                             <h6 class="mb-1 text-dark text-sm">{{ $investment->user->name ?? 'N/A' }}</h6>

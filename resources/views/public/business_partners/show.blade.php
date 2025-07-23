@@ -10,9 +10,6 @@
                 <div class="card-header pb-0">
                     <div class="d-flex align-items-center">
                         <h5 class="mb-0">{{ $businessPartner->name }}</h5>
-                        @if(Auth::user() && (Auth::user()->is_admin || Auth::user()->is_marketing_agent || Auth::user()->is_marketing_catalyst))
-                            <a href="{{ route('business_partners.edit', $businessPartner) }}" class="btn btn-primary btn-sm ms-auto">Edit Partner</a>
-                        @endif
                     </div>
                 </div>
                 <div class="card-body px-0 pb-2">
@@ -58,9 +55,6 @@
             <div class="card h-100">
                 <div class="card-header pb-0">
                     <h6>Products & Services Offered</h6>
-                    @if(Auth::user() && Auth::user()->is_admin)
-                        <a href="{{ route('business_partners.products_services.create', $businessPartner) }}" class="btn btn-primary btn-sm mt-2">Add New Product/Service</a>
-                    @endif
                 </div>
                 <div class="card-body p-3">
                     @if($businessPartner->productsServices->isEmpty())
@@ -72,7 +66,6 @@
                                     <div class="d-flex align-items-center">
                                         <div class="icon icon-shape icon-sm me-3 bg-gradient-info shadow text-center">
                                             <i class="material-icons opacity-10">{{ $productService->is_voucher ? 'card_giftcard' : 'shopping_bag' }}</i>
-{{--                                            <i class="material-symbols-rounded opacity-10">{{ $productService->is_voucher ? 'card_giftcard' : 'shopping_bag' }}</i>--}}
                                         </div>
                                         <div class="d-flex flex-column">
                                             <h6 class="mb-1 text-dark text-sm">{{ $productService->name }}</h6>

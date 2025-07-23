@@ -50,14 +50,16 @@
                             <textarea class="form-control" name="agreement_details" rows="5">{{ old('agreement_details') }}</textarea>
                         </div>
 
-                        <div class="input-group input-group-outline my-3">
+                        <div class="form-group">
                             <label class="form-label">Referred By (Marketing Agent/Catalyst)</label>
-                            <select class="form-control" name="referred_by_user_id">
-                                <option value="">-- Select User (Optional) --</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}" {{ old('referred_by_user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }} (ID: {{ $user->id }})</option>
-                                @endforeach
-                            </select>
+                            <div class="input-group input-group-outline my-3">
+                                <select class="form-control" name="referred_by_user_id">
+                                    <option value="">-- Select User (Optional) --</option>
+                                    @foreach($users as $user)
+                                        <option value="{{ $user->id }}" {{ old('referred_by_user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }} (ID: {{ $user->id }})</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
                         <div class="d-flex justify-content-end mt-4">

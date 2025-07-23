@@ -14,6 +14,7 @@ use App\Http\Controllers\MembershipTypeController;
 use App\Http\Controllers\PartnerProductServiceController;
 use App\Http\Controllers\PayoutController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PublicBusinessPartnerController;
 use App\Http\Controllers\PublicEventController;
 use App\Http\Controllers\PublicFilmProjectController;
 use App\Http\Controllers\ReferralController;
@@ -84,8 +85,8 @@ Route::get('/film-projects', [PublicFilmProjectController::class, 'index'])->nam
 Route::get('/film-projects/{filmProject}', [PublicFilmProjectController::class, 'show'])->name('public.film_projects.show');
 
 // Publicly accessible for viewing business partners and their products/services
-Route::get('/business-partners', [BusinessPartnerController::class, 'index'])->name('business_partners.index');
-Route::get('/business-partners/{businessPartner}', [BusinessPartnerController::class, 'show'])->name('business_partners.show');
+Route::get('/business-partners', [PublicBusinessPartnerController::class, 'index'])->name('public.business_partners.index');
+Route::get('/business-partners/{businessPartner}', [PublicBusinessPartnerController::class, 'show'])->name('public.business_partners.show');
 Route::get('/business-partners/{businessPartner}/products-services', [PartnerProductServiceController::class, 'index'])->name('business_partners.products_services.index');
 Route::get('/business-partners/{businessPartner}/products-services/{partnerProductService}', [PartnerProductServiceController::class, 'show'])->name('business_partners.products_services.show');
 Route::post('/products-services/{partnerProductService}/redeem', [PartnerProductServiceController::class, 'redeem'])->middleware('auth')->name('products_services.redeem');
@@ -132,6 +133,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Business Partners (Admin/Marketing Agent CRUD)
     Route::get('/admin/business-partners/create', [BusinessPartnerController::class, 'create'])->name('business_partners.create');
+    Route::get('/admin/business-partners', [BusinessPartnerController::class, 'index'])->name('business_partners.index');
+    Route::get('/admin/business-partners/{businessPartner}', [BusinessPartnerController::class, 'show'])->name('business_partners.show');
     Route::post('/admin/business-partners', [BusinessPartnerController::class, 'store'])->name('business_partners.store');
     Route::get('/admin/business-partners/{businessPartner}/edit', [BusinessPartnerController::class, 'edit'])->name('business_partners.edit');
     Route::put('/admin/business-partners/{businessPartner}', [BusinessPartnerController::class, 'update'])->name('business_partners.update');

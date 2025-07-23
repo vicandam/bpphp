@@ -17,7 +17,7 @@
                     <div class="row px-4 py-3">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Donor Name</label>
-                            <p class="text-muted">{{ $donation->donor_name ?? 'N/A' }}</p>
+                            <p class="text-muted">{{ $donation->donor_name ?? $donation->user->name }}</p>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Associated User</label>
