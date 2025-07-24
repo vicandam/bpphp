@@ -47,6 +47,15 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
+// Xendit Webhook route (POST)
+Route::post('/xendit/callback', [TicketController::class, 'callback'])->name('xendit.callback');
+
+// QR Code Scanner Endpoint (GET)
+// This URL will be embedded in the QR code for venue staff to scan
+Route::get('/redeem-ticket/{token}', [TicketController::class, 'scanRedeem'])->name('ticket.scan-redeem');
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -21,6 +21,7 @@ class Ticket extends Model
         'is_redeemed',
         'joy_points_earned',
         'purchase_date',
+        'virtual_membership_card_qr',
     ];
 
     /**

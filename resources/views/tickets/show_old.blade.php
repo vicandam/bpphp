@@ -1,3 +1,4 @@
+<!-- resources/views/tickets/show.blade.php -->
 @extends('layouts.master')
 
 @section('title', 'Ticket Details')
@@ -10,11 +11,11 @@
                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
                         <h6 class="text-white text-capitalize ps-3">Ticket Details #{{ $ticket->id }}</h6>
                         @if(Auth::user() && Auth::user()->is_admin)
-                            {{-- Admin/Staff can redeem a ticket directly from this view, if desired --}}
+                            {{-- Admin/Staff can redeem a ticket --}}
                             @if(!$ticket->is_redeemed)
                                 <form action="{{ route('tickets.redeem', $ticket) }}" method="POST" class="d-inline me-3">
                                     @csrf
-                                    <button type="submit" class="btn btn-white btn-sm mb-0" onclick="return confirm('Are you sure you want to mark this ticket as redeemed?')">Mark as Redeemed (Admin)</button>
+                                    <button type="submit" class="btn btn-white btn-sm mb-0" onclick="return confirm('Are you sure you want to mark this ticket as redeemed?')">Mark as Redeemed</button>
                                 </form>
                             @else
                                 <span class="badge badge-sm bg-gradient-secondary me-3">Already Redeemed</span>
@@ -58,16 +59,13 @@
                             <label class="form-label">Joy Points Earned</label>
                             <p class="text-muted">{{ number_format($ticket->joy_points_earned, 2) }}</p>
                         </div>
-                        {{-- Display the generated QR code --}}
-                        @if($ticket->virtual_membership_card_qr)
-                            <div class="col-md-12 mb-3 text-center">
-                                <label class="form-label d-block">Scan to Redeem at Venue</label>
-                                <img src="{{ asset($ticket->virtual_membership_card_qr) }}" alt="Ticket QR Code" style="max-width: 250px; border: 1px solid #ddd; padding: 5px;">
-                                <p class="text-sm text-muted mt-2">Show this QR code at the event entrance.</p>
-                            </div>
-                        @else
+                        {{-- Assuming QR code path is stored and accessible --}}
+                        @if(isset($ticket->qr_code_path) && $ticket->qr_code_path)
                             <div class="col-md-12 mb-3">
-                                <p class="text-muted text-center">QR code not yet generated.</p>
+                                <label class="form-label">QR Code</label>
+                                <div>
+                                    <img src="{{ asset($ticket->qr_code_path) }}" alt="Ticket QR Code" style="max-width: 200px;">
+                                </div>
                             </div>
                         @endif
                     </div>
