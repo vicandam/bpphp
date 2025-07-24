@@ -31,4 +31,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'xendit' => [
+        'secret_key' => 'secret_key_here...',
+        'webhook_verification_token' => 'b4C6qYKWcOZZrErKh4ujdvJGLFWU3DsiZd9c6KMLgicdpm9u'
+    ]
+
 ];

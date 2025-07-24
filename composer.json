@@ -11,6 +11,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "opcodesio/log-viewer": "^3.15",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "xendit/xendit-php": "^7.0"
     },
     "require-dev": {
