@@ -37,13 +37,13 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="input-group input-group-outline my-3">
+                                <div class="input-group input-group-outline is-filled my-3">
                                     <label class="form-label">Event Date</label>
                                     <input type="date" class="form-control" name="event_date" value="{{ old('event_date') }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="input-group input-group-outline my-3">
+                                <div class="input-group input-group-outline is-filled my-3">
                                     <label class="form-label">Event Time</label>
                                     <input type="time" class="form-control" name="event_time" value="{{ old('event_time') }}">
                                 </div>

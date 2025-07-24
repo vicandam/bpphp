@@ -15,19 +15,21 @@
                 <div class="card-body px-0 pb-2">
                     <form method="POST" action="{{ route('payouts.store') }}" class="p-4">
                         @csrf
-                        <div class="input-group input-group-outline my-3">
+                        <div class="form-group">
                             <label class="form-label">User</label>
-                            <select class="form-control" name="user_id" required>
-                                <option value="">-- Select User --</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }} (ID: {{ $user->id }})</option>
-                                @endforeach
-                            </select>
+                            <div class="input-group input-group-outline my-3">
+                                <select class="form-control" name="user_id" required>
+                                    <option value="">-- Select User --</option>
+                                    @foreach($users as $user)
+                                        <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }} (ID: {{ $user->id }})</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
                         <div class="input-group input-group-outline my-3">
-                            <label class="form-label">Payout Type</label>
-                            <input type="text" class="form-control" name="type" value="{{ old('type') }}" required placeholder="e.g., Referral Rewards, Angel Investor Share">
+                            <label class="form-label">Payout Type: e.g., Referral Rewards, Angel Investor Share</label>
+                            <input type="text" class="form-control" name="type" value="{{ old('type') }}" required>
                         </div>
 
                         <div class="input-group input-group-outline my-3">

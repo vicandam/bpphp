@@ -113,7 +113,7 @@
                 © <script>
                   document.write(new Date().getFullYear())
                 </script>,
-                copy write <i class="fa fa-heart" aria-hidden="true"></i> by
+                  Copyright <i class="fa fa-heart" aria-hidden="true"></i> by
                 <a href="https://www.creative-tim.com" class="font-weight-bold text-white" target="_blank">BPPHP.FUN</a>
                 Movement
               </div>

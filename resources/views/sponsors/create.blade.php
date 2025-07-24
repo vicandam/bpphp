@@ -41,8 +41,8 @@
                         </div>
 
                         <div class="input-group input-group-outline my-3">
-                            <label class="form-label">Sponsorship Type</label>
-                            <input type="text" class="form-control" name="sponsorship_type" value="{{ old('sponsorship_type') }}" placeholder="e.g., Event Sponsorship, Film Sponsorship">
+                            <label class="form-label">Sponsorship Type: e.g., Event Sponsorship, Film Sponsorship</label>
+                            <input type="text" class="form-control" name="sponsorship_type" value="{{ old('sponsorship_type') }}">
                         </div>
 
                         <div class="input-group input-group-outline my-3">
@@ -50,14 +50,16 @@
                             <input type="number" step="0.01" class="form-control" name="amount_pledged" value="{{ old('amount_pledged') }}">
                         </div>
 
-                        <div class="input-group input-group-outline my-3">
+                        <div class="form-group my-3">
                             <label class="form-label">Referred By (Marketing Agent/Catalyst)</label>
-                            <select class="form-control" name="referred_by_user_id">
-                                <option value="">-- Select User (Optional) --</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}" {{ old('referred_by_user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }} (ID: {{ $user->id }})</option>
-                                @endforeach
-                            </select>
+                            <div class="input-group input-group-outline">
+                                <select class="form-control" name="referred_by_user_id">
+                                    <option value="">-- Select User (Optional) --</option>
+                                    @foreach($users as $user)
+                                        <option value="{{ $user->id }}" {{ old('referred_by_user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }} (ID: {{ $user->id }})</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
                         <div class="d-flex justify-content-end mt-4">
