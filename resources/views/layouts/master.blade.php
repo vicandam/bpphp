@@ -402,9 +402,9 @@
                 <p class="text-sm">Choose between different sidenav types.</p>
             </div>
             <div class="d-flex">
-                <button class="btn bg-gradient-dark px-3 mb-2 {{ $uiPreference->sidenav_type === 'bg-gradient-dark' ? 'active':'' }}" data-class="bg-gradient-dark" id="sidebar-dark" onclick="updateSidebarType('bg-gradient-dark')">Dark</button>
-                <button class="btn bg-gradient-dark px-3 mb-2 ms-2 {{ $uiPreference->sidenav_type === 'bg-transparent' ? 'active':'' }}" data-class="bg-transparent" id="sidebar-transparent" onclick="updateSidebarType('bg-transparent')">Transparent</button>
-                <button class="btn bg-gradient-dark px-3 mb-2  ms-2 {{ $uiPreference->sidenav_type === 'bg-white' ? 'active':'' }}" data-class="bg-white" id="sidebar-white" onclick="updateSidebarType('bg-white')">White</button>
+                <button class="btn bg-gradient-dark px-3 mb-2 {{ isset($uiPreference->sidenav_type) ? ($uiPreference->sidenav_type === 'bg-gradient-dark' ? 'active':''):'bg-gradient-dark' }}" data-class="bg-gradient-dark" id="sidebar-dark" onclick="updateSidebarType('bg-gradient-dark')">Dark</button>
+                <button class="btn bg-gradient-dark px-3 mb-2 ms-2 {{ isset($uiPreference->sidenav_type) ? ($uiPreference->sidenav_type === 'bg-transparent' ? 'active':'') : 'bg-transparent' }}" data-class="bg-transparent" id="sidebar-transparent" onclick="updateSidebarType('bg-transparent')">Transparent</button>
+                <button class="btn bg-gradient-dark px-3 mb-2  ms-2 {{ isset($uiPreference->sidenav_type) ? ($uiPreference->sidenav_type === 'bg-white' ? 'active':''):'bg-white' }}" data-class="bg-white" id="sidebar-white" onclick="updateSidebarType('bg-white')">White</button>
             </div>
             <p class="text-sm d-xl-none d-block mt-2">You can change the sidenav type just on desktop view.</p>
             <!-- Navbar Fixed -->
