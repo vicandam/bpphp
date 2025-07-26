@@ -82,7 +82,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function uiPreference()
     {
-        return $this->hasOne(UIPreference::class);
+        return $this->hasOne(UiPreference::class);
     }
 
     /**
