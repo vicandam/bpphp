@@ -24,6 +24,7 @@ use App\Http\Controllers\UserController;
 use GlennRaya\Xendivel\Xendivel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,6 +63,13 @@ Route::post('/pay-with-card', function (Request $request) {
         ->getResponse();
 
     return $payment;
+});
+
+
+Route::post('/ghl/webhook', function (Request $request) {
+    Log::info('Received from GHL:', $request->all());
+
+    return response()->json(['status' => 'received']);
 });
 
 
