@@ -32,8 +32,8 @@ return [
     ],
 
     'xendit' => [
-        'secret_key' => 'secret_key_here...',
-        'webhook_verification_token' => 'b4C6qYKWcOZZrErKh4ujdvJGLFWU3DsiZd9c6KMLgicdpm9u'
+        'secret_key' => env('XENDIT_SECRET_KEY'),
+        'webhook_verification_token' => env('XENDIT_WEBHOOK_VERIFICATION_TOKEN'),
     ]
 
 ];

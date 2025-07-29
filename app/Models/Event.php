@@ -57,4 +57,10 @@ class Event extends Model
     {
         return $this->hasMany(Investment::class);
     }
+
+    public function pendingOrders()
+    {
+        return $this->hasMany(PendingOrder::class);
+    }
+
 }

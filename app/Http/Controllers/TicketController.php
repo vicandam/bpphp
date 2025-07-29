@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\PendingOrder;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Services\QrCodeGeneratorService;
@@ -10,12 +11,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Xendit\Invoice\CreateInvoiceRequest;
+use Xendit\Invoice\Invoice;
 use Xendit\Invoice\InvoiceApi;
 use Xendit\Configuration;
 
 class TicketController extends Controller
 {
     protected $qrCodeGeneratorService;
+
     public function __construct(QrCodeGeneratorService $qrCodeGeneratorService)
     {
         $this->middleware('auth')->except(['callback', 'scanRedeem']); // 'callback' and 'scanRedeem' must be public for Xendit/scanning to access them.
@@ -44,11 +48,38 @@ class TicketController extends Controller
         return view('tickets.show', compact('ticket'));
     }
 
-    /**
-     * Store a new ticket request and create a Xendit invoice.
-     */
     public function store(Request $request)
     {
+//    use Xendit\Xendit;
+
+// Initialize Xendit with your secret key
+//        Xendit::setApiKey('YOUR_SECRET_KEY');
+
+// Prepare your invoice data in a variable
+        $invoiceData = [
+            'external_id' => 'invoice-' . time(), // Unique identifier for your invoice
+            'amount' => 100000, // Amount in cents (e.g., 100000 for IDR 1,000.00)
+            'payer_email' => 'customer@example.com',
+            'description' => 'Payment for goods/services',
+            // Add other relevant invoice parameters as required by Xendit API
+            // e.g., items, fees, customer_details, etc.
+        ];
+
+        try {
+            // Pass the variable containing invoice data to the createInvoice method
+            $invoice = Xendit\Invoice::create($invoiceData);
+            $invoice = $this->xenditInvoiceApi->createInvoice($invoiceData);
+
+            echo "Invoice created successfully with ID: " . $invoice['id'];
+        } catch (Xendit\Exceptions\ApiException $e) {
+            echo "Error creating invoice: " . $e->getMessage();
+        }
+
+
+        dd('Done!');
+
+
+
         $request->validate([
             'event_id' => ['required', 'exists:events,id'],
         ]);
@@ -56,35 +87,70 @@ class TicketController extends Controller
         $event = Event::findOrFail($request->event_id);
         $user = Auth::user();
 
-        // Step 1: Initialize Xendit API
+        // Step 1: Initialize Xendit
         Configuration::setXenditKey(config('services.xendit.secret_key'));
         $apiInstance = new InvoiceApi();
 
         try {
-            $ticketCode = Str::uuid(); // Use a unique ID as Xendit's external_id and our ticket_code
+            $ticketCode = (string) Str::uuid(); // This will be used as both external_id and ticket_code
 
-            // In a more complex system, you might first create a 'pending_order' record
-            // in your database here, linking it to $ticketCode, user, and event.
-            // Then, in the webhook, you'd mark that order as paid and create the actual ticket.
-            // For this setup, we rely on the external_id as the ticketCode.
-
+            // Step 2: Prepare invoice parameters
             $params = [
-                'external_id' => $ticketCode, // This will be used to identify the ticket later
+                'external_id' => $ticketCode,
                 'amount' => $event->ticket_price,
                 'description' => 'Ticket for ' . $event->name,
                 'payer_email' => $user->email,
-                'invoice_duration' => 86400, // Invoice is valid for 24 hours
+                'invoice_duration' => 86400, // 24 hours validity
             ];
 
-            $createInvoiceRequest = new \Xendit\Invoice\CreateInvoiceRequest($params);
-            $invoice = $apiInstance->createInvoice($createInvoiceRequest);
 
-            // Redirect the user to the Xendit payment page
+
+//            $request = new CreateInvoiceRequest($params);
+//            $invoice = $apiInstance->createInvoice($request);
+
+            // Create invoice logic here...
+            $params = new CreateInvoiceRequest([
+                'external_id' => $ticketCode,
+                'amount' => $event->ticket_price,
+                'description' => 'Ticket for ' . $event->name,
+                'customer' => [
+                    'given_names' => $user->name,
+                    'email' => $user->email,
+                ],
+                //'currency' => 'IDR',
+                'invoice_duration' => 3600, // 1 hour
+                'success_redirect_url' => route('tickets.index'),
+            ]);
+
+            // 1. Prepare the object
+//            $params = new CreateInvoiceRequest([
+//                'external_id' => $ticketCode,
+//                'amount' => $event->ticket_price,
+//                'description' => 'Ticket for ' . $event->name,
+//                'payer_email' => $user->email,
+//                'invoice_duration' => 86400, // 24 hours validity
+//            ]);
+
+            // 2. Then pass it to createInvoice
+            $invoice = $apiInstance->createInvoice($params);
+
+
+
+            // Step 3: Save pending order to DB
+            PendingOrder::create([
+                'external_id' => $ticketCode,
+                'user_id' => $user->id,
+                'event_id' => $event->id,
+            ]);
+
+            // Step 4: Redirect to Xendit invoice URL
             return redirect($invoice['invoice_url']);
 
         } catch (\Xendit\XenditSdkException $e) {
             Log::error('Xendit invoice creation failed: ' . $e->getMessage());
-            return back()->withInput()->withErrors(['error' => 'Failed to initiate payment. Please try again.']);
+            return back()->withInput()->withErrors([
+                'error' => 'Failed to initiate payment. Please try again.',
+            ]);
         }
     }
 
@@ -93,6 +159,8 @@ class TicketController extends Controller
      */
     public function callback(Request $request)
     {
+        Log::info('xendit callback', $request->all());
+
         // Step 1: Verify the webhook token
         $xCallbackToken = $request->header('X-Callback-Token');
         $expectedToken = config('services.xendit.webhook_verification_token');

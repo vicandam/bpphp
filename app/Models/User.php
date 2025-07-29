@@ -85,6 +85,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(UiPreference::class);
     }
 
+    public function pendingOrders()
+    {
+        return $this->hasMany(PendingOrder::class);
+    }
+
     /**
      * Get the membership type that the user belongs to.
      */
