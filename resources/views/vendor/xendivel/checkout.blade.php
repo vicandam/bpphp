@@ -65,6 +65,7 @@
                 </div>
 
                 {{-- Cards payment --}}
+
                 <div class="p-8 pb-0 flex">
                     <input id="amount-to-pay" placeholder="Amount to pay" type="text" class="rounded-md border border-gray-300 mb-2 w-full">
                 </div>
@@ -72,6 +73,26 @@
                     id="card-panel"
                     class="flex flex-col rounded-bl-md rounded-br-md bg-white p-8 pt-0 shadow-md font-medium"
                 >
+                    {{-- Cardholder name fields --}}
+                    <div class="mb-2">
+                        <input
+                            type="text"
+                            id="card-holder-first-name"
+                            name="card_holder_first_name"
+                            class="w-full rounded-md border border-gray-300 p-3 text-sm mb-2"
+                            placeholder="Cardholder First Name"
+                            required
+                        />
+                        <input
+                            type="text"
+                            id="card-holder-last-name"
+                            name="card_holder_last_name"
+                            class="w-full rounded-md border border-gray-300 p-3 text-sm"
+                            placeholder="Cardholder Last Name"
+                            required
+                        />
+                    </div>
+
                     <div
                         id="payment-form"
                         class="mb-4 flex flex-col overflow-hidden rounded-md border border-gray-300 bg-gray-100 shadow-sm"
@@ -364,13 +385,20 @@
                     }
 
                     // Request a token from Xendit
-                    Xendit.card.createToken({
+                    Xendit.card.createToken(
+                        {
                         // Card details and the amount to pay.
                         amount: document.getElementById('amount-to-pay').value,
                         card_number: form.querySelector('#card-number').value,
                         card_exp_month: form.querySelector('#card-exp-month').value,
                         card_exp_year: form.querySelector('#card-exp-year').value,
                         card_cvn: form.querySelector('#card-cvn').value,
+
+                        // ✅ ADD these required fields:
+                        card_holder_first_name: document.getElementById('card-holder-first-name').value,
+                        card_holder_last_name: document.getElementById('card-holder-last-name').value,
+                        card_holder_email: "test@example.com",
+                        card_holder_phone_number: "+639944557467",
 
                         // Change the currency you want to charge your customers in.
                         // This defaults to the currency of your Xendit account.
@@ -452,6 +480,10 @@
                         case 'VERIFIED':
                             console.log('VERIFIED: ', response);
                             console.log('Authentication token: ', response.id);
+
+                            // ✅ Automatically close 3DS modal when authentication is successful
+                            setIframeSource('payer-auth-url', "");
+                            authDialog.style.display = 'none';
 
                             // Function to charge the card.
                             chargeCard(authentication_id, card_token)

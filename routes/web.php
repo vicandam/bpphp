@@ -21,6 +21,8 @@ use App\Http\Controllers\ReferralController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
+use GlennRaya\Xendivel\Xendivel;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +56,13 @@ Route::post('/xendit/callback', [TicketController::class, 'callback'])->name('xe
 // QR Code Scanner Endpoint (GET)
 // This URL will be embedded in the QR code for venue staff to scan
 Route::get('/redeem-ticket/{token}', [TicketController::class, 'scanRedeem'])->name('ticket.scan-redeem');
+
+Route::post('/pay-with-card', function (Request $request) {
+    $payment = Xendivel::payWithCard($request)
+        ->getResponse();
+
+    return $payment;
+});
 
 
 Route::middleware('auth')->group(function () {
