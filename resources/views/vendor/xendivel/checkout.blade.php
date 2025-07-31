@@ -398,7 +398,7 @@
                         card_holder_first_name: document.getElementById('card-holder-first-name').value,
                         card_holder_last_name: document.getElementById('card-holder-last-name').value,
                         card_holder_email: "test@example.com",
-                        card_holder_phone_number: "+639944557467",
+                        // card_holder_phone_number: "+639944557467",
 
                         // Change the currency you want to charge your customers in.
                         // This defaults to the currency of your Xendit account.

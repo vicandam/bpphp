@@ -9,6 +9,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\FilmProjectController;
 use App\Http\Controllers\GHLContactController;
 use App\Http\Controllers\GHLSettingsController;
+use App\Http\Controllers\GhlWebhookController;
 use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\MembershipTypeController;
 use App\Http\Controllers\PartnerProductServiceController;
@@ -26,6 +27,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use Spatie\Browsershot\Browsershot;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,18 +61,116 @@ Route::post('/xendit/callback', [TicketController::class, 'callback'])->name('xe
 Route::get('/redeem-ticket/{token}', [TicketController::class, 'scanRedeem'])->name('ticket.scan-redeem');
 
 Route::post('/pay-with-card', function (Request $request) {
+
+    $invoiceData = [
+        'invoice_number' => 20250729001,
+        'merchant' => [
+            'name' => 'RiseUp Digital PH',
+            'address' => '123 Manila Road, Philippines',
+            'phone' => '+63 917 123 4567',
+            'email' => 'support@riseupdigitalph.com',
+        ],
+        'customer' => [
+            'name' => $request->input('name', 'Vic Andam'),
+            'address' => $request->input('address', 'Davao City'),
+            'email' => $request->input('email', 'vic@example.com'),
+            'phone' => $request->input('phone', '+639171234567'),
+        ],
+        'items' => [
+            ['item' => 'Premium Digital Services', 'price' => 2499, 'quantity' => 1],
+            ['item' => 'Setup Fee', 'price' => 500, 'quantity' => 1],
+        ],
+        'tax_rate' => 0.12,
+        'tax_id' => 'VAT-998877',
+        'card_type' => 'VISA', // 👈 ADD THIS
+        'masked_card_number' => $request->input('masked_card_number', '**** **** **** 1234'),
+        'footer_note' => 'Daghang salamat sa imong pagsalig sa RiseUp Digital PH!',
+    ];
+
+    return view('vendor/xendivel/invoice', ['invoice_data' => $invoiceData]);
+
     $payment = Xendivel::payWithCard($request)
+        ->emailInvoiceTo('customer@example.com', $invoiceData)
+        ->subject('Salamat! Your Invoice Is Here')
+        ->send()
         ->getResponse();
+
+    Log::info('payment', [$payment]);
+    Log::info('Payment Success!');
 
     return $payment;
 });
 
+Route::get('/xendivel/invoice/generate', function () {
+    $invoice_data = [
+        'invoice_number' => 1000023,
+        'card_type' => 'VISA',
+        'masked_card_number' => '400000XXXXXX0002',
+        'merchant' => [
+            'name' => 'Xendivel LLC',
+            'address' => '152 Maple Avenue Greenfield, New Liberty, Arcadia USA 54331',
+            'phone' => '+63 971-444-1234',
+            'email' => 'xendivel@example.com',
+        ],
+        'customer' => [
+            'name' => 'Victoria Marini',
+            'address' => 'Alex Johnson, 4457 Pine Circle, Rivertown, Westhaven, 98765, Silverland',
+            'email' => 'victoria@example.com',
+            'phone' => '+63 909-098-654',
+        ],
+        'items' => [
+            ['item' => 'iPhone 15 Pro Max', 'price' => 1099, 'quantity' => 5],
+            ['item' => 'MacBook Pro 16" M3 Max', 'price' => 2499, 'quantity' => 3],
+            ['item' => 'Apple Pro Display XDR', 'price' => 5999, 'quantity' => 2],
+            ['item' => 'Pro Stand', 'price' => 999, 'quantity' => 2],
+        ],
+        'tax_rate' => .12,
+        'tax_id' => '123-456-789',
+        'footer_note' => 'Thank you for your recent purchase with us! We are thrilled to have the opportunity to serve you and hope that your new purchase brings you great satisfaction.',
+    ];
 
-Route::post('/ghl/webhook', function (Request $request) {
-    Log::info('Received from GHL:', $request->all());
 
-    return response()->json(['status' => 'received']);
+    return view('vendor/xendivel/invoice', compact('invoice_data'));
+
+    $pdf = Barryvdh\DomPDF\Facade\Pdf::loadView('vendor/xendivel/invoice', compact('invoice_data'))
+        ->setPaper('a4', 'landscape');
+
+//dd($pdf);
+
+    return $pdf->download('invoice-' . $invoice_data['invoice_number'] . '.pdf');
+
+    return GlennRaya\Xendivel\Invoice::make($invoice_data)
+        ->paperSize('A4')
+        ->orientation('landscape')
+        ->fileName('my-awesome-invoice-filename')
+        ->download();
+
+    return GlennRaya\Xendivel\Invoice::make($invoice_data)
+        ->save();
 });
+
+
+
+Route::get('/test-browsershot', function () {
+    return Browsershot::html('<h1>Invoice</h1>')
+        ->setChromePath('C:\Program Files\Google\Chrome\Application\chrome.exe')
+        ->addChromiumArguments([
+            '--headless=new',
+            '--disable-gpu',
+            '--no-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-software-rasterizer',
+            '--single-process',
+            '--no-zygote'
+        ])
+        ->format('A4')
+        ->save(public_path('invoice.pdf'));
+});
+
+
+
+
+Route::post('/ghl/webhook',[GhlWebhookController::class, 'store'])->name('ghl-webhook');
 
 
 Route::middleware('auth')->group(function () {
