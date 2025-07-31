@@ -61,7 +61,6 @@ Route::post('/xendit/callback', [TicketController::class, 'callback'])->name('xe
 Route::get('/redeem-ticket/{token}', [TicketController::class, 'scanRedeem'])->name('ticket.scan-redeem');
 
 Route::post('/pay-with-card', function (Request $request) {
-
     $invoiceData = [
         'invoice_number' => 20250729001,
         'merchant' => [
@@ -87,7 +86,7 @@ Route::post('/pay-with-card', function (Request $request) {
         'footer_note' => 'Daghang salamat sa imong pagsalig sa RiseUp Digital PH!',
     ];
 
-    return view('vendor/xendivel/invoice', ['invoice_data' => $invoiceData]);
+    //return view('vendor/xendivel/invoice', ['invoice_data' => $invoiceData]);
 
     $payment = Xendivel::payWithCard($request)
         ->emailInvoiceTo('customer@example.com', $invoiceData)
@@ -101,10 +100,10 @@ Route::post('/pay-with-card', function (Request $request) {
     return $payment;
 });
 
-Route::get('/xendivel/invoice/generate', function () {
+Route::get('/invoice/generate', function () {
     $invoice_data = [
         'invoice_number' => 1000023,
-        'card_type' => 'VISA',
+        'card_type' => 'MASTERCARD',
         'masked_card_number' => '400000XXXXXX0002',
         'merchant' => [
             'name' => 'Xendivel LLC',
@@ -129,46 +128,12 @@ Route::get('/xendivel/invoice/generate', function () {
         'footer_note' => 'Thank you for your recent purchase with us! We are thrilled to have the opportunity to serve you and hope that your new purchase brings you great satisfaction.',
     ];
 
+    //return view('invoice.template', compact('invoice_data'));
+    $pdf = Pdf::loadView('invoice.template', compact('invoice_data'))
+        ->setPaper('a4', 'portrate');
 
-    return view('vendor/xendivel/invoice', compact('invoice_data'));
-
-    $pdf = Barryvdh\DomPDF\Facade\Pdf::loadView('vendor/xendivel/invoice', compact('invoice_data'))
-        ->setPaper('a4', 'landscape');
-
-//dd($pdf);
-
-    return $pdf->download('invoice-' . $invoice_data['invoice_number'] . '.pdf');
-
-    return GlennRaya\Xendivel\Invoice::make($invoice_data)
-        ->paperSize('A4')
-        ->orientation('landscape')
-        ->fileName('my-awesome-invoice-filename')
-        ->download();
-
-    return GlennRaya\Xendivel\Invoice::make($invoice_data)
-        ->save();
+    return $pdf->download('invoice-'.$invoice_data['invoice_number'].'.pdf');
 });
-
-
-
-Route::get('/test-browsershot', function () {
-    return Browsershot::html('<h1>Invoice</h1>')
-        ->setChromePath('C:\Program Files\Google\Chrome\Application\chrome.exe')
-        ->addChromiumArguments([
-            '--headless=new',
-            '--disable-gpu',
-            '--no-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-software-rasterizer',
-            '--single-process',
-            '--no-zygote'
-        ])
-        ->format('A4')
-        ->save(public_path('invoice.pdf'));
-});
-
-
-
 
 Route::post('/ghl/webhook',[GhlWebhookController::class, 'store'])->name('ghl-webhook');
 
