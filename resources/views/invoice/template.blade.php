@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device‑width,initial‑scale=1">
     <title>Invoice #{{ $invoice_data['invoice_number'] }}</title>
     <style>
-        body { font-family: Inter, sans-serif; color: #374151; font-size: 12px; }
+        body { font-family: DejaVu Sans, Inter, sans-serif; color: #374151; font-size: 12px; }
         .header { background: linear-gradient(to top, #e2e8f0, #fff); padding: 40px; }
         .container {
             width: 100%;
@@ -35,7 +35,14 @@
     {{-- Customer --}}
     <div style="text-align: right;">
         <p>Date: {{ now()->format('M. d, Y \a\t g:ia') }}</p>
-        <p><strong>Customer</strong><br>{{ $invoice_data['customer']['name'] }}<br>{{ $invoice_data['customer']['address'] }}<br>Phone: {{ $invoice_data['customer']['phone'] }}<br>Email: {{ $invoice_data['customer']['email'] }}</p>
+        <p>
+            <strong>Customer</strong>
+            {{ $invoice_data['customer']['name'] }}<br>
+            @if($invoice_data['customer']['address'] != 'N/A') {{ $invoice_data['customer']['address'] }}<br> @endif
+            @if($invoice_data['customer']['phone'] != 'N/A')<strong>Phone:</strong> {{ $invoice_data['customer']['phone'] }}<br> @endif
+            <strong>Email:</strong> {{ $invoice_data['customer']['email'] }}
+        </p>
+
     </div>
 </div>
 
@@ -51,20 +58,20 @@
             <tr>
                 <td>{{ $item['item'] }}</td>
                 <td>{{ $item['quantity'] }}</td>
-                <td class="text-right">${{ number_format($item['price'],2) }}</td>
-                <td class="text-right">${{ number_format($subtotal,2) }}</td>
+                <td class="text-right">₱{{ number_format($item['price'],2) }}</td>
+                <td class="text-right">₱{{ number_format($subtotal,2) }}</td>
             </tr>
         @endforeach
         </tbody>
     </table>
 
     <div style="margin-top: 20px; text-align: right;">
-        <p>Subtotal: ${{ number_format($total_price,2) }}</p>
+        <p>Subtotal: ₱{{ number_format($total_price,2) }}</p>
         @php $tax_amount = $total_price * $invoice_data['tax_rate']; @endphp
-        <p>Tax ({{ $invoice_data['tax_rate']*100 }}%): ${{ number_format($tax_amount,2) }}</p>
+        <p>Tax ({{ $invoice_data['tax_rate']*100 }}%): ₱{{ number_format($tax_amount,2) }}</p>
         <div class="total-box">
             <span style="margin-right: 1rem;">TOTAL</span>
-            <span>${{ number_format($total_price + $tax_amount,2) }}</span>
+            <span>₱{{ number_format($total_price + $tax_amount,2) }}</span>
         </div>
 
         <p>

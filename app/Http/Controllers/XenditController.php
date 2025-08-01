@@ -47,7 +47,7 @@ class XenditController extends Controller
         if ($user) {
             $customer_name = $user->name;
             $phone = $user->mobile_no;
-            $address = $user->city_or_province = trim($request->input('city') . ', ' . $request->input('state'));
+            $address = $user->city_or_province;
 
             Log::info($request->email . ' This email already exists. Record just updated.');
         } else {
