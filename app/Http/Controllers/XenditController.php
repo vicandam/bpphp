@@ -93,7 +93,7 @@ class XenditController extends Controller
         $ticketPrice = $event->ticket_price;
 
         // Create Ticket
-        $joyPointsEarned = floor($ticketPrice / 500) * 10;
+        $joyPointsEarned = floor($ticketPrice / 500) * 10; // 1 joy point for every P500, 1 joy point = Php10
         $qrCodePath = $this->qrCodeGeneratorService->generateForTicket($externalId);
 
         $ticket = Ticket::create([

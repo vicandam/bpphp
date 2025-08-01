@@ -47,8 +47,55 @@ class TicketController extends Controller
         $ticket->load('event');
         return view('tickets.show', compact('ticket'));
     }
-
     public function store(Request $request)
+    {
+        $request->validate([
+            'event_id' => ['required', 'exists:events,id'],
+            // Add validation for payment confirmation here if integrating a gateway
+            // 'payment_status' => ['required', 'in:paid'],
+        ]);
+
+        $event = Event::findOrFail($request->event_id);
+        $user = Auth::user();
+
+        // Simulate payment success (replace with actual payment gateway logic)
+        $paymentSuccessful = true; // Placeholder
+
+        if (!$paymentSuccessful) {
+            return back()->withErrors(['payment_error' => 'Payment failed. Please try again.']);
+        }
+
+        try {
+            $ticketCode = Str::uuid(); // Generate a unique ticket code
+
+            // Generate QR code (placeholder)
+            // $qrCodeSvg = QrCode::size(200)->generate($ticketCode);
+            // $qrPath = 'qrcodes/tickets/' . $ticketCode . '.svg';
+            // Storage::put($qrPath, $qrCodeSvg);
+
+            $joyPointsEarned = floor($event->ticket_price / 500) * 10; // 1 joy point for every P500, 1 joy point = Php10
+
+            $ticket = Ticket::create([
+                'user_id' => $user->id,
+                'event_id' => $event->id,
+                'ticket_code' => $ticketCode,
+                'is_redeemed' => false,
+                'joy_points_earned' => $joyPointsEarned,
+                'purchase_date' => now(),
+                // 'qr_code_path' => $qrPath, // Store QR code path if generated
+            ]);
+
+            // Update user's BPP Points Balance
+            $user->bpp_points_balance += $joyPointsEarned;
+            $user->save();
+
+            return redirect()->route('tickets.show', $ticket)->with('success', 'Ticket purchased successfully! Check your email for details and QR code.');
+        } catch (\Exception $e) {
+            Log::error('Ticket purchase failed: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['error' => 'Failed to purchase ticket. Please try again.']);
+        }
+    }
+    public function storeNew(Request $request)
     {
 //    use Xendit\Xendit;
 
