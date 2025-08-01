@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class EventController extends Controller
 {
@@ -55,11 +56,25 @@ class EventController extends Controller
             'is_concert' => ['boolean'],
             'is_seminar_workshop' => ['boolean'],
             'is_other_event' => ['boolean'],
+            'campaign' => ['boolean'],
             'ticket_price' => ['required', 'numeric', 'min:0'],
         ]);
 
         try {
-            Event::create($request->all());
+            Event::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'event_date' => $request->event_date,
+                'event_time' => $request->event_time,
+                'venue' => $request->venue,
+                'is_movie_screening' => $request->boolean('is_movie_screening'),
+                'is_concert' => $request->boolean('is_concert'),
+                'is_seminar_workshop' => $request->boolean('is_seminar_workshop'),
+                'is_other_event' => $request->boolean('is_other_event'),
+                'campaign' => $request->boolean('campaign'),
+                'ticket_price' => $request->ticket_price,
+            ]);
+
             return redirect()->route('events.index')->with('success', 'Event created successfully.');
         } catch (\Exception $e) {
             Log::error('Event creation failed: ' . $e->getMessage());

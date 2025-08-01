@@ -47,6 +47,11 @@
                                 @if(!$event->is_movie_screening && !$event->is_concert && !$event->is_seminar_workshop && !$event->is_other_event)
                                     <span class="badge badge-sm bg-gradient-light text-dark">General Event</span>
                                 @endif
+
+                                {{-- Campaign badge --}}
+                                @if($event->campaign)
+                                    <span class="badge badge-sm bg-gradient-danger">Running Campaign</span>
+                                @endif
                             </p>
                         </div>
                     </div>

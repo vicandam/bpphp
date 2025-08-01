@@ -82,6 +82,12 @@
                                     <label class="form-check-label mb-0 ms-3" for="is_other_event">Other Event</label>
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <div class="form-check form-switch d-flex align-items-center mb-3">
+                                    <input class="form-check-input" type="checkbox" id="campaign" name="campaign" value="1" {{ old('campaign', $event->campaign) ? 'checked' : '' }}>
+                                    <label class="form-check-label mb-0 ms-3" for="campaign">Run Campaign</label>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="d-flex justify-content-end mt-4">

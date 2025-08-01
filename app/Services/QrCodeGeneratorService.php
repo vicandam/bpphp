@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\File;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,21 +16,22 @@ class QrCodeGeneratorService
      */
     public function generateForTicket(string $ticketCode): string
     {
-        // The URL embedded in the QR code.
-        // This URL will be scanned by venue staff.
+        // Define the redeem URL for the QR code
         $redeemUrl = url('/redeem-ticket/' . $ticketCode);
 
-        // Define the storage path
-        $fileName = 'tickets/' . $ticketCode . '.svg';
-        $filePath = 'qrcodes/' . $fileName; // Path relative to storage/app/public
+        // Define the file path in 'public' disk
+        $filePath = "qrcodes/tickets/{$ticketCode}.svg";
 
-        // Generate and store the QR code
-        QrCode::format('svg')
-            ->size(250) // Adjust size as needed
-            ->errorCorrection('H') // High error correction
-            ->generate($redeemUrl, storage_path('app/public/' . $filePath));
+        // Ensure directory exists (optional — Laravel creates it automatically if missing)
+        Storage::disk('public')->makeDirectory('qrcodes/tickets');
 
-        // Return the public URL to access the QR code image
+        // Generate QR code and save to storage/app/public/qrcodes/tickets/
+        Storage::disk('public')->put($filePath, QrCode::format('svg')
+            ->size(250)
+            ->errorCorrection('H')
+            ->generate($redeemUrl));
+
+        // Return URL accessible via /storage/...
         return Storage::url($filePath);
     }
 }

@@ -25,6 +25,7 @@ class Event extends Model
         'is_seminar_workshop',
         'is_other_event',
         'ticket_price',
+        'campaign'
     ];
 
     /**
@@ -39,6 +40,7 @@ class Event extends Model
         'is_concert' => 'boolean',
         'is_seminar_workshop' => 'boolean',
         'is_other_event' => 'boolean',
+        'campaign' => 'boolean',
         'ticket_price' => 'decimal:2',
     ];
 
