@@ -37,145 +37,147 @@ class XenditController extends Controller
         // Step 2: Extract relevant data
         $charge = $payment;
 
-        // OPTIONAL: Fetch customer and items from request or DB
+        // The CAPTURED status means the payment went successful.
+        // And the customer's card was successfully charged.
+        if ($payment->status == 'CAPTURED') {
+            $customer_email = $charge->metadata->card_holder_email;
 
-        $customer_email = $charge->metadata->card_holder_email;
+            $user = User::where('email', $customer_email)->first();
+            $generatedPassword = null;
 
-        $user = User::where('email', $customer_email)->first();
-        $generatedPassword = null;
+            if ($user) {
+                $customer_name = $user->name;
+                $phone = $user->mobile_no;
+                $address = $user->city_or_province;
 
-        if ($user) {
-            $customer_name = $user->name;
-            $phone = $user->mobile_no;
-            $address = $user->city_or_province;
+                Log::info($request->email . ' This email already exists. Record just updated.');
+            } else {
 
-            Log::info($request->email . ' This email already exists. Record just updated.');
-        } else {
+                $first_name = $payment->metadata->card_holder_first_name;
+                $last_name = $payment->metadata->card_holder_last_name;
+                $customer_name = $first_name. ' ' . $last_name;
 
-            $first_name = $payment->metadata->card_holder_first_name;
-            $last_name = $payment->metadata->card_holder_last_name;
-            $customer_name = $first_name. ' ' . $last_name;
+                Log::info("Creating user for $customer_email");
 
-            Log::info("Creating user for $customer_email");
+                $plainPassword = Str::random(12);
+                $hashedPassword = Hash::make($plainPassword);
 
-            $plainPassword = Str::random(12);
-            $hashedPassword = Hash::make($plainPassword);
+                $defaultMembership = \App\Models\MembershipType::where('name', 'United Moviegoers and Musiclovers Dream Club International')->first();
 
-            $defaultMembership = \App\Models\MembershipType::where('name', 'United Moviegoers and Musiclovers Dream Club International')->first();
+                $user = User::create([
+                    'first_name' => $first_name,
+                    'last_name' => $last_name,
+                    'name' => $customer_name,
+                    'email' => $customer_email,
+                    'password' => $hashedPassword,
+                    'membership_type_id' => $defaultMembership->id ?? null,
+                    'referral_code' => Str::upper(Str::random(8)),
+                    'email_verified_at' => now(),
+                    'bpp_wallet_balance' => 0.00,
+                    'bpp_points_balance' => 0.00,
+                ]);
 
-            $user = User::create([
-                'first_name' => $first_name,
-                'last_name' => $last_name,
+                $generatedPassword = $plainPassword;
+                Log::info("New user created: " . $user->email);
+            }
+
+            $customer = [
                 'name' => $customer_name,
+                'address' => $address ?? 'N/A',
                 'email' => $customer_email,
-                'password' => $hashedPassword,
-                'membership_type_id' => $defaultMembership->id ?? null,
-                'referral_code' => Str::upper(Str::random(8)),
-                'email_verified_at' => now(),
-                'bpp_wallet_balance' => 0.00,
-                'bpp_points_balance' => 0.00,
+                'phone' => $phone ?? 'N/A',
+            ];
+
+            $event = Event::where('campaign', 1)->first();
+
+            $externalId = $charge->external_id;
+            $ticketPrice = $event->ticket_price;
+
+            // Create Ticket
+            $joyPointsEarned = floor($ticketPrice / 500) * 10; // 1 joy point for every P500, 1 joy point = Php10
+            $qrCodePath = $this->qrCodeGeneratorService->generateForTicket($externalId);
+
+            $ticket = Ticket::create([
+                'user_id' => $user->id,
+                'event_id' => $event->id,
+                'ticket_code' => $externalId,
+                //'ticket_code' => strtoupper(Str::random(8)),
+                'is_redeemed' => false,
+                'joy_points_earned' => $joyPointsEarned,
+                'purchase_date' => now(),
+                'virtual_membership_card_qr' => $qrCodePath,
             ]);
 
-            $generatedPassword = $plainPassword;
-            Log::info("New user created: " . $user->email);
-        }
+            $user->bpp_points_balance += $joyPointsEarned;
+            $user->save();
 
-        $customer = [
-            'name' => $customer_name,
-            'address' => $address ?? 'N/A',
-            'email' => $customer_email,
-            'phone' => $phone ?? 'N/A',
-        ];
+            Log::info("Ticket {$ticket->id} created for {$user->email} for event {$event->name}");
 
-        $event = Event::where('campaign', 1)->first();
-
-        $externalId = $charge->external_id;
-        $ticketPrice = $event->ticket_price;
-
-        // Create Ticket
-        $joyPointsEarned = floor($ticketPrice / 500) * 10; // 1 joy point for every P500, 1 joy point = Php10
-        $qrCodePath = $this->qrCodeGeneratorService->generateForTicket($externalId);
-
-        $ticket = Ticket::create([
-            'user_id' => $user->id,
-            'event_id' => $event->id,
-            'ticket_code' => $externalId,
-            //'ticket_code' => strtoupper(Str::random(8)),
-            'is_redeemed' => false,
-            'joy_points_earned' => $joyPointsEarned,
-            'purchase_date' => now(),
-            'virtual_membership_card_qr' => $qrCodePath,
-        ]);
-
-        $user->bpp_points_balance += $joyPointsEarned;
-        $user->save();
-
-        Log::info("Ticket {$ticket->id} created for {$user->email} for event {$event->name}");
-
-        // Email credentials
-        if ($generatedPassword) {
-            try {
-                Mail::to($user->email)->send(new WelcomeNewUserMail($user, $generatedPassword));
-                Log::info("Welcome email sent to {$user->email}");
-            } catch (\Exception $e) {
-                Log::error("Failed to send welcome email: " . $e->getMessage());
+            // Email credentials
+            if ($generatedPassword) {
+                try {
+                    Mail::to($user->email)->send(new WelcomeNewUserMail($user, $generatedPassword));
+                    Log::info("Welcome email sent to {$user->email}");
+                } catch (\Exception $e) {
+                    Log::error("Failed to send welcome email: " . $e->getMessage());
+                }
             }
-        }
 
-        $items = $request->input('items', [
-            ['item' => $event->name, 'price' => $ticketPrice, 'quantity' => 1]
-        ]);
+            $items = $request->input('items', [
+                ['item' => $event->name, 'price' => $ticketPrice, 'quantity' => 1]
+            ]);
 
-        // Step 3: Prepare invoice data
-        $invoice_data = [
-            'invoice_number' => $charge->external_id ?? uniqid('INV-'),
-            'card_type' => $charge->card_brand ?? 'CARD',
-            'masked_card_number' => $charge->masked_card_number ?? '',
-            'currency' => $charge->currency ?? 'PHP',
-            'charge_date' => date('F j, Y H:i A', strtotime($charge->created ?? now())),
-            'merchant' => [
-                'name' => 'BPPHP.fun',
-                'address' => 'Metro Manila',
-                'phone' => '+63 971-444-1234',
-                'email' => 'support@bpphp.fun',
-            ],
-            'customer' => $customer,
-            'items' => $items,
-            'tax_rate' => 0.12,
-            'tax_id' => '123-456-789',
-            'footer_note' => 'Transaction approved by ' . ($charge->issuing_bank_name ?? 'your bank') .
-                '. Descriptor: ' . ($charge->descriptor ?? ''),
-            'approval_code' => $charge->approval_code ?? null,
-            'total_amount' => $charge->authorized_amount ?? 0,
-        ];
+            // Step 3: Prepare invoice data
+            $invoice_data = [
+                'invoice_number' => $charge->external_id ?? uniqid('INV-'),
+                'card_type' => $charge->card_brand ?? 'CARD',
+                'masked_card_number' => $charge->masked_card_number ?? '',
+                'currency' => $charge->currency ?? 'PHP',
+                'charge_date' => date('F j, Y H:i A', strtotime($charge->created ?? now())),
+                'merchant' => [
+                    'name' => 'BPPHP.fun',
+                    'address' => 'Metro Manila',
+                    'phone' => '+63 971-444-1234',
+                    'email' => 'support@bpphp.fun',
+                ],
+                'customer' => $customer,
+                'items' => $items,
+                'tax_rate' => 0.12,
+                'tax_id' => '123-456-789',
+                'footer_note' => 'Transaction approved by ' . ($charge->issuing_bank_name ?? 'your bank') .
+                    '. Descriptor: ' . ($charge->descriptor ?? ''),
+                'approval_code' => $charge->approval_code ?? null,
+                'total_amount' => $charge->authorized_amount ?? 0,
+            ];
 
 
-        // Step 4: Generate and store PDF
-        $filename = 'invoice-' . $invoice_data['invoice_number'] . '.pdf';
-        $savePath = storage_path('app/invoices/' . $filename);
+            // Step 4: Generate and store PDF
+            $filename = 'invoice-' . $invoice_data['invoice_number'] . '.pdf';
+            $savePath = storage_path('app/invoices/' . $filename);
 
-        // Email credentials
-        if ($filename) {
-            try {
-                Mail::to($user->email)->send(new InvoiceMail($invoice_data));
-                Log::info("Invoice email sent to {$user->email}");
-            } catch (\Exception $e) {
-                Log::error("Failed to send invoice email: " . $e->getMessage());
+            // Email credentials
+            if ($filename) {
+                try {
+                    Mail::to($user->email)->send(new InvoiceMail($invoice_data));
+                    Log::info("Invoice email sent to {$user->email}");
+                } catch (\Exception $e) {
+                    Log::error("Failed to send invoice email: " . $e->getMessage());
+                }
             }
+
+            File::ensureDirectoryExists(storage_path('app/invoices'));
+
+            Pdf::loadView('invoice.template', compact('invoice_data'))
+                ->setPaper('a4', 'portrait')
+                ->save($savePath);
+
+            // Step 6: Return the payment response + optional link to invoice
+            return response()->json([
+                'status' => 'success',
+                'payment' => $payment,
+                'invoice_url' => asset('storage/invoices/' . $filename), // if you symlinked storage:link
+            ]);
         }
-
-        File::ensureDirectoryExists(storage_path('app/invoices'));
-
-        Pdf::loadView('invoice.template', compact('invoice_data'))
-            ->setPaper('a4', 'portrait')
-            ->save($savePath);
-
-        // Step 6: Return the payment response + optional link to invoice
-        return response()->json([
-            'status' => 'success',
-            'payment' => $payment,
-            'invoice_url' => asset('storage/invoices/' . $filename), // if you symlinked storage:link
-        ]);
     }
 
 //{

@@ -13,6 +13,7 @@ use App\Http\Controllers\GhlWebhookController;
 use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\MembershipTypeController;
 use App\Http\Controllers\PartnerProductServiceController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayoutController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicBusinessPartnerController;
@@ -67,12 +68,7 @@ Route::post('/xendit/callback', [TicketController::class, 'callback'])->name('xe
 // This URL will be embedded in the QR code for venue staff to scan
 Route::get('/redeem-ticket/{token}', [TicketController::class, 'scanRedeem'])->name('ticket.scan-redeem');
 
-
-Route::post('/pay-with-card', [XenditController::class, 'payWithCard'])->name('pay.card');
-
-Route::get('/test', function () {
-   return view('vendor.mail.html.header');
-});
+Route::post('/pay-with-card', [PaymentController::class, 'payWithCard'])->name('pay.card');
 
 Route::get('/invoice/generate', function () {
     $invoice_data = [
