@@ -161,6 +161,8 @@ class TicketController extends Controller
     {
         Log::info('xendit callback', $request->all());
 
+        return response()->json(['status' => 'ok']);
+
         // Step 1: Verify the webhook token
         $xCallbackToken = $request->header('X-Callback-Token');
         $expectedToken = config('services.xendit.webhook_verification_token');

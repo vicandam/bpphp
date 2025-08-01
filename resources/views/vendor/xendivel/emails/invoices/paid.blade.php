@@ -2,10 +2,10 @@
 # Greetings!
 
 <p>
-@if ($message === null)
+@if ($customMessage === null)
 Thank you for your recent purchase from {{ config('app.name') }}. We have attached your invoice to this email.
 @else
-{{ $message }}
+{{ $customMessage }}
 @endif
 </p>
 

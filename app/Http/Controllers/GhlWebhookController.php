@@ -36,6 +36,8 @@ class GhlWebhookController extends Controller
                 // Create new user if not found
                 $user = new User();
                 $user->email = $request->input('email');
+            } else {
+                Log::info($request->email . ' This email already exists. Record just updated.');
             }
 
             $user->first_name = $request->input('first_name');
@@ -50,14 +52,12 @@ class GhlWebhookController extends Controller
 
             $user->save();
 
-            // Step 3: Save pending order to DB
-            PendingOrder::create([
-                'external_id' => $ticketCode,
-                'user_id' => $user->id,
-                'event_id' => $event->id,
-            ]);
-
-            Log::info($request->email . ' This email already exists. Record just updated.');
+//            // Step 3: Save pending order to DB
+//            PendingOrder::create([
+//                'external_id' => $ticketCode,
+//                'user_id' => $user->id,
+//                'event_id' => $event->id,
+//            ]);
 
         } catch (\Exception $e) {
             Log::error('User creation failed: ' . $e->getMessage());

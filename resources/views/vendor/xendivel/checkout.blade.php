@@ -67,18 +67,27 @@
                 {{-- Cards payment --}}
 
                 <div class="p-8 pb-0 flex">
-                    <input id="amount-to-pay" placeholder="Amount to pay" type="text" class="rounded-md border border-gray-300 mb-2 w-full">
+                    <input id="amount-to-pay" placeholder="Amount to pay" value="2000" type="number" class="rounded-md border border-gray-300 mb-2 w-full">
                 </div>
                 <div
                     id="card-panel"
                     class="flex flex-col rounded-bl-md rounded-br-md bg-white p-8 pt-0 shadow-md font-medium"
                 >
                     {{-- Cardholder name fields --}}
+                    @php
+                        $faker = fake();
+                        $first = $faker->firstName();
+                        $last = $faker->lastName();
+                        $email = $faker->safeEmail();
+                    @endphp
+
+
                     <div class="mb-2">
                         <input
                             type="text"
                             id="card-holder-first-name"
                             name="card_holder_first_name"
+                            value="{{$first}}"
                             class="w-full rounded-md border border-gray-300 p-3 text-sm mb-2"
                             placeholder="Cardholder First Name"
                             required
@@ -87,8 +96,18 @@
                             type="text"
                             id="card-holder-last-name"
                             name="card_holder_last_name"
+                            value="{{$last}}"
                             class="w-full rounded-md border border-gray-300 p-3 text-sm"
                             placeholder="Cardholder Last Name"
+                            required
+                        />
+                        <input
+                            type="email"
+                            value="{{$email}}"
+                            id="card-holder-email"
+                            name="card_holder_last_name"
+                            class="w-full rounded-md border border-gray-300 p-3 text-sm"
+                            placeholder="Cardholder Email"
                             required
                         />
                     </div>
@@ -118,6 +137,7 @@
                                         <input
                                             type="text"
                                             id="card-number"
+                                            value="4508750015741019"
                                             name="card-number"
                                             class="w-full border-none bg-gray-100 p-3 outline-none ring-0 focus:bg-gray-200 focus:ring-0"
                                             placeholder="Card number"
@@ -134,6 +154,7 @@
                                         type="text"
                                         id="card-exp-month"
                                         name="card-exp-month"
+                                        value="01"
                                         class="w-14 border-none bg-gray-100 p-3 outline-none ring-0 focus:bg-gray-200 focus:ring-0"
                                         placeholder="MM"
                                         maxLength="2"
@@ -145,6 +166,7 @@
                                         type="text"
                                         id="card-exp-year"
                                         name="card-exp-year"
+                                        value="2039"
                                         class="w-auto border-none bg-gray-100 p-3 outline-none ring-0 focus:bg-gray-200 focus:ring-0"
                                         placeholder="YYYY"
                                         maxLength="4"
@@ -168,6 +190,7 @@
                                         type="text"
                                         id="card-cvn"
                                         name="card-cvn"
+                                        value="100"
                                         class="w-full border-none bg-gray-100 p-3 outline-none ring-0 focus:bg-gray-200 focus:ring-0"
                                         placeholder="CVV"
                                         maxLength="4"
@@ -266,6 +289,9 @@
         {{-- Process for tokenizing the card details, validation
              and charging the credit/debit card. --}}
         <script>
+            let cardHolderFirstName;// = document.getElementById('card-holder-first-name').value
+            let cardHolderLastName;// = document.getElementById('card-holder-last-name').value
+            let cardHolderEmail;// = document.getElementById('card-holder-email').value
             document.addEventListener('DOMContentLoaded', function() {
 
                 // Payment options
@@ -330,6 +356,13 @@
 
                 // Charge card button
                 chargeCardBtn.addEventListener('click', function(event) {
+                    cardHolderFirstName = document.getElementById('card-holder-first-name').value
+                    cardHolderLastName = document.getElementById('card-holder-last-name').value
+                    cardHolderEmail = document.getElementById('card-holder-email').value
+
+                    // Card Holder Details
+                    console.log('test: ', cardHolderFirstName)
+
                     event.preventDefault();
 
                     // Disable the submit button to prevent repeated clicks
@@ -395,9 +428,9 @@
                         card_cvn: form.querySelector('#card-cvn').value,
 
                         // ✅ ADD these required fields:
-                        card_holder_first_name: document.getElementById('card-holder-first-name').value,
-                        card_holder_last_name: document.getElementById('card-holder-last-name').value,
-                        card_holder_email: "test@example.com",
+                        card_holder_first_name: cardHolderFirstName,
+                        card_holder_last_name: cardHolderLastName,
+                        card_holder_email: cardHolderEmail,
                         // card_holder_phone_number: "+639944557467",
 
                         // Change the currency you want to charge your customers in.
@@ -531,6 +564,7 @@
                 function chargeCard(auth_id, card_token) {
                     console.log('Executing payment...');
                     console.log('Authentication ID: ' + auth_id)
+                    console.log('card_holder_frist_name: ', cardHolderFirstName)
 
                     axios.post('/pay-with-card', {
                         amount: document.getElementById('amount-to-pay').value,
@@ -573,17 +607,20 @@
                         //     }
                         // },
 
-                        // metadata: {
-                        //     store_owner: 'Glenn Raya',
-                        //     nationality: 'Filipino',
-                        //     product: 'MacBook Pro 16" M3 Pro',
-                        //     other_details: {
-                        //         purpose: 'Work laptop',
-                        //         issuer: 'Xendivel LTD',
-                        //         manufacturer: 'Apple',
-                        //         color: 'Silver'
-                        //     }
-                        // }
+                        metadata: {
+                            card_holder_first_name: cardHolderFirstName,
+                            card_holder_last_name: cardHolderLastName,
+                            card_holder_email: cardHolderEmail,
+                            // store_owner: 'Glenn Raya',
+                            // nationality: 'Filipino',
+                            // product: 'MacBook Pro 16" M3 Pro',
+                            // other_details: {
+                            //     purpose: 'Work laptop',
+                            //     issuer: 'Xendivel LTD',
+                            //     manufacturer: 'Apple',
+                            //     color: 'Silver'
+                            // }
+                        }
                     })
                     .then(response => {
                         console.log(response);

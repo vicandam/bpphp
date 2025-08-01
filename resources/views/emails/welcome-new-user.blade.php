@@ -1,20 +1,27 @@
 <x-mail::message>
-    # Welcome to BPPHP Fun, {{ $user->name ?? $user->email }}!
+# 🎉 Welcome to BPPHP Fun, {{ $user->name ?? '$user->email' }}!
 
-    Thank you for your ticket purchase! We've automatically created an account for you.
+<div style="margin-top: 30px;">
+    Thank you for your ticket purchase — your account has been <strong>successfully created</strong>!
+</div>
 
-    Here are your login credentials:
-    - **Email:** {{ $user->email }}
-    - **Password:** {{ $password }}
 
-    Please log in and consider changing your password for security.
+---
+### 🔐 Your Login Credentials
+- **Email:** {{ $user->email??'' }}
+- **Password:** {{ $password??'' }}
 
-    <x-mail::button :url="url('/login')">
-        Login to Your Account
-    </x-mail::button>
+Please log in and consider updating your password for security.
 
-    We are excited to have you as part of the BPPHP Movement!
+<x-mail::button :url="url('/login')">
+    Login to Your Account
+</x-mail::button>
 
-    Thanks,<br>
-    {{ config('app.name') }}
+---
+
+We're excited to have you join the **BPPHP Movement**.
+If you have any questions, feel free to reach out.
+
+Thanks,
+{{ config('app.name') }}
 </x-mail::message>
