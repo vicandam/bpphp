@@ -7,6 +7,7 @@ use Illuminate\Mail\MailManager;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
+use Opcodes\LogViewer\Facades\LogViewer;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class AppServiceProvider extends ServiceProvider
@@ -44,6 +45,13 @@ class AppServiceProvider extends ServiceProvider
                 $user->loadMissing('uiPreference');
                 $view->with('uiPreference', $user->uiPreference);
             }
+        });
+
+        LogViewer::auth(function ($request) {
+            return $request->user()
+                && in_array($request->user()->email, [
+                    'admin@example.com',
+                ]);
         });
     }
 }
