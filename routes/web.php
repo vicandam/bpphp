@@ -59,10 +59,38 @@ Route::get('/dashboard', function () {
 
 // Xendit Webhook route (POST)
 Route::post('/xendit/callback', [TicketController::class, 'callback'])->name('xendit.callback');
-//Route::any('/xendit/callback', function () {
-//    return 'Webhook alive!';
-//});
 
+Route::any('/invoice', function (Request $request) {
+    $invoice_data = [
+        'invoice_number' => 20250729001,
+        'merchant' => [
+            'name' => 'RiseUp Digital PH',
+            'address' => '123 Manila Road, Philippines',
+            'phone' => '+63 917 123 4567',
+            'email' => 'support@riseupdigitalph.com',
+        ],
+        'customer' => [
+            'name' => $request->input('name', 'Vic Andam'),
+            'address' => $request->input('address', 'Davao City'),
+            'email' => $request->input('email', 'vic@example.com'),
+            'phone' => $request->input('phone', '+639171234567'),
+        ],
+        'items' => [
+            ['item' => 'Premium Digital Services', 'price' => 2499, 'quantity' => 1],
+            ['item' => 'Setup Fee', 'price' => 500, 'quantity' => 1],
+        ],
+        'tax_rate' => 0.12,
+        'tax_id' => 'VAT-998877',
+        'card_type' => 'VISA', // 👈 ADD THIS
+        'masked_card_number' => $request->input('masked_card_number', '**** **** **** 1234'),
+        'footer_note' => 'Daghang salamat sa imong pagsalig sa RiseUp Digital PH!',
+    ];
+//    return view('vendor/xendivel/invoice', compact('invoice_data'));
+    return view('invoice.template', compact('invoice_data'));
+});
+
+
+Route::get('/checkout', [PaymentController::class, 'checkout']);
 
 // QR Code Scanner Endpoint (GET)
 // This URL will be embedded in the QR code for venue staff to scan

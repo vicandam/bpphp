@@ -9,14 +9,47 @@
         body { font-family: DejaVu Sans, Inter, sans-serif; color: #374151; font-size: 12px; }
         .header { background: linear-gradient(to top, #e2e8f0, #fff); padding: 40px; }
         .container {
-            width: 100%;
-            margin: 0;
             padding: 0 40px;
             box-sizing: border-box;
         }
+
+        .container table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .container th, .container td {
+            padding: 0.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        .container .text-right {
+            text-align: right;
+        }
+
+        .total-box {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #444;
+        }
         .flex { display: flex; justify-content: space-between; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border-bottom: 1px solid #e5e7eb; padding: .5rem; }
+        th, td { border-bottom: 1px solid #e5e7eb;
+            padding: .5rem;
+        }
+        .no-border td {
+            border-bottom: none !important;
+            padding: 0;
+        }
+
         th { text-align: left; font-weight: 600; }
         .text-right { text-align: right; }
         .total-box { background: black; color: white; padding: .5rem 1rem; border-radius: 6px; display: inline-flex; }
@@ -24,27 +57,46 @@
     </style>
 </head>
 <body>
-<div class="header flex">
-    {{-- Merchant --}}
-    <div>
-        <!-- Logo SVG -->
-        <svg width="42" height="42">…</svg>
-        <p>Invoice #: {{ $invoice_data['invoice_number'] }}</p>
-        <p><strong>Merchant</strong><br>{{ $invoice_data['merchant']['name'] }}<br>{{ $invoice_data['merchant']['address'] }}<br>Phone: {{ $invoice_data['merchant']['phone'] }}<br>Email: {{ $invoice_data['merchant']['email'] }}</p>
-    </div>
-    {{-- Customer --}}
-    <div style="text-align: right;">
-        <p>Date: {{ now()->format('M. d, Y \a\t g:ia') }}</p>
-        <p>
-            <strong>Customer</strong>
-            {{ $invoice_data['customer']['name'] }}<br>
-            @if($invoice_data['customer']['address'] != 'N/A') {{ $invoice_data['customer']['address'] }}<br> @endif
-            @if($invoice_data['customer']['phone'] != 'N/A')<strong>Phone:</strong> {{ $invoice_data['customer']['phone'] }}<br> @endif
-            <strong>Email:</strong> {{ $invoice_data['customer']['email'] }}
-        </p>
 
-    </div>
+<div class="header">
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr valign="top">
+            {{-- Left column: logo + merchant --}}
+            <td style="width: 50%; vertical-align: top;">
+                <table class="no-border" style="width: 100%;">
+                    <tr>
+                        <td style="width: 60px;">
+                            <a href="https://app.bpphp.fun/login"><img src="{{ public_path('images/bpphp.png') }}" alt="Logo" style="height: 60px; width: auto;"></a>
+                        </td>
+                        <td style="padding-left: 10px;">
+                            <div style="margin-bottom: 5px;">Invoice #: {{ $invoice_data['invoice_number'] }}</div>
+                            <div style="font-weight: bold; margin-bottom: 3px;">Merchant</div>
+                            <div>
+                                {{ $invoice_data['merchant']['name'] }}<br>
+                                {{ $invoice_data['merchant']['address'] }}<br>
+                                Phone: {{ $invoice_data['merchant']['phone'] }}<br>
+                                Email: {{ $invoice_data['merchant']['email'] }}
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+            {{-- Right column: customer --}}
+            <td style="width: 50%; vertical-align: top; text-align: right;">
+                <div style="margin-bottom: 5px;">Date: {{ now()->format('M. d, Y \a\t g:ia') }}</div>
+                <div style="font-weight: bold; margin-bottom: 3px;">Customer</div>
+                <div>
+                    {{ $invoice_data['customer']['name'] }}<br>
+                    @if($invoice_data['customer']['address'] != 'N/A'){{ $invoice_data['customer']['address'] }}<br>@endif
+                    @if($invoice_data['customer']['phone'] != 'N/A')Phone: {{ $invoice_data['customer']['phone'] }}<br>@endif
+                    Email: {{ $invoice_data['customer']['email'] }}
+                </div>
+            </td>
+        </tr>
+    </table>
 </div>
+
 
 <div class="container">
     <table>

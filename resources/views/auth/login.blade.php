@@ -49,7 +49,10 @@
               <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                 <div class="bg-gradient-dark shadow-dark border-radius-lg py-3 pe-1">
                   <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Sign in</h4>
-                  <div class="row mt-3">
+                    <div class="row mt-3">
+                        <img src="{{ asset('images/bpphp.png') }}" alt="BPPHP" style="height: 60px; width: auto;" class="d-block mx-auto mb-4">
+                    </div>
+                  <div class="row mt-3 d-none">
                     <div class="col-2 text-center ms-auto">
                       <a class="btn btn-link px-3" href="javascript:;">
                         <i class="fa fa-facebook text-white text-lg"></i>
@@ -85,17 +88,20 @@
                     <div>
                         <x-input-error :messages="$errors->get('password')" class="mt-2 text-danger" />
                     </div>
-                  <div class="form-check form-switch d-flex align-items-center mb-3">
+                  <div class="form-check form-switch d-flex align-items-center mb-3 d-none">
                     <input class="form-check-input" type="checkbox" id="rememberMe" checked>
                     <label class="form-check-label mb-0 ms-3" for="rememberMe">Remember me</label>
                   </div>
                   <div class="text-center">
                     <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign in</button>
+                      <span class="text-success" style="font-size: 13px; font-weight: 700;"><i style="margin-right: 9px;" class="fas fa-lock"></i>secure connection</span>
                   </div>
-                  <p class="mt-4 text-sm text-center">
+                  <p class="mt-4 text-sm text-center"
+                     style="color: #8898aa"
+                  >
                       @if (Route::has('password.request'))
-                          <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                              {{ __('Forgot your password?') }}
+                          <a  href="{{ route('password.request') }}">
+                              <small style="text-decoration: underline!important; color: #8898aa;">{{ __('Forgot your password?') }}</small>
                           </a>
                       @endif
                   </p>
