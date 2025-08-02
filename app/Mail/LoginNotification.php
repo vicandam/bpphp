@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -24,34 +25,11 @@ class LoginNotification extends Mailable
         $this->user = $user;
     }
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            from: new \Illuminate\Mail\Mailables\Address('system@virtulab.in', 'VirtuLab Login Alert'),
-            subject: 'Someone just logged in to VirtuLab',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'emails.login-notification',
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
+        return $this->to($this->user->email, $this->user->name)
+            ->subject('Someone just logged in to BPPHP')
+            ->markdown('emails.login-notification')
+            ->with(['user' => $this->user]);
     }
 }

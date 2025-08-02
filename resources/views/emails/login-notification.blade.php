@@ -14,6 +14,6 @@
     <li><strong>Time:</strong> {{ now()->toDayDateTimeString() }}</li>
 </ul>
 <p>Thanks,</p>
-<p>Virtulab Contacts Management System</p>
+<p>BPPHP System</p>
 </body>
 </html>
