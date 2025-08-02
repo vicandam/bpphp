@@ -10,6 +10,7 @@ use App\Mail\InvoiceMail;
 use App\Services\QrCodeGeneratorService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use GlennRaya\Xendivel\Xendivel;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -80,10 +81,20 @@ class PaymentService
         $filename = $this->generateInvoice($invoice_data);
 
         if ($generatedPassword) {
-            Mail::to($user->email)->send(new WelcomeNewUserMail($user, $generatedPassword));
+            try {
+                Mail::to($user->email)->send(new WelcomeNewUserMail($user, $generatedPassword));
+            } catch (\Exception $e) {
+                Log::error("Error sending welcome email to {$user->email}", [$e->getMessage()]);
+            }
         }
 
-        Mail::to($user->email)->send(new InvoiceMail($invoice_data, $ticket));
+        try {
+            Mail::to(new Address($user->email, $user->name))
+                ->send(new InvoiceMail($invoice_data, $ticket));
+
+        } catch (\Exception $e) {
+            Log::error("Error sending invoice to {$user->email}", [$e->getMessage()]);
+        }
 
         return [
             'status' => 'success',

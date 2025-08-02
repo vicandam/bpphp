@@ -22,6 +22,6 @@ Please log in and consider updating your password for security.
 We're excited to have you join the **BPPHP Movement**.
 If you have any questions, feel free to reach out.
 
-Thanks,
+Thanks,<br>
 {{ config('app.name') }}
 </x-mail::message>

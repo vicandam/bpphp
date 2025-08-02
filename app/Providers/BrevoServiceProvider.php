@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Mail\Transport\BrevoTransport;
 use Illuminate\Mail\MailManager;
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class BrevoServiceProvider extends ServiceProvider
@@ -14,7 +15,9 @@ class BrevoServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(HttpClientInterface::class, function () {
+            return HttpClient::create();
+        });
     }
 
     /**

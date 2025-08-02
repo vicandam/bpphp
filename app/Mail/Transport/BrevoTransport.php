@@ -43,7 +43,7 @@ class BrevoTransport extends AbstractTransport
             'to' => array_map(function ($recipient) {
                 return [
                     'email' => $recipient->getAddress(),
-                    'name' => $recipient->getName(),
+                    'name' => $recipient->getName() ?? '', // Prevent missing name
                 ];
             }, $to),
             'subject' => $email->getSubject(),
@@ -67,9 +67,16 @@ class BrevoTransport extends AbstractTransport
                 'json' => $payload,
             ]);
 
-            if (200 !== $response->getStatusCode()) {
-                throw new TransportException('Brevo API error: ' . $response->getContent(false));
+            $statusCode = $response->getStatusCode();
+            $data = $response->toArray(false);
+
+            if ($statusCode >= 200 && $statusCode < 300) {
+                // Optional: Log messageId or attach it to SentMessage metadata
+                // $message->getHeaders()->addTextHeader('X-Brevo-Message-ID', $data['messageId'] ?? 'N/A');
+                return;
             }
+
+            throw new TransportException('Brevo API error: ' . json_encode($data));
         } catch (\Throwable $e) {
             throw new TransportException('Brevo send failed: ' . $e->getMessage(), 0, $e);
         }

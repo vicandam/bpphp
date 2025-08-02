@@ -6,8 +6,6 @@ use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class WelcomeNewUserMail extends Mailable
@@ -27,36 +25,16 @@ class WelcomeNewUserMail extends Mailable
     }
 
     /**
-     * Get the message envelope.
+     * Build the message.
      */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Welcome to BPPHP Fun! Your Login Details',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            markdown: 'emails.welcome-new-user', // Points to resources/views/emails/welcome-new-user.blade.php
-            with: [
+        return $this->to($this->user->email, $this->user->name)
+            ->subject('Welcome to BPPHP Fun! Your Login Details')
+            ->markdown('emails.welcome-new-user')
+            ->with([
                 'user' => $this->user,
                 'password' => $this->password,
-            ],
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
+            ]);
     }
 }
