@@ -17,14 +17,16 @@ class InvoiceMail extends Mailable
 
     public $invoiceData;
     public $customMessage;
+    public $ticket;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($invoiceData, $customMessage=null)
+    public function __construct($invoiceData, $ticket, $customMessage=null)
     {
         $this->invoiceData = $invoiceData;
         $this->customMessage = $customMessage;
+        $this->ticket = $ticket;
     }
 
     public function build()
@@ -35,6 +37,7 @@ class InvoiceMail extends Mailable
             ->markdown('vendor.xendivel.emails.invoices.paid')
             ->with([
                 'customMessage' => $this->customMessage,
+                'ticket' => $this->ticket
             ])
             ->attachData($pdf->output(), 'invoice.pdf', [
                 'mime' => 'application/pdf',

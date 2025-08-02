@@ -83,7 +83,7 @@ class PaymentService
             Mail::to($user->email)->send(new WelcomeNewUserMail($user, $generatedPassword));
         }
 
-        Mail::to($user->email)->send(new InvoiceMail($invoice_data));
+        Mail::to($user->email)->send(new InvoiceMail($invoice_data, $ticket));
 
         return [
             'status' => 'success',
