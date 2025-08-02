@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.1",
         "barryvdh/laravel-dompdf": "^3.1",
+        "getbrevo/brevo-php": "^2.0",
         "glennraya/xendivel": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
@@ -14,6 +15,7 @@
         "laravel/tinker": "^2.8",
         "opcodesio/log-viewer": "^3.15",
         "simplesoftwareio/simple-qrcode": "^4.2",
+        "symfony/http-client": "^7.3",
         "xendit/xendit-php": "^7.0"
     },
     "require-dev": {
