@@ -57,6 +57,19 @@ class BrevoTransport extends AbstractTransport
             $payload['textContent'] = $email->getTextBody();
         }
 
+        // Handle attachments
+        $attachments = [];
+        foreach ($email->getAttachments() as $attachment) {
+            $attachments[] = [
+                'content' => base64_encode($attachment->getBody()),
+                'name' => $attachment->getFilename(),
+            ];
+        }
+
+        if (!empty($attachments)) {
+            $payload['attachment'] = $attachments;
+        }
+
         try {
             $response = $this->client->request('POST', 'https://api.brevo.com/v3/smtp/email', [
                 'headers' => [
