@@ -10,6 +10,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class InvoiceMail extends Mailable
 {
@@ -31,16 +32,20 @@ class InvoiceMail extends Mailable
 
     public function build()
     {
-        $pdf = Pdf::loadView('invoice.template',  ['invoice_data' => $this->invoiceData]);
+        try {
+            $pdf = Pdf::loadView('invoice.template', ['invoice_data' => $this->invoiceData]);
 
-        return $this->subject('Your Invoice from ' . config('app.name'))
-            ->markdown('vendor.xendivel.emails.invoices.paid')
-            ->with([
-                'customMessage' => $this->customMessage,
-                'ticket' => $this->ticket
-            ])
-            ->attachData($pdf->output(), 'invoice.pdf', [
-                'mime' => 'application/pdf',
-            ]);
+            return $this->subject('Your Invoice from ' . config('app.name'))
+                ->markdown('vendor.xendivel.emails.invoices.paid')
+                ->with([
+                    'customMessage' => $this->customMessage,
+                    'ticket' => $this->ticket
+                ])
+                ->attachData($pdf->output(), 'invoice.pdf', [
+                    'mime' => 'application/pdf',
+                ]);
+        } catch (\Exception $e) {
+            Log::error('Email build failed: ' . $e->getMessage());
+        }
     }
 }

@@ -38,13 +38,15 @@ class PaymentService
 
         $charge = $payment;
         $customer_email = $charge->metadata->card_holder_email;
+        $userPayload = $this->buildUserPayload($charge);
+
         $user = User::firstOrCreate(
             ['email' => $customer_email],
-            $this->buildUserPayload($charge)
+            $userPayload
         );
 
         $isNewUser = $user->wasRecentlyCreated;
-        $generatedPassword = $isNewUser ? $this->buildUserPayload($charge)['plainPassword'] : null;
+        $generatedPassword = $isNewUser ? $userPayload['plainPassword'] : null;
 
         $customer = [
             'name' => $user->name,
