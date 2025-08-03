@@ -127,6 +127,10 @@
     );
 </script>
 
+<script>
+    const isProduction = @json(app()->environment('production'));
+</script>
+
 {{-- Process for tokenizing the card details, validation
      and charging the credit/debit card. --}}
 <script>
@@ -469,10 +473,12 @@
                     // Display the API response from Xendit.
                     chargeResponseDiv.querySelector('pre').textContent = JSON.stringify(response.data, null, 2)
 
-                    switch (response.data.status) {
+                    switch (response.data?.payment?.status) {
                         // The CAPTURED status means the payment went successful.
                         // And the customer's card was successfully charged.
                         case 'CAPTURED':
+                            console.log("Redirect check: ", isProduction);
+
                             chargeResponseDiv.style.display = 'flex'
 
                             if(save_card === true) {
@@ -485,6 +491,12 @@
                             // Hide the 3DS authentication dialog after successful authentication/payment.
                             setIframeSource('payer-auth-url', "")
                             authDialog.style.display = 'none'
+                            if (isProduction) {
+                                setTimeout(function () {
+                                    window.location.href = "https://bpphp.fun/thank-you";
+                                }, 2000);
+                            }
+
                             break;
 
                         // With a FAILED status, the customer failed to verify their card,
