@@ -19,31 +19,47 @@ class InvoiceMail extends Mailable
     public $invoiceData;
     public $customMessage;
     public $ticket;
+    public $filename;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($invoiceData, $ticket, $customMessage=null)
+    public function __construct($invoiceData, $ticket, string $filename, $customMessage=null)
     {
         $this->invoiceData = $invoiceData;
         $this->customMessage = $customMessage;
         $this->ticket = $ticket;
+        $this->filename = $filename;
     }
 
     public function build()
     {
         try {
-            $pdf = Pdf::loadView('invoice.template', ['invoice_data' => $this->invoiceData]);
+//            $pdf = Pdf::loadView('invoice.template', ['invoice_data' => $this->invoiceData]);
+//
+//            return $this->subject('Your Invoice from ' . config('app.name'))
+//                ->markdown('vendor.xendivel.emails.invoices.paid')
+//                ->with([
+//                    'customMessage' => $this->customMessage,
+//                    'ticket' => $this->ticket
+//                ])
+//                ->attachData($pdf->output(), 'invoice.pdf', [
+//                    'mime' => 'application/pdf',
+//                ]);
+
+            $path = storage_path('app/invoices/' . $this->filename);
 
             return $this->subject('Your Invoice from ' . config('app.name'))
                 ->markdown('vendor.xendivel.emails.invoices.paid')
                 ->with([
-                    'customMessage' => $this->customMessage,
-                    'ticket' => $this->ticket
+                    'customMessage' => $this->customMessage ?? '',
+                    'ticket' => $this->ticket,
                 ])
-                ->attachData($pdf->output(), 'invoice.pdf', [
+                ->attach($path, [
+                    'as' => 'invoice.pdf',
                     'mime' => 'application/pdf',
                 ]);
+
         } catch (\Exception $e) {
             Log::error('Email build failed: ' . $e->getMessage());
         }

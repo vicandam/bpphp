@@ -92,7 +92,7 @@ class PaymentService
 
         try {
             Mail::to(new Address($user->email, $user->name))
-                ->send(new InvoiceMail($invoice_data, $ticket));
+                ->send(new InvoiceMail($invoice_data, $ticket,  $filename));
 
         } catch (\Exception $e) {
             Log::error("Error sending invoice to {$user->email}", [$e->getMessage()]);
