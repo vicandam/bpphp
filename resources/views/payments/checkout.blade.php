@@ -3,7 +3,31 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Xendivel Cards Payment Template</title>
+    <!-- SEO Title and Description -->
+    <title>BPPHP.fun - Become a Member, Earn Rewards, Live Your Dream</title>
+
+    <link rel="icon" type="image/png" href="https://assets.cdn.filesafe.space/rXM1uS2u3mzz5DBmQq5L/media/6880e0be12dcea2d369279b7.png">
+    <link rel="apple-touch-icon" href="https://assets.cdn.filesafe.space/rXM1uS2u3mzz5DBmQq5L/media/6880e0be12dcea2d369279b7.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://assets.cdn.filesafe.space/rXM1uS2u3mzz5DBmQq5L/media/6880e0be12dcea2d369279b7.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://assets.cdn.filesafe.space/rXM1uS2u3mzz5DBmQq5L/media/6880e0be12dcea2d369279b7.png">
+
+
+    <meta name="description" content="Join the BPPHP.fun Dream Club — where your passion for movies, music, and community turns into real-world rewards. Sign up today and start earning.">
+
+    <!-- Social Sharing (Open Graph for Facebook, LinkedIn, etc.) -->
+    <meta property="og:title" content="BPPHP.fun - Become a Member, Earn Rewards, Live Your Dream">
+    <meta property="og:description" content="Join the Dream Club — where your passion for entertainment meets real rewards. Membership has never been this rewarding.">
+    <meta property="og:image" content="https://assets.cdn.filesafe.space/rXM1uS2u3mzz5DBmQq5L/media/6880e0be12dcea2d369279b7.png">
+    <meta property="og:url" content="https://bpphp.fun">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Sharing -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BPPHP.fun - Dream Club for Movie & Music Lovers">
+    <meta name="twitter:description" content="Turn your love for movies and music into perks and rewards. Join the Dream Club at BPPHP.fun today.">
+    <meta name="twitter:image" content="https://assets.cdn.filesafe.space/rXM1uS2u3mzz5DBmQq5L/media/6880e0be12dcea2d369279b7.png">
+
+
 
     {{-- @vite('resources/css/checkout.css') --}}
     <style>
