@@ -98,6 +98,8 @@ Route::get('/redeem-ticket/{token}', [TicketController::class, 'scanRedeem'])->n
 
 Route::post('/pay-with-card', [PaymentController::class, 'payWithCard'])->name('pay.card');
 
+Route::post('/pay-via-ewallet', [PaymentController::class, 'payViaWallet'])->name('pay.wallet');
+
 Route::get('/invoice/generate', function () {
     $invoice_data = [
         'invoice_number' => 1000023,
@@ -138,6 +140,10 @@ Route::get('/invoice/generate', function () {
         ->save($savePath);
 
     return $pdf->download('invoice-'.$invoice_data['invoice_number'].'.pdf');
+});
+
+Route::get('/ewallet/failed', function () {
+    echo "E-wallet failed!";
 });
 
 Route::post('/ghl/webhook',[GhlWebhookController::class, 'store'])->name('ghl-webhook');

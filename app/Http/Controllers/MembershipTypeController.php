@@ -44,7 +44,7 @@ class MembershipTypeController extends Controller
 
         try {
             MembershipType::create($request->all());
-            return redirect()->route('membership_types.index')->with('success', 'Membership type created successfully.');
+            return redirect()->route('membership-types.index')->with('success', 'Membership type created successfully.');
         } catch (\Exception $e) {
             Log::error('Membership type creation failed: ' . $e->getMessage());
             return back()->withInput()->withErrors(['error' => 'Failed to create membership type.']);

@@ -68,7 +68,7 @@ return [
     | trust and preventing security risks.
     |
     */
-    'verify_webhook_signature' => true,
+    'verify_webhook_signature' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -111,5 +111,5 @@ return [
     |
     */
 
-    'webhook_verification_token' => env('XENDIT_WEBHOOK_VERIFICATION_TOKEN', ''),
+    'webhook_verification_token' => env('XENDIT_WEBHOOK_VERIFICATION_TOKEN', 'Ezi0FVZnsMN0nXBnD4HIq5dIEH68OPHmXVM8cW6hkMsbV3X0'),
 ];

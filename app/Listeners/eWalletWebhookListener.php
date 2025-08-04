@@ -3,15 +3,15 @@
 namespace App\Listeners;
 
 use App\Events\eWalletEvents;
+use App\Services\Payment\PaymentService;
 
 class eWalletWebhookListener
 {
-    /**
-     * Create the event listener.
-     */
-    public function __construct()
+    protected PaymentService $paymentService;
+
+    public function __construct(PaymentService $paymentService)
     {
-        //
+        $this->paymentService = $paymentService;
     }
 
     /**
@@ -34,5 +34,23 @@ class eWalletWebhookListener
         // You can inspect the returned data from the webhoook in your logs file
         // storage/logs/laravel.log
         logger('Webhook data received: ', $event->webhook_data);
+
+        $data = $event->webhook_data['data'] ?? [];
+
+        if (($data['status'] ?? null) === 'SUCCEEDED') {
+            // Rebuild the payment object as stdClass (object)
+            $rawResponse = json_decode(json_encode($event->webhook_data['data']));
+
+            try {
+
+                $payment = $this->paymentService->normalizePaymentResponse($rawResponse, 'e-wallet');
+
+                $result = $this->paymentService->finalizeSuccessfulPayment($payment);
+
+                logger('Finalization success', $result);
+            } catch (\Throwable $e) {
+                logger('Error in finalizeSuccessfulPayment:', [$e->getMessage()]);
+            }
+        }
     }
 }

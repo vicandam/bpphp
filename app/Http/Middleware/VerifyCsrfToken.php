@@ -12,8 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        '/xendit/payment-link-callback', // Exclude Xendit Payment Link webhook
-        '/xendit/callback', // Exclude Xendit Invoice API webhook (if still used)
         '/ghl/webhook',
+        '/xendit/*',
     ];
 }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\PaymentService;
+use App\Models\Event;
+use App\Services\Payment\PaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class PaymentController extends Controller
 {
@@ -13,10 +13,19 @@ class PaymentController extends Controller
 
     public function checkout()
     {
-        $external_id = 'INV-' . now()->format('Ymd') . '-' . mt_rand(10000, 99999);
+        $event = Event::getActiveCampaignEvent();
+        $externalId = $this->paymentService->generateExternalId();
 
-        return view('payments.checkout', compact('external_id'));
+        if (!$event) {
+            abort(404, 'No active campaign event found.');
+        }
+
+        return view('payments.checkout', [
+            'external_id' => $externalId,
+            'ticketPrice' => $event->ticket_price,
+        ]);
     }
+
     public function payWithCard(Request $request)
     {
         try {
@@ -27,4 +36,16 @@ class PaymentController extends Controller
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
     }
+
+    public function payViaWallet(Request $request)
+    {
+        try {
+            $result = $this->paymentService->handleEwalletPayment($request);
+            return response()->json($result);
+        } catch (\Throwable $e) {
+            Log::error('Wallet payment failed: ' . $e->getMessage());
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
+    }
+
 }

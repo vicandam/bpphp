@@ -44,6 +44,11 @@ class Event extends Model
         'ticket_price' => 'decimal:2',
     ];
 
+    public static function getActiveCampaignEvent(): ?self
+    {
+        return self::where('campaign', 1)->first();
+    }
+
     /**
      * Get the tickets for the event.
      */

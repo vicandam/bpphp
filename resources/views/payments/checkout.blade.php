@@ -67,18 +67,18 @@
     {{-- Payment form --}}
     <div class="mt-8 flex w-[500px] flex-col rounded-md border border-gray-300 bg-white">
         <div class="flex w-full text-sm">
-                    <span
-                        id="card-payment"
-                        class="flex-1 cursor-pointer p-4 text-center bg-white font-bold text-black rounded-tl-md"
-                    >
-                        Credit/Debit Card
-                    </span>
+            <span
+                id="card-payment"
+                class="flex-1 cursor-pointer p-4 text-center bg-white font-bold text-black rounded-tl-md"
+            >
+                Credit/Debit Card
+            </span>
             <span
                 id="ewallet-payment"
                 class="flex-1 cursor-pointer p-4 text-center rounded-tr-md text-black bg-gray-200"
             >
-                        E-Wallet
-                    </span>
+                E-Wallet
+            </span>
         </div>
 
         {{-- Cards payment --}}
@@ -93,6 +93,15 @@
             id="ewallet-panel"
             class="hidden w-full grid-cols-6 gap-4 rounded-bl-md rounded-br-md bg-white p-8 pt-2 shadow-sm"
         >
+
+            {{-- E-Wallet fields --}}
+            @if(app()->environment('local', 'development'))
+                @include('payments.ewallet_fields_local')
+            @else
+                @include('payments.ewallet_fields_prod')
+            @endif
+
+
             <button
                 type="button"
                 id="charge-ewallet-btn"
@@ -153,6 +162,7 @@
 
 <script>
     const isProduction = @json(app()->environment('production'));
+    const BASE_URL = "{{ config('app.url') }}";
 </script>
 
 {{-- Process for tokenizing the card details, validation
@@ -594,18 +604,24 @@
                 currency: 'PHP',
                 checkout_method: 'ONE_TIME_PAYMENT',
                 channel_code: 'PH_GCASH',
+                reference_id: externalId,
                 channel_properties: {
-                    success_redirect_url: '{{ getenv('APP_URL') }}/ewallet/success',
-                    failure_redirect_url: '{{ getenv('APP_URL') }}/ewallet/failed',
+                    success_redirect_url: 'https://bpphp.fun/thank-you',
+                    failure_redirect_url: `${BASE_URL}/ewallet/failed`,
                 },
+                metadata: {
+                    card_holder_email: document.getElementById('email-wallet').value,
+                    card_holder_first_name: document.getElementById('first-name-wallet').value,
+                    card_holder_last_name: document.getElementById('last-name-wallet').value
+                }
             })
                 .then(response => {
                     // Upon successful request, you will be redirected to the eWallet's checkout url.
                     console.log('Success response: ', response.data)
-                    window.location.href =
-                        response.data.actions.desktop_web_checkout_url
+                    window.location.href = response.data.actions.desktop_web_checkout_url
                 })
                 .catch(error => {
+
                     const err = JSON.parse(error.response.data.message)
                     console.log('Error response: ', err.message)
                     console.log('Errors: ', err.errors)
