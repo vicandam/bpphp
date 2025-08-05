@@ -104,12 +104,33 @@ class PaymentService
 
         $normalized = clone $raw;
 
+
+        switch ($raw->channel_code) {
+            case 'PH_GCASH':
+                $wallet_logo = 'gcash.png';
+                break;
+            case 'PH_GRABPAY':
+                $wallet_logo = 'grabpay.png';
+                break;
+            case 'PH_PAYMAYA':
+                $wallet_logo = 'maya.png';
+                break;
+            case 'PH_SHOPEEPAY':
+                $wallet_logo = 'shopeepay.png';
+                break;
+            default:
+                $wallet_logo = null; // or 'default-ewallet.png'
+                break;
+        }
+
         // Normalize field names
-        $normalized->card_brand = $raw->channel_code;
-        $normalized->masked_card_number = 'N/A'; // Not a card, just display channel
+        $normalized->card_brand = 'E-WALLET';;
+        $normalized->masked_card_number = '••••';
         $normalized->authorized_amount = $raw->charge_amount;
         $normalized->approval_code = $raw->id;
         $normalized->external_id = $raw->reference_id;
+        $normalized->wallet_logo = $wallet_logo;
+
 
         return $normalized;
     }
@@ -160,7 +181,8 @@ class PaymentService
     {
         return [
             'invoice_number' => $charge->external_id ?? uniqid('INV-'),
-            'card_type' => $charge->card_brand ?? 'CARD',
+            'card_type' => $charge->card_brand,
+            'wallet_logo' => $charge->wallet_logo??'',
             'masked_card_number' => $charge->masked_card_number ?? '',
             'currency' => $charge->currency,
             'charge_date' => date('F j, Y H:i A', strtotime($charge->created ?? now())),
@@ -179,8 +201,8 @@ class PaymentService
             'items' => $items,
             'tax_rate' => 0.12,
             'tax_id' => '123-456-789',
-            'footer_note' => 'Transaction via ' . ($charge->descriptor ?? 'Payment Gateway'),
-            'footer_note_message' => 'Thank you for your recent purchase with us! We are thrilled to have the opportunity to serve you and hope that your new purchase brings you great satisfaction.',
+            'footer_note' => 'Thank you for your recent purchase with us! We are thrilled to have the opportunity to serve you and hope that your new purchase brings you great satisfaction.',
+            'footer_note_right' => 'Transaction via ' . ($charge->descriptor ?? 'Payment Gateway'),
             'approval_code' => $charge->approval_code ?? null,
             'total_amount' => $charge->authorized_amount,
         ];

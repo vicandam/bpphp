@@ -35,17 +35,6 @@ class InvoiceMail extends Mailable
     public function build()
     {
         try {
-//            $pdf = Pdf::loadView('invoice.template', ['invoice_data' => $this->invoiceData]);
-//
-//            return $this->subject('Your Invoice from ' . config('app.name'))
-//                ->markdown('vendor.xendivel.emails.invoices.paid')
-//                ->with([
-//                    'customMessage' => $this->customMessage,
-//                    'ticket' => $this->ticket
-//                ])
-//                ->attachData($pdf->output(), 'invoice.pdf', [
-//                    'mime' => 'application/pdf',
-//                ]);
 
             $path = storage_path('app/invoices/' . $this->filename);
 

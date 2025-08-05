@@ -103,8 +103,9 @@ Route::post('/pay-via-ewallet', [PaymentController::class, 'payViaWallet'])->nam
 Route::get('/invoice/generate', function () {
     $invoice_data = [
         'invoice_number' => 1000023,
-        'card_type' => 'MASTERCARD',
-        'masked_card_number' => '400000XXXXXX0002',
+        'card_type' => 'E-WALLET',
+        'wallet_logo' => 'gcash.png'??'',
+        'masked_card_number' => '••••',
         'merchant' => [
             'name' => 'Xendivel LLC',
             'address' => '152 Maple Avenue Greenfield, New Liberty, Arcadia USA 54331',
@@ -126,9 +127,10 @@ Route::get('/invoice/generate', function () {
         'tax_rate' => .12,
         'tax_id' => '123-456-789',
         'footer_note' => 'Thank you for your recent purchase with us! We are thrilled to have the opportunity to serve you and hope that your new purchase brings you great satisfaction.',
+        'footer_note_right' => 'Transaction via Payment Gateway',
     ];
 
-    //return view('invoice.template', compact('invoice_data'));
+    return view('invoice.template', compact('invoice_data'));
 
     $filename = 'invoice-' . $invoice_data['invoice_number'] . '.pdf';
     $savePath = storage_path('app/invoices/' . $filename);
