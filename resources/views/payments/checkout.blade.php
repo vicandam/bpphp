@@ -331,7 +331,7 @@
             )
 
             var cvn = Xendit.card.validateCvn(form.querySelector("#card-cvn").value)
-            var amount_to_pay = document.getElementById("amount-to-pay").value
+            var amount_to_pay = parseFloat(ticketPrice);
 
             // Card CVN/CVV data is optional when creating card token.
             // But it is highly recommended to include it.
@@ -370,7 +370,7 @@
             Xendit.card.createToken(
                 {
                     // Card details and the amount to pay.
-                    amount: document.getElementById('amount-to-pay').value,
+                    amount: parseFloat(ticketPrice),
                     card_number: form.querySelector('#card-number').value,
                     card_exp_month: form.querySelector('#card-exp-month').value,
                     card_exp_year: form.querySelector('#card-exp-year').value,
@@ -435,7 +435,7 @@
 
             // Perform authentication of the card token. (Single use or multi-use tokens)
             Xendit.card.createAuthentication({
-                amount: document.getElementById('amount-to-pay').value,
+                amount: parseFloat(ticketPrice),
                 token_id: card_token,
                 // token_id: '65716539689dc6001715bd1f', // Test: Multi-use token
             }, authenticationHandler)
@@ -516,7 +516,7 @@
             console.log('card_holder_frist_name: ', cardHolderFirstName)
 
             axios.post('/pay-with-card', {
-                amount: ticketPrice,
+                amount: parseFloat(ticketPrice),
                 token_id: card_token,
                 authentication_id: auth_id,
                 external_id: externalId,
