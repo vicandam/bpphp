@@ -23,7 +23,20 @@ class TicketController extends Controller
     public function __construct(QrCodeGeneratorService $qrCodeGeneratorService)
     {
         $this->middleware('auth')->except(['callback', 'scanRedeem']); // 'callback' and 'scanRedeem' must be public for Xendit/scanning to access them.
+
+        // Apply admin middleware to the scanner functionality
+        $this->middleware('admin')->only(['scan', 'redeem']);
+
         $this->qrCodeGeneratorService = $qrCodeGeneratorService;
+    }
+
+    /**
+     * Display the QR code scanner view for admins.
+     * This view will use the device's camera to scan QR codes.
+     */
+    public function scan()
+    {
+        return view('tickets.scan');
     }
 
     /**

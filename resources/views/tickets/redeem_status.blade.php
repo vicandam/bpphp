@@ -1,3 +1,4 @@
+<!-- resources/views/tickets/redeem_status.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,6 +51,8 @@
     @if ($status == 'error')
         <p class="text-muted mt-3">Please try again or contact event staff for assistance.</p>
     @endif
+
+    <a href="{{ route('ticket.scan') }}" class="btn btn-primary mt-4">Scan Again</a>
 </div>
 </body>
 </html>

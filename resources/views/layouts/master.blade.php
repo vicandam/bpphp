@@ -123,6 +123,14 @@
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Admin pages</h6>
             </li>
             <li class="nav-item">
+                <a class="nav-link text-white {{ request()->routeIs('ticket.scan') ? 'active bg-gradient-primary' : '' }}" href="{{ route('ticket.scan') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">qr_code_scanner</i>
+                    </div>
+                    <span class="nav-link-text ms-1">Ticket Scanner</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link {{ is_active_route('membership-types.*') }}" href="{{ route('membership-types.index') }}">
                     <i class="material-symbols-rounded opacity-5">badge</i>
                     <span class="nav-link-text ms-1">Membership Types</span>

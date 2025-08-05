@@ -222,6 +222,8 @@ Route::middleware('auth')->group(function () {
 // You need to define the 'admin' middleware in app/Http/Kernel.php
 // and implement its logic (e.g., checking if Auth::user()->is_admin is true)
 Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/tickets/scan', [TicketController::class, 'scan'])->name('ticket.scan');
+
     // Membership Types
     Route::resource('membership-types', MembershipTypeController::class);
 
