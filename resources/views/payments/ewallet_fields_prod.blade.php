@@ -1,4 +1,4 @@
-<div class="mb-2 col-span-6">
+<div id="ewallet-fields" class="mb-2 col-span-6 hidden mt-5">
     <input
         type="text"
         id="first-name-wallet"

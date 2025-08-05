@@ -170,11 +170,6 @@
                     <span>{{ $invoice_data['masked_card_number'] }}</span>
                 @endif
             </p>
-            @if ($invoice_data['card_type'] === 'E-WALLET')
-                <p style="margin-top: -20px">
-                    <img src="{{ public_path('images/payments') . '/' . $invoice_data['wallet_logo'] }}" height="50" alt="{{$invoice_data['wallet_logo']}}">
-                </p>
-            @endif
         </div>
     </div>
 
@@ -186,6 +181,11 @@
 
     @if(!empty($invoice_data['footer_note_right']))
         <div class="footer-right">
+            @if ($invoice_data['card_type'] === 'E-WALLET')
+                <p style="margin-bottom: -10px">
+                    <img src="{{ public_path('images/payments') . '/' . $invoice_data['wallet_logo'] }}" height="40" alt="{{$invoice_data['wallet_logo']}}">
+                </p>
+            @endif
             {!! nl2br(e($invoice_data['footer_note_right'])) !!}<br>
             <strong>Tax ID/VAT Number:</strong> {{ $invoice_data['tax_id'] }}
         </div>

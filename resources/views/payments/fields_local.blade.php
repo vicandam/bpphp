@@ -1,8 +1,5 @@
-<div class="p-8 pb-0 flex">
-    <input id="amount-to-pay" placeholder="Amount to pay" value="2000" type="number" class="rounded-md border border-gray-300 mb-2 w-full">
-</div>
 
-<div id="card-panel" class="flex flex-col rounded-bl-md rounded-br-md bg-white p-8 pt-0 shadow-md font-medium">
+<div id="card-panel" class="flex flex-col rounded-bl-md rounded-br-md bg-white p-8 pt-5 shadow-md font-medium">
     {{-- Cardholder name fields --}}
     @php
         $faker = fake();

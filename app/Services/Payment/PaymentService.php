@@ -113,7 +113,7 @@ class PaymentService
                 $wallet_logo = 'grabpay.png';
                 break;
             case 'PH_PAYMAYA':
-                $wallet_logo = 'maya.png';
+                $wallet_logo = 'paymaya.png';
                 break;
             case 'PH_SHOPEEPAY':
                 $wallet_logo = 'shopeepay.png';

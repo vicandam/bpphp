@@ -104,7 +104,7 @@ Route::get('/invoice/generate', function () {
     $invoice_data = [
         'invoice_number' => 1000023,
         'card_type' => 'E-WALLET',
-        'wallet_logo' => 'gcash.png'??'',
+        'wallet_logo' => 'grabpay.png'??'',
         'masked_card_number' => '••••',
         'merchant' => [
             'name' => 'Xendivel LLC',
