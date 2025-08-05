@@ -26,83 +26,154 @@
     </div>
 @endsection
 @push('scripts')
-    <script type="module">
-        console.log('testing');
-        import {
-            BrowserQRCodeReader,
-            BrowserCodeReader
-        } from 'https://cdn.jsdelivr.net/npm/@zxing/browser@0.0.9/+esm';
+{{--    <script type="module">--}}
+{{--        import {--}}
+{{--            BrowserQRCodeReader,--}}
+{{--            BrowserCodeReader--}}
+{{--        } from 'https://cdn.jsdelivr.net/npm/@zxing/browser@0.0.9/+esm';--}}
 
-        document.addEventListener('DOMContentLoaded', async function () {
-            const qrReaderResultsDiv = document.getElementById('qr-reader-results');
-            const videoElement = document.getElementById('scanner-video');
-            const codeReader = new BrowserQRCodeReader();
+{{--        document.addEventListener('DOMContentLoaded', async function () {--}}
+{{--            const qrReaderResultsDiv = document.getElementById('qr-reader-results');--}}
+{{--            const videoElement = document.getElementById('scanner-video');--}}
+{{--            const codeReader = new BrowserQRCodeReader();--}}
 
-            // Get back camera if available
-            async function getBackCamera(devices) {
-                const backCamera = devices.find(device =>
-                    device.label.toLowerCase().includes('back') ||
-                    device.label.toLowerCase().includes('rear')
-                );
-                return backCamera ? backCamera.deviceId : devices[0].deviceId;
-            }
+{{--            // Get back camera if available--}}
+{{--            async function getBackCamera(devices) {--}}
+{{--                const backCamera = devices.find(device =>--}}
+{{--                    device.label.toLowerCase().includes('back') ||--}}
+{{--                    device.label.toLowerCase().includes('rear')--}}
+{{--                );--}}
+{{--                return backCamera ? backCamera.deviceId : devices[0].deviceId;--}}
+{{--            }--}}
 
-            function onScanSuccess(decodedText) {
-                qrReaderResultsDiv.innerHTML = '<div class="alert alert-info">Processing ticket...</div>';
-                codeReader.reset();
+{{--            function onScanSuccess(decodedText) {--}}
+{{--                qrReaderResultsDiv.innerHTML = '<div class="alert alert-info">Processing ticket...</div>';--}}
+{{--                codeReader.reset();--}}
 
-                fetch(decodedText)
-                    .then(response => {
-                        window.location.href = response.url;
-                    })
-                    .catch(error => {
-                        console.error('Error during redemption fetch:', error);
-                        qrReaderResultsDiv.innerHTML =
-                            `<div class="alert alert-danger">Error: Could not connect to the server.</div>`;
-                    });
-            }
+{{--                fetch(decodedText)--}}
+{{--                    .then(response => {--}}
+{{--                        window.location.href = response.url;--}}
+{{--                    })--}}
+{{--                    .catch(error => {--}}
+{{--                        console.error('Error during redemption fetch:', error);--}}
+{{--                        qrReaderResultsDiv.innerHTML =--}}
+{{--                            `<div class="alert alert-danger">Error: Could not connect to the server.</div>`;--}}
+{{--                    });--}}
+{{--            }--}}
 
-            try {
-                const videoInputDevices = await BrowserCodeReader.listVideoInputDevices();
+{{--            try {--}}
+{{--                const videoInputDevices = await BrowserCodeReader.listVideoInputDevices();--}}
 
-                if (videoInputDevices.length) {
-                    const cameraId = await getBackCamera(videoInputDevices);
+{{--                if (videoInputDevices.length) {--}}
+{{--                    const cameraId = await getBackCamera(videoInputDevices);--}}
 
-                    codeReader.decodeFromVideoDevice(cameraId, videoElement, (result, err) => {
-                        if (result) {
-                            onScanSuccess(result.getText());
-                        }
-                    });
-                } else {
+{{--                    codeReader.decodeFromVideoDevice(cameraId, videoElement, (result, err) => {--}}
+{{--                        if (result) {--}}
+{{--                            onScanSuccess(result.getText());--}}
+{{--                        }--}}
+{{--                    });--}}
+{{--                } else {--}}
+{{--                    qrReaderResultsDiv.innerHTML =--}}
+{{--                        `<div class="alert alert-warning">No camera found on this device.</div>`;--}}
+{{--                }--}}
+{{--            } catch (err) {--}}
+{{--                console.error('Error getting camera access:', err);--}}
+
+{{--                if (err.name === 'NotAllowedError') {--}}
+{{--                    qrReaderResultsDiv.innerHTML =--}}
+{{--                        `<div class="alert alert-danger">--}}
+{{--                        <strong>Camera access denied!</strong><br>--}}
+{{--                        Please allow camera access in your browser settings to use the scanner.--}}
+{{--                    </div>`;--}}
+{{--                } else if (err.name === 'NotFoundError') {--}}
+{{--                    qrReaderResultsDiv.innerHTML =--}}
+{{--                        `<div class="alert alert-warning">No camera found on this device.</div>`;--}}
+{{--                } else if (window.location.protocol === 'http:' && (err.name === 'NotAllowedError' || err.name === 'SecurityError')) {--}}
+{{--                    qrReaderResultsDiv.innerHTML =--}}
+{{--                        `<div class="alert alert-danger">--}}
+{{--                        <strong>Camera access blocked!</strong><br>--}}
+{{--                        Your browser is blocking camera access because you are using an insecure connection (http).--}}
+{{--                        Please access the app via <strong>https://</strong> or on <strong>localhost</strong> during development.--}}
+{{--                    </div>`;--}}
+{{--                } else {--}}
+{{--                    qrReaderResultsDiv.innerHTML =--}}
+{{--                        `<div class="alert alert-danger">An unexpected error occurred: ${err.message}.</div>`;--}}
+{{--                }--}}
+{{--            }--}}
+{{--        });--}}
+{{--    </script>--}}
+<script type="module">
+    import {
+        BrowserQRCodeReader,
+        BrowserCodeReader
+    } from 'https://cdn.jsdelivr.net/npm/@zxing/browser@0.0.9/+esm';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const qrReaderResultsDiv = document.getElementById('qr-reader-results');
+        const videoElement = document.getElementById('scanner-video');
+        const codeReader = new BrowserQRCodeReader();
+
+        async function getBackCamera(devices) {
+            const backCamera = devices.find(device =>
+                device.label.toLowerCase().includes('back') ||
+                device.label.toLowerCase().includes('rear')
+            );
+            return backCamera ? backCamera.deviceId : devices[0].deviceId;
+        }
+
+        function onScanSuccess(decodedText) {
+            qrReaderResultsDiv.innerHTML = '<div class="alert alert-info">Processing ticket...</div>';
+            codeReader.reset(); // Stop scanner after success
+            fetch(decodedText)
+                .then(response => {
+                    window.location.href = response.url;
+                })
+                .catch(error => {
+                    console.error('Error during redemption fetch:', error);
                     qrReaderResultsDiv.innerHTML =
-                        `<div class="alert alert-warning">No camera found on this device.</div>`;
+                        `<div class="alert alert-danger">Error: Could not connect to the server.</div>`;
+                });
+        }
+
+        try {
+            const devices = await BrowserCodeReader.listVideoInputDevices();
+            console.log('devices: ', devices);
+
+            if (!devices.length) {
+                qrReaderResultsDiv.innerHTML =
+                    `<div class="alert alert-warning">No camera devices found.</div>`;
+                return;
+            }
+
+            const cameraId = await getBackCamera(devices);
+
+            console.log('cameraId: ', cameraId);
+            codeReader.decodeFromVideoDevice(cameraId, videoElement, (result, error) => {
+                if (result) {
+                    onScanSuccess(result.getText());
                 }
-            } catch (err) {
-                console.error('Error getting camera access:', err);
+                // Don't log error every frame — too noisy
+            });
 
-                if (err.name === 'NotAllowedError') {
-                    qrReaderResultsDiv.innerHTML =
-                        `<div class="alert alert-danger">
-                        <strong>Camera access denied!</strong><br>
-                        Please allow camera access in your browser settings to use the scanner.
+        } catch (err) {
+            console.error('Camera setup error:', err);
+
+            if (err.name === 'NotAllowedError') {
+                qrReaderResultsDiv.innerHTML =
+                    `<div class="alert alert-danger">
+                        <strong>Camera access denied!</strong> Please enable it in your browser settings.
                     </div>`;
-                } else if (err.name === 'NotFoundError') {
-                    qrReaderResultsDiv.innerHTML =
-                        `<div class="alert alert-warning">No camera found on this device.</div>`;
-                } else if (window.location.protocol === 'http:' && (err.name === 'NotAllowedError' || err.name === 'SecurityError')) {
-                    qrReaderResultsDiv.innerHTML =
-                        `<div class="alert alert-danger">
-                        <strong>Camera access blocked!</strong><br>
-                        Your browser is blocking camera access because you are using an insecure connection (http).
-                        Please access the app via <strong>https://</strong> or on <strong>localhost</strong> during development.
+            } else if (window.location.protocol === 'http:') {
+                qrReaderResultsDiv.innerHTML =
+                    `<div class="alert alert-danger">
+                        Camera access requires HTTPS or localhost. Please switch to a secure connection.
                     </div>`;
-                } else {
-                    qrReaderResultsDiv.innerHTML =
-                        `<div class="alert alert-danger">An unexpected error occurred: ${err.message}.</div>`;
-                }
+            } else {
+                qrReaderResultsDiv.innerHTML =
+                    `<div class="alert alert-danger">Error: ${err.message}</div>`;
             }
-        });
-    </script>
-
+        }
+    });
+</script>
 
 @endpush
