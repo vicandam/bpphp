@@ -111,5 +111,5 @@ return [
     |
     */
 
-    'webhook_verification_token' => env('XENDIT_WEBHOOK_VERIFICATION_TOKEN', 'Ezi0FVZnsMN0nXBnD4HIq5dIEH68OPHmXVM8cW6hkMsbV3X0'),
+    'webhook_verification_token' => env('XENDIT_WEBHOOK_VERIFICATION_TOKEN', ''),
 ];
