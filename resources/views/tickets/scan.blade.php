@@ -30,9 +30,89 @@
 @endsection
 @push('scripts')
     {{-- Include the qr-scanner library via CDN --}}
-    <script type="module">
-        console.log('test');
+{{--    <script type="module">--}}
+{{--        console.log('test');--}}
 
+{{--        import QrScanner from "https://cdn.jsdelivr.net/npm/qr-scanner@1.4.2/qr-scanner.min.js";--}}
+
+{{--        document.addEventListener('DOMContentLoaded', async function () {--}}
+{{--            const video = document.getElementById('qr-video');--}}
+{{--            const qrReaderResultsDiv = document.getElementById('qr-reader-results');--}}
+{{--            let scanner;--}}
+
+{{--            // Function to handle the scanned result--}}
+{{--            function onScanSuccess(decodedText) {--}}
+{{--                scanner.stop();--}}
+{{--                qrReaderResultsDiv.innerHTML = '<div class="alert alert-info">Processing ticket...</div>';--}}
+
+{{--                // Fetch the decoded URL to trigger the redemption process--}}
+{{--                fetch(decodedText)--}}
+{{--                    .then(response => {--}}
+{{--                        window.location.href = response.url;--}}
+{{--                    })--}}
+{{--                    .catch(error => {--}}
+{{--                        console.error('Error during redemption fetch:', error);--}}
+{{--                        qrReaderResultsDiv.innerHTML =--}}
+{{--                            `<div class="alert alert-danger">Error: Could not connect to the server.</div>`;--}}
+{{--                    });--}}
+{{--            }--}}
+
+{{--            // Function to handle camera access errors--}}
+{{--            function handleCameraError(err) {--}}
+{{--                console.error('Camera access error:', err);--}}
+
+{{--                if (err instanceof DOMException && err.name === 'NotAllowedError') {--}}
+{{--                    // The user denied camera access--}}
+{{--                    qrReaderResultsDiv.innerHTML =--}}
+{{--                        `<div class="alert alert-danger">--}}
+{{--                        <strong>Camera access denied!</strong><br>--}}
+{{--                        Please allow camera access in your browser settings to use the scanner.--}}
+{{--                    </div>`;--}}
+{{--                } else if (err instanceof DOMException && err.name === 'NotFoundError') {--}}
+{{--                    // No camera found on the device--}}
+{{--                    qrReaderResultsDiv.innerHTML =--}}
+{{--                        `<div class="alert alert-warning">No camera found on this device.</div>`;--}}
+{{--                } else if (window.location.protocol === 'http:') {--}}
+{{--                    // The specific error for insecure context--}}
+{{--                    qrReaderResultsDiv.innerHTML =--}}
+{{--                        `<div class="alert alert-danger">--}}
+{{--                        <strong>Camera access blocked!</strong><br>--}}
+{{--                        Your browser is blocking camera access because you are using an insecure connection (http).--}}
+{{--                        Please access the app via <strong>https://</strong> or on <strong>localhost</strong> during development.--}}
+{{--                    </div>`;--}}
+{{--                } else {--}}
+{{--                    // A general error occurred--}}
+{{--                    qrReaderResultsDiv.innerHTML =--}}
+{{--                        `<div class="alert alert-danger">An unexpected error occurred: ${err.message}.</div>`;--}}
+{{--                }--}}
+{{--            }--}}
+
+{{--            try {--}}
+{{--                // Check for available cameras and prefer the back camera--}}
+{{--                const cameras = await QrScanner.listCameras(true);--}}
+{{--                const backCamera = cameras.find(camera => camera.label.toLowerCase().includes('back') || camera.label.toLowerCase().includes('rear'));--}}
+{{--                const cameraId = backCamera ? backCamera.id : (cameras.length > 0 ? cameras[0].id : null);--}}
+
+{{--                if (cameraId) {--}}
+{{--                    // Initialize and start the scanner with the selected camera--}}
+{{--                    scanner = new QrScanner(video, onScanSuccess, {--}}
+{{--                        onDecodeError: (err) => { /* console.warn(err) */ },--}}
+{{--                        highlightScanRegion: true,--}}
+{{--                        highlightCodeOutline: true,--}}
+{{--                        preferredCamera: cameraId,--}}
+{{--                    });--}}
+
+{{--                    await scanner.start();--}}
+{{--                } else {--}}
+{{--                    qrReaderResultsDiv.innerHTML =--}}
+{{--                        `<div class="alert alert-warning">No camera found on this device.</div>`;--}}
+{{--                }--}}
+{{--            } catch (err) {--}}
+{{--                handleCameraError(err);--}}
+{{--            }--}}
+{{--        });--}}
+{{--    </script>--}}
+    <script type="module">
         import QrScanner from "https://cdn.jsdelivr.net/npm/qr-scanner@1.4.2/qr-scanner.min.js";
 
         document.addEventListener('DOMContentLoaded', async function () {
@@ -40,12 +120,10 @@
             const qrReaderResultsDiv = document.getElementById('qr-reader-results');
             let scanner;
 
-            // Function to handle the scanned result
             function onScanSuccess(decodedText) {
                 scanner.stop();
                 qrReaderResultsDiv.innerHTML = '<div class="alert alert-info">Processing ticket...</div>';
 
-                // Fetch the decoded URL to trigger the redemption process
                 fetch(decodedText)
                     .then(response => {
                         window.location.href = response.url;
@@ -57,59 +135,57 @@
                     });
             }
 
-            // Function to handle camera access errors
             function handleCameraError(err) {
                 console.error('Camera access error:', err);
 
                 if (err instanceof DOMException && err.name === 'NotAllowedError') {
-                    // The user denied camera access
                     qrReaderResultsDiv.innerHTML =
                         `<div class="alert alert-danger">
-                        <strong>Camera access denied!</strong><br>
-                        Please allow camera access in your browser settings to use the scanner.
-                    </div>`;
+                    <strong>Camera access denied!</strong><br>
+                    Please allow camera access in your browser settings to use the scanner.
+                </div>`;
                 } else if (err instanceof DOMException && err.name === 'NotFoundError') {
-                    // No camera found on the device
                     qrReaderResultsDiv.innerHTML =
                         `<div class="alert alert-warning">No camera found on this device.</div>`;
                 } else if (window.location.protocol === 'http:') {
-                    // The specific error for insecure context
                     qrReaderResultsDiv.innerHTML =
                         `<div class="alert alert-danger">
-                        <strong>Camera access blocked!</strong><br>
-                        Your browser is blocking camera access because you are using an insecure connection (http).
-                        Please access the app via <strong>https://</strong> or on <strong>localhost</strong> during development.
-                    </div>`;
+                    <strong>Camera access blocked!</strong><br>
+                    Please access the app via <strong>https://</strong> or <strong>localhost</strong> during development.
+                </div>`;
                 } else {
-                    // A general error occurred
                     qrReaderResultsDiv.innerHTML =
-                        `<div class="alert alert-danger">An unexpected error occurred: ${err.message}.</div>`;
+                        `<div class="alert alert-danger">Unexpected error: ${err.message}.</div>`;
                 }
             }
 
             try {
-                // Check for available cameras and prefer the back camera
                 const cameras = await QrScanner.listCameras(true);
                 const backCamera = cameras.find(camera => camera.label.toLowerCase().includes('back') || camera.label.toLowerCase().includes('rear'));
-                const cameraId = backCamera ? backCamera.id : (cameras.length > 0 ? cameras[0].id : null);
+                const selectedCameraId = backCamera ? backCamera.id : (cameras[0]?.id || null);
 
-                if (cameraId) {
-                    // Initialize and start the scanner with the selected camera
-                    scanner = new QrScanner(video, onScanSuccess, {
-                        onDecodeError: (err) => { /* console.warn(err) */ },
+                if (selectedCameraId) {
+                    scanner = new QrScanner(video, result => {
+                        console.log("Scanned result:", result);
+                        onScanSuccess(result);
+                    }, {
+                        onDecodeError: err => {
+                            // console.warn('Decode error:', err);
+                        },
                         highlightScanRegion: true,
                         highlightCodeOutline: true,
-                        preferredCamera: cameraId,
                     });
 
+                    await scanner.setCamera(selectedCameraId);
                     await scanner.start();
                 } else {
                     qrReaderResultsDiv.innerHTML =
-                        `<div class="alert alert-warning">No camera found on this device.</div>`;
+                        `<div class="alert alert-warning">No usable camera found.</div>`;
                 }
             } catch (err) {
                 handleCameraError(err);
             }
         });
     </script>
+
 @endpush
