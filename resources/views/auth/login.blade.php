@@ -120,23 +120,20 @@
                   document.write(new Date().getFullYear())
                 </script>,
                   Copyright <i class="fa fa-heart" aria-hidden="true"></i> by
-                <a href="https://www.creative-tim.com" class="font-weight-bold text-white" target="_blank">BPPHP.FUN</a>
+                <a href="https://bpphp.fun/" class="font-weight-bold text-white" target="_blank">BPPHP</a>
                 Movement
               </div>
             </div>
             <div class="col-12 col-md-6">
               <ul class="nav nav-footer justify-content-center justify-content-lg-end">
                 <li class="nav-item">
-                  <a href="" class="nav-link text-white" target="_blank">Big Perspective Productions</a>
+                  <a href="https://bpphp.fun/" class="nav-link text-white" target="_blank">BPPHP.fun</a>
                 </li>
                 <li class="nav-item">
-                  <a href="" class="nav-link text-white" target="_blank">About Us</a>
+                  <a href="https://bpphp.fun/" class="nav-link text-white" target="_blank">About Us</a>
                 </li>
                 <li class="nav-item">
-                  <a href="" class="nav-link text-white" target="_blank">Blog</a>
-                </li>
-                <li class="nav-item">
-                  <a href="" class="nav-link pe-0 text-white" target="_blank">License</a>
+                  <a href="https://bpphp.fun/" class="nav-link text-white" target="_blank">Blog</a>
                 </li>
               </ul>
             </div>
