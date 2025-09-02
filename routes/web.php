@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\BusinessPartnerController;
 use App\Http\Controllers\CustomPasswordController;
@@ -223,6 +224,10 @@ Route::middleware('auth')->group(function () {
 // and implement its logic (e.g., checking if Auth::user()->is_admin is true)
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/tickets/scan', [TicketController::class, 'scan'])->name('ticket.scan');
+
+
+    Route::get('/admin/users', [AdminUserController::class, 'index'])->name('index.users');
+    Route::get('/admin/users/{user}', [AdminUserController::class, 'show'])->name('show.users');
 
     // Membership Types
     Route::resource('membership-types', MembershipTypeController::class);

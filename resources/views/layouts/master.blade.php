@@ -172,6 +172,12 @@
                     <span class="nav-link-text ms-1">Manage Donations</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ is_active_route(['index.users', 'show.users']) }}" href="{{ route('index.users') }}">
+                    <i class="material-symbols-rounded opacity-5">supervisor_account</i>
+                    <span class="nav-link-text ms-1">Manage Users</span>
+                </a>
+            </li>
             @endif
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Account pages</h6>

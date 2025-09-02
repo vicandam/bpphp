@@ -180,4 +180,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Payout::class);
     }
+
+    /**
+     * Get the ticket requests made by the user (pending/paid orders).
+     */
+    public function ticketRequests()
+    {
+        return $this->hasMany(TicketRequest::class);
+    }
 }
