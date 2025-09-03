@@ -3,7 +3,7 @@
 
 <p>
 @if ($customMessage === null)
-Thank you for your recent purchase from {{ config('app.name') }}. We have attached your invoice to this email.
+Thank you for your recent purchase from Big Perspective Productions. We have attached your invoice to this email.
 @else
 {{ $customMessage }}
 @endif
@@ -27,6 +27,24 @@ Thank you for your recent purchase from {{ config('app.name') }}. We have attach
 </table>
 @endif
 
+{{-- Referral Code Section --}}
+@if(isset($referral_code))
+<table width="100%" style="text-align: center; margin-top: 30px; background-color: #f9fafb; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+<tr>
+<td>
+<strong style="display: block; margin-bottom: 8px;">🎁 Your Referral Code</strong>
+<p style="font-size: 16px; color: #2d3748; font-weight: bold; margin: 0; text-align: center">
+{{ $referral_code }}
+</p>
+<p style="font-size: 14px; color: #555; margin-top: 8px; text-align: center">
+Share this code with friends and earn exclusive rewards!
+</p>
+</td>
+</tr>
+</table>
+@endif
+<br>
+<br>
 Thanks,<br>
-{{ config('app.name') }}
+Big Perspective Productions
 </x-mail::message>

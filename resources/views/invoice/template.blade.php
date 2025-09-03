@@ -188,7 +188,7 @@
                 </p>
             @endif
             {!! nl2br(e($invoice_data['footer_note_right'])) !!}<br>
-            <strong>Tax ID/VAT Number:</strong> {{ $invoice_data['tax_id'] }}
+{{--            <strong>Tax ID/VAT Number:</strong> {{ $invoice_data['tax_id'] }}--}}
         </div>
     @endif
 </div>

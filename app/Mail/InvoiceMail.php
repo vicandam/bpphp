@@ -43,6 +43,7 @@ class InvoiceMail extends Mailable
                 ->with([
                     'customMessage' => $this->customMessage ?? '',
                     'ticket' => $this->ticket,
+                    'referral_code' => $this->invoiceData['referral_code']
                 ])
                 ->attach($path, [
                     'as' => 'invoice.pdf',

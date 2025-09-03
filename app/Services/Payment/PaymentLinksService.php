@@ -220,6 +220,7 @@ class PaymentLinksService
             'footer_note_right' => 'Transaction via ' . ($charge->descriptor ?? 'Payment Gateway'),
             'approval_code' => $charge->approval_code ?? null,
             'total_amount' => $charge->authorized_amount,
+            'referral_code' => $user->referral_code
         ];
     }
 
