@@ -152,10 +152,11 @@
         <div style="margin-top: 20px; text-align: right;">
             <p>Subtotal: ₱{{ number_format($total_price,2) }}</p>
             @php $tax_amount = $total_price * $invoice_data['tax_rate']; @endphp
-            <p>Tax ({{ $invoice_data['tax_rate']*100 }}%): ₱{{ number_format($tax_amount,2) }}</p>
+{{--            <p>Tax ({{ $invoice_data['tax_rate']*100 }}%): ₱{{ number_format($tax_amount,2) }}</p>--}}
             <div class="total-box">
                 <span style="margin-right: 1rem;">TOTAL</span>
-                <span>₱{{ number_format($total_price + $tax_amount,2) }}</span>
+{{--                <span>₱{{ number_format($total_price + $tax_amount,2) }}</span>--}}
+                <span>₱{{ number_format($total_price,2) }}</span>
             </div>
             <p>
                 {{-- Visa icon --}}
