@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
-class PaymentService
+class PaymentLinksService
 {
     protected QrCodeGeneratorService $qrCodeGeneratorService;
 
@@ -60,14 +60,14 @@ class PaymentService
         return (array)$rawResponse;
     }
 
-    public function finalizeSuccessfulPayment(object $payment): array
+    public function finalizeSuccessfulPayment($payment): array
     {
-        Log::info('oject payment', [$payment]);
+        Log::info('payment', [$payment]);
 
-        $customer_email = $payment->metadata->card_holder_email;
+        $customer_email = $payment->payer_email;
         $userPayload = $this->buildUserPayload(
-            $payment->metadata->card_holder_first_name,
-            $payment->metadata->card_holder_last_name,
+            $payment->on_demand_payload->first_name,
+            $payment->on_demand_payload->last_name,
             $customer_email
         );
 
@@ -76,7 +76,7 @@ class PaymentService
         $generatedPassword = $isNewUser ? $userPayload['plainPassword'] : null;
 
         $event = Event::getActiveCampaignEvent();
-        $ticketPrice = $event->ticket_price;
+        $ticketPrice = $payment->paid_amount;
         $externalId = $payment->external_id ?? $payment->reference_id;
 
         $ticket = $this->createTicket($user, $event, $externalId, $ticketPrice);
@@ -98,41 +98,39 @@ class PaymentService
     }
 
 
-    public function normalizePaymentResponse(object $raw, string $type): object
+    public function normalizePaymentResponse(object $raw): object
     {
-        if ($type === 'card') return $raw;
-
-        $normalized = clone $raw;
-
-
-        switch ($raw->channel_code) {
-            case 'PH_GCASH':
-                $wallet_logo = 'gcash.png';
-                break;
-            case 'PH_GRABPAY':
-                $wallet_logo = 'grabpay.png';
-                break;
-            case 'PH_PAYMAYA':
-                $wallet_logo = 'paymaya.png';
-                break;
-            case 'PH_SHOPEEPAY':
-                $wallet_logo = 'shopeepay.png';
-                break;
-            default:
-                $wallet_logo = null; // or 'default-ewallet.png'
-                break;
+        switch ($raw->payment_channel) {
+            case 'GCASH': $wallet_logo = 'gcash.png'; break;
+            case 'PAYMAYA': $wallet_logo = 'paymaya.png'; break;
+            case 'SHOPEEPAY': $wallet_logo = 'shopeepay.png'; break;
+            case 'BPI_DIRECT_DEBIT':
+            case 'DD_BPI_ONLINE_BANKING': // 👈 new case from your log
+                $wallet_logo = 'bpi.png'; break;
+            case 'RCBC_DIRECT_DEBIT': $wallet_logo = 'rcbc.png'; break;
+            case 'UBP_DIRECT_DEBIT': $wallet_logo = 'ubp.png'; break;
+            case 'CEBUANA': $wallet_logo = 'cebuana.png'; break;
+            case 'LBC': $wallet_logo = 'lbc.png'; break;
+            case 'QRPH': $wallet_logo = 'qrph.png'; break;
+            default: $wallet_logo = null; break;
         }
 
-        // Normalize field names
-        $normalized->card_brand = 'E-WALLET';;
-        $normalized->masked_card_number = '••••';
-        $normalized->authorized_amount = $raw->charge_amount;
-        $normalized->approval_code = $raw->id;
-        $normalized->external_id = $raw->reference_id;
-        $normalized->wallet_logo = $wallet_logo;
+        $raw->card_brand = 'E-WALLET';
+        $raw->masked_card_number = '••••';
+        $raw->authorized_amount = $raw->paid_amount;
+        $raw->approval_code = $raw->id;
+        $raw->wallet_logo = $wallet_logo;
 
+        // Convert nested arrays to objects
+        if (isset($raw->on_demand_payload) && is_array($raw->on_demand_payload)) {
+            $raw->on_demand_payload = (object) $raw->on_demand_payload;
+        }
 
-        return $normalized;
+        if (isset($raw->items) && is_array($raw->items)) {
+            $raw->items = array_map(fn($i) => (object) $i, $raw->items);
+        }
+
+        return $raw;
     }
 
 

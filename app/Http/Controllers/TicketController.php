@@ -287,7 +287,7 @@ class TicketController extends Controller
 
 
             try {
-                $joyPointsEarned = floor($event->ticket_price / 500) * 10;
+                $joyPointsEarned = floor($event->ticket_price / 200) * 1;
                 $qrCodePath = $this->qrCodeGeneratorService->generateForTicket($externalId); // Generate QR code
 
                 $ticket = Ticket::create([

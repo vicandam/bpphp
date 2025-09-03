@@ -25,6 +25,7 @@ use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\XenditController;
+use App\Http\Controllers\XenditWebhookController;
 use Barryvdh\DomPDF\Facade\Pdf;
 use GlennRaya\Xendivel\Xendivel;
 use Illuminate\Http\Request;
@@ -59,7 +60,8 @@ Route::get('/dashboard', function () {
 
 
 // Xendit Webhook route (POST)
-Route::post('/xendit/callback', [TicketController::class, 'callback'])->name('xendit.callback');
+//Route::post('/xendit/callback', [TicketController::class, 'callback'])->name('xendit.callback');
+Route::post('/xendit/callback', [XenditWebhookController::class, 'handlePaymentLinksCallback'])->name('xendit.callback');
 
 Route::any('/invoice', function (Request $request) {
     $invoice_data = [
@@ -82,7 +84,7 @@ Route::any('/invoice', function (Request $request) {
         ],
         'tax_rate' => 0.12,
         'tax_id' => 'VAT-998877',
-        'card_type' => 'VISA', // 👈 ADD THIS
+        'card_type' => 'DIRECT_DEBIT', // 👈 ADD THIS
         'masked_card_number' => $request->input('masked_card_number', '**** **** **** 1234'),
         'footer_note' => 'Daghang salamat sa imong pagsalig sa RiseUp Digital PH!',
     ];

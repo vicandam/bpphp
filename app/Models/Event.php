@@ -46,7 +46,21 @@ class Event extends Model
 
     public static function getActiveCampaignEvent(): ?self
     {
-        return self::where('campaign', 1)->first();
+        $event = self::where('campaign', 1)->first();
+
+        if (!$event) {
+            // Create a default Event instance (not saved to DB)
+            $event = new self([
+                'name' => 'Alive @ 50',
+                'description' => "Event Details:\nDate/Time: November 29, 2025 (Saturday) / 6:00 PM\nVenue: 11th Floor The Exchange Square Exchange Road Corner San Miguel Avenue Ortigas Center Pasig City",
+                'event_date' => '2025-11-29',
+                'event_time' => '18:00:00',
+                'venue' => '11th Floor The Exchange Square Exchange Road Corner San Miguel Avenue Ortigas Center Pasig City',
+                'ticket_price' => 1500.00,
+            ]);
+        }
+
+        return $event;
     }
 
     /**

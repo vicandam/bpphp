@@ -6,6 +6,7 @@ use App\Models\PendingOrder;
 use App\Models\User;
 use App\Models\Event; // Assuming event details are linked somehow
 use App\Models\Ticket;
+use App\Services\Payment\PaymentLinksService;
 use App\Services\QrCodeGeneratorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,11 +21,36 @@ use Xendit\Invoice\InvoiceApi;
 class XenditWebhookController extends Controller
 {
     protected $qrCodeGeneratorService;
+    protected PaymentLinksService $paymentService;
 
-    public function __construct(QrCodeGeneratorService $qrCodeGeneratorService)
+    public function __construct(QrCodeGeneratorService $qrCodeGeneratorService, PaymentLinksService $paymentService)
     {
-        $this->middleware('auth')->except(['handlePaymentLinkCallback']); // 'callback' and 'scanRedeem' must be public for Xendit/scanning to access them.
+        $this->middleware('auth')->except(['handlePaymentLinksCallback']); // 'callback' and 'scanRedeem' must be public for Xendit/scanning to access them.
         $this->qrCodeGeneratorService = $qrCodeGeneratorService;
+        $this->paymentService = $paymentService;
+    }
+
+    public function handlePaymentLinksCallback(Request $request)
+    {
+        $data = $request->all();
+
+        logger('xendit callback ', $data);
+
+        if (($data['status'] ?? null) === 'PAID') {
+
+            logger('status', [$data['status']]);
+
+            try {
+
+                $payment = $this->paymentService->normalizePaymentResponse((object) $data);
+
+                $result = $this->paymentService->finalizeSuccessfulPayment($payment);
+
+                logger('Finalization success', $result);
+            } catch (\Throwable $e) {
+                logger('Error in finalizeSuccessfulPayment:', [$e->getMessage()]);
+            }
+        }
     }
 
     /**
@@ -34,7 +60,7 @@ class XenditWebhookController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function handlePaymentLinkCallback(Request $request)
+    public function handlePaymentLinkCallbackOld(Request $request)
     {
         Log::info('Xendit Webhook received...', $request->all());
 
