@@ -64,14 +64,31 @@ class PaymentLinksService
     {
         Log::info('payment', [$payment]);
 
-        $customer_email = $payment->payer_email;
-        $userPayload = $this->buildUserPayload(
-            $payment->on_demand_payload->first_name,
-            $payment->on_demand_payload->last_name,
-            $customer_email
-        );
+        $firstName = $payment->on_demand_payload->first_name ?? 'Guest';
+        $lastName  = $payment->on_demand_payload->last_name ?? 'User';
 
-        $user = User::firstOrCreate(['email' => $customer_email], $userPayload);
+        // Step 1: Check if Xendit provided an email
+        $customer_email = $payment->payer_email ?? ($payment->on_demand_payload->email ?? null);
+
+        if ($customer_email) {
+            // Normal flow
+            $userPayload = $this->buildUserPayload($firstName, $lastName, $customer_email);
+            $user = User::firstOrCreate(['email' => $customer_email], $userPayload);
+        } else {
+            // Step 2: Search user by first_name + last_name (case-insensitive)
+            $user = User::whereRaw('LOWER(first_name) = ?', [strtolower($firstName)])
+                ->whereRaw('LOWER(last_name) = ?', [strtolower($lastName)])
+                ->first();
+
+            if (!$user) {
+                // Generate unique placeholder email
+                $customer_email = strtolower($firstName . '.' . $lastName) . '.' . uniqid() . '@noemail.local';
+
+                $userPayload = $this->buildUserPayload($firstName, $lastName, $customer_email);
+                $user = User::create($userPayload);
+            }
+        }
+
         $isNewUser = $user->wasRecentlyCreated;
         $generatedPassword = $isNewUser ? $userPayload['plainPassword'] : null;
 
