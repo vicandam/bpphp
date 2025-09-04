@@ -18,7 +18,9 @@ class ReferralController extends Controller
     public function index()
     {
         $user = Auth::user();
+
         $referrals = $user->madeReferrals()->with('referredMember')->get();
+
         return view('referrals.index', compact('referrals', 'user'));
     }
 

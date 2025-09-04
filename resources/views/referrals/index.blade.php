@@ -47,11 +47,14 @@
                                         <td class="align-middle text-center text-sm">
                                             <span class="text-secondary text-xs font-weight-bold">{{ $referral->created_at->format('M d, Y') }}</span>
                                         </td>
-                                        <td class="align-middle">
-                                            <a href="{{ route('users.show', $referral->referredMember) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="View Referred Member">
-                                                View Profile
-                                            </a>
-                                        </td>
+                                        @if($user->is_admin)
+                                            <td class="align-middle">
+                                                <a href="{{ route('users.show', $referral->referredMember) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="View Referred Member">
+                                                    View Profile
+                                                </a>
+                                            </td>
+                                        @endif
+
                                     </tr>
                                 @endforeach
                                 </tbody>

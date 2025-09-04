@@ -2,6 +2,7 @@
 
 namespace App\Services\Ticket;
 
+use App\Models\Referral;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Ticket;
@@ -84,6 +85,13 @@ class TicketService
         $bonus = 100.00;
 
         $referrer->increment('bpp_wallet_balance', $bonus);
+
+        $referral = Referral::where('referrer_id', $referrer->id)
+            ->where('referred_member_id', $user->id)
+            ->first();
+
+        $referral->amount_earned = $bonus;
+        $referral->save();
 
         Payout::create([
             'user_id'          => $referrer->id,

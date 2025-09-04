@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Referral;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -59,6 +60,14 @@ class GhlWebhookController extends Controller
             $user->birthday = $request->input('date_of_birth');
 
             $user->save();
+
+            if (!empty($user->referred_by_member_id)) {
+                Referral::create([
+                    'referrer_id' => $referrer->id,
+                    'referred_member_id' => $user->id,
+                    'amount_earned' => 0.00
+                ]);
+            }
 
             Log::info('User record created/updated successfully.', [
                 'name'  => $user->name,
