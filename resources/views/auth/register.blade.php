@@ -56,31 +56,51 @@
                             <div class="card-body">
                                 <form method="POST" action="{{ route('register') }}">
                                     @csrf
-                                    <div class="input-group input-group-outline mb-3">
-                                        <label class="form-label">Name</label>
-                                        <x-text-input id="name" class="block mt-1 w-full form-control" type="text" name="name" :value="old('name')" required autofocus />
-                                    </div>
-                                    <div class="input-group input-group-outline mb-3">
-                                        <label class="form-label">Email</label>
-                                        <input id="email" class="form-control" type="email" name="email" value="{{old('email')}}" required autofocus/>
-
-                                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                                    <div class="form-group">
+                                        <div class="input-group input-group-outline is-filled mb-3">
+                                            <label class="form-label">Name</label>
+                                            <x-text-input id="name" class="block mt-1 w-full form-control" type="text" name="name" :value="old('name')" required autofocus />
+                                        </div>
                                     </div>
 
-                                    <div class="input-group input-group-outline mb-4">
-                                        <label class="form-label">Password</label>
-                                        <input type="password" class="form-control" name="password" required>
-                                    </div>
-                                    <div>
-                                        <x-input-error :messages="$errors->get('password')" class="mt-2 text-danger" />
+
+                                    <div class="form-group">
+                                        <div class="input-group input-group-outline is-filled mb-3">
+                                            <label class="form-label">Email</label>
+                                            <x-text-input id="email" class="form-control block mt-1 w-full" type="email" name="email" value="{{old('email')}}" required autofocus/>
+
+                                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                                        </div>
                                     </div>
 
-                                    <div class="input-group input-group-outline mb-3">
-                                        <label class="form-label">Confirm Password</label>
-                                        <input type="password" name="password_confirmation" required autocomplete="new-password" class="form-control">
+
+                                    <div class="form-group">
+                                        <div class="input-group input-group-outline is-filled mb-4">
+                                            <label class="form-label">Password</label>
+                                            <x-text-input type="password" class="form-control block mt-1 w-full" name="password" required />
+                                        </div>
+                                        <div>
+                                            <x-input-error :messages="$errors->get('password')" class="mt-2 text-danger" />
+                                        </div>
                                     </div>
-                                    <div>
-                                        <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2 text-danger" />
+
+
+                                    <div class="form-group">
+                                        <div class="input-group input-group-outline is-filled mb-3">
+                                            <label class="form-label">Confirm Password</label>
+                                            <x-text-input type="password" name="password_confirmation" required autocomplete="new-password" class="form-control block mt-1 w-full" />
+                                        </div>
+
+                                        <div>
+                                            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2 text-danger" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-group input-group-outline is-filled mb-3">
+                                            <label class="form-label">Referral Code</label>
+                                            <x-text-input id="referral_code" class="block mt-1 w-full form-control" type="text" name="referral_code" :value="old('referral_code')" autofocus />
+                                        </div>
                                     </div>
 
                                     <div class="form-check form-check-info text-start ps-0">

@@ -6,9 +6,11 @@ use App\Mail\InvoiceMail;
 use App\Mail\WelcomeNewUserMail;
 use App\Models\Event;
 use App\Models\MembershipType;
+use App\Models\Payout;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Services\QrCodeGeneratorService;
+use App\Services\Ticket\TicketService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use GlennRaya\Xendivel\Xendivel;
 use Illuminate\Http\Request;
@@ -21,11 +23,11 @@ use Illuminate\Support\Str;
 
 class PaymentLinksService
 {
-    protected QrCodeGeneratorService $qrCodeGeneratorService;
+    protected TicketService $ticketService;
 
-    public function __construct(QrCodeGeneratorService $qrCodeGeneratorService)
+    public function __construct(TicketService $ticketService)
     {
-        $this->qrCodeGeneratorService = $qrCodeGeneratorService;
+        $this->ticketService = $ticketService;
     }
 
     /**
@@ -60,7 +62,107 @@ class PaymentLinksService
         return (array)$rawResponse;
     }
 
-    public function finalizeSuccessfulPayment($payment): array
+    public function finalizeSuccessfulPayment(object $payment): array
+    {
+        Log::info('Finalize successful payment received.', [
+            'external_id' => $payment->external_id ?? $payment->reference_id,
+            'amount'      => $payment->paid_amount ?? null,
+        ]);
+
+        $firstName = $payment->on_demand_payload->first_name ?? 'Guest';
+        $lastName  = $payment->on_demand_payload->last_name ?? 'User';
+
+        $customerEmail = $payment->payer_email
+            ?? ($payment->on_demand_payload->email ?? null);
+
+        $userPayload = $this->buildUserPayload($firstName, $lastName, $customerEmail);
+
+        $user = null;
+        $generatedPassword = null;
+
+        // --- Step 1: Try to find by email first ---
+        if ($customerEmail) {
+            $user = User::where('email', $customerEmail)->first();
+
+            if ($user) {
+                // Update only allowed fields (exclude wallet, points, email if you don’t want to overwrite)
+                $user->first_name         = $userPayload['first_name'];
+                $user->last_name          = $userPayload['last_name'];
+                $user->name               = $userPayload['name'];
+                $user->password           = $userPayload['password'];
+                $user->membership_type_id = $userPayload['membership_type_id'];
+                $user->referral_code      = $userPayload['referral_code'];
+                $user->email_verified_at  = $userPayload['email_verified_at'];
+                $user->save();
+
+                $generatedPassword = $userPayload['plainPassword'];
+            }
+        }
+
+        // --- Step 2: If no user found by email, try first_name + last_name + password NULL ---
+        if (!$user) {
+            $user = User::whereRaw('LOWER(first_name) = ?', [strtolower($firstName)])
+                ->whereRaw('LOWER(last_name) = ?', [strtolower($lastName)])
+                ->whereNull('password')
+                ->first();
+
+            if ($user) {
+                // Update allowed fields
+                $user->first_name         = $userPayload['first_name'];
+                $user->last_name          = $userPayload['last_name'];
+                $user->name               = $userPayload['name'];
+                $user->password           = $userPayload['password'];
+                $user->membership_type_id = $userPayload['membership_type_id'];
+                $user->referral_code      = $userPayload['referral_code'];
+                $user->email_verified_at  = $userPayload['email_verified_at'];
+                $user->save();
+
+                $generatedPassword = $userPayload['plainPassword'];
+
+                // Use email temporarily for downstream logic, but do NOT save to DB
+                $temporaryEmail = $customerEmail;
+            }
+        }
+
+        // --- Step 3: If still no user, create new user with unique email ---
+        if (!$user) {
+            // Ensure email is unique
+            if (!$customerEmail || User::where('email', $customerEmail)->exists()) {
+                $customerEmail = strtolower($firstName . '.' . $lastName) . '.' . uniqid() . '@noemail.local';
+            }
+
+            $userPayload['email'] = $customerEmail;
+            $user = User::create($userPayload);
+            $generatedPassword = $userPayload['plainPassword'];
+        }
+
+        // --- Step 4: Handle ticket creation ---
+        $event       = Event::getActiveCampaignEvent();
+        $ticketPrice = (float) $payment->paid_amount;
+        $externalId  = $payment->external_id ?? $payment->reference_id;
+
+        $ticket = $this->ticketService->createTicket($user, $event, $externalId, $ticketPrice);
+
+        // --- Step 5: Build invoice ---
+        $items = [
+            ['item' => $event->name, 'price' => $ticketPrice, 'quantity' => 1],
+        ];
+
+        $invoiceData = $this->buildInvoiceData($payment, $user, $items, $event);
+        $filename    = $this->generateInvoice($invoiceData);
+
+        // --- Step 6: Send emails ---
+        $this->sendEmails($user, $generatedPassword, $invoiceData, $ticket, $filename);
+
+        return [
+            'status'      => 'success',
+            'payment'     => $payment,
+            'invoice_url' => asset("storage/invoices/{$filename}"),
+        ];
+    }
+
+
+    public function finalizeSuccessfulPaymentOld($payment): array
     {
         Log::info('payment', [$payment]);
 
@@ -73,11 +175,49 @@ class PaymentLinksService
         if ($customer_email) {
             // Normal flow
             $userPayload = $this->buildUserPayload($firstName, $lastName, $customer_email);
-            $user = User::firstOrCreate(['email' => $customer_email], $userPayload);
+
+            $user = User::where('email', $customer_email)->whereNull('password')->first();
+
+            if ($user) { // Naay email og nag match sa user email nga ge create during sa registration webhook
+
+                // Update only allowed fields for existing user
+                $user->name               = $userPayload['name'];
+                $user->password           = $userPayload['password'];
+                $user->membership_type_id = $userPayload['membership_type_id'];
+                $user->referral_code      = $userPayload['referral_code'];
+                $user->email_verified_at  = $userPayload['email_verified_at'];
+                $user->save();
+
+            } else {
+
+                // Naay email pero wala nag match sa user email nga ge create during sa registration webhook
+                // Need nga e find ang first name og last name sa DB
+
+                $user = User::whereRaw('LOWER(first_name) = ?', [strtolower($firstName)])
+                    ->whereRaw('LOWER(last_name) = ?', [strtolower($lastName)])
+                    ->whereNull('password')
+                    ->first();
+
+                // Override email locally
+                if ($user) {
+                    $user->name               = $userPayload['name'];
+                    $user->password           = $userPayload['password'];
+                    $user->membership_type_id = $userPayload['membership_type_id'];
+                    $user->referral_code      = $userPayload['referral_code'];
+                    $user->email_verified_at  = $userPayload['email_verified_at'];
+                    $user->save();
+
+                    $user->email = $customer_email;
+                } else {
+                    $user = User::create($userPayload);
+                }
+
+            }
         } else {
             // Step 2: Search user by first_name + last_name (case-insensitive)
             $user = User::whereRaw('LOWER(first_name) = ?', [strtolower($firstName)])
                 ->whereRaw('LOWER(last_name) = ?', [strtolower($lastName)])
+                ->whereNull('password')
                 ->first();
 
             if (!$user) {
@@ -96,7 +236,7 @@ class PaymentLinksService
         $ticketPrice = $payment->paid_amount;
         $externalId = $payment->external_id ?? $payment->reference_id;
 
-        $ticket = $this->createTicket($user, $event, $externalId, $ticketPrice);
+        $ticket = $this->ticketService->createTicket($user, $event, $externalId, $ticketPrice);
 
         $items = [
             ['item' => $event->name, 'price' => $ticketPrice, 'quantity' => 1]
@@ -170,27 +310,6 @@ class PaymentLinksService
             'plainPassword' => $plainPassword,
         ];
     }
-
-    private function createTicket(User $user, Event $event, string $externalId, float $amount): Ticket
-    {
-        $points = floor($amount / 200) * 1;
-        $qrCodePath = $this->qrCodeGeneratorService->generateForTicket($externalId);
-
-        $ticket = Ticket::create([
-            'user_id' => $user->id,
-            'event_id' => $event->id,
-            'ticket_code' => $externalId,
-            'is_redeemed' => false,
-            'joy_points_earned' => $points,
-            'purchase_date' => now(),
-            'virtual_membership_card_qr' => $qrCodePath,
-        ]);
-
-        $user->increment('bpp_points_balance', $points);
-
-        return $ticket;
-    }
-
 
     private function buildInvoiceData(object $charge, User $user, array $items, Event $event): array
     {
