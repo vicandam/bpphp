@@ -1,22 +1,31 @@
 <x-mail::message>
-# Greetings!
+# Hi {{ $first_name }}!
 
-<p>
-@if ($customMessage === null)
-Thank you for your recent purchase from Big Perspective Productions. We have attached your invoice to this email.
-@else
-{{ $customMessage }}
-@endif
-</p>
+Thank you for your Alive@50 ticket purchase from Big Perspective Productions.
+Welcome to our BPPHP Movement!
 
-{{-- Only show if QR exists --}}
+<div style="text-align: center; margin: 20px 0; font-size: 16px; line-height: 1.8; font-weight: bold; color: #2d3748;">
+Be <br>
+Positive-minded <br>
+Productive and <br>
+Happy <br>
+Philippines 🎉
+</div>
+
+---
+
+📄 Attached is your sales invoice.
+
+📍 Below is your QR Code/Digital Ticket to **Alive@50** on **November 29, 2025, 6:00 PM**
+at the **11th Floor of The Exchange Square, Exchange Road, Ortigas Center, Pasig City.**
+
 @if($ticket->virtual_membership_card_qr)
 <table width="100%" style="text-align: center; margin-top: 30px;">
 <tr>
 <td>
-<strong style="display: block; margin-bottom: 8px;">🎟️ Your Event Ticket QR Code</strong>
+<strong style="display: block; margin-bottom: 8px;">🎟️ QR Code for Alive@50</strong>
 <img src="{{ asset($ticket->virtual_membership_card_qr) }}" alt="Ticket QR Code" width="200" style="border: 1px solid #ddd; padding: 5px;">
-<p style="margin-top: 8px; font-size: 14px; color: #555; text-align: center;">Show this at the venue entrance to gain access.</p>
+<p style="margin-top: 8px; font-size: 14px; color: #555;">Show this QR code at the venue entrance to gain access.</p>
 
 {{-- Download link --}}
 <a href="{{ asset($ticket->virtual_membership_card_qr) }}" download style="display: inline-block; margin-top: 10px; background-color: #2d3748; color: #fff; padding: 10px 15px; text-decoration: none; border-radius: 5px;">
@@ -27,24 +36,28 @@ Thank you for your recent purchase from Big Perspective Productions. We have att
 </table>
 @endif
 
-{{-- Referral Code Section --}}
+---
+
+{{-- Buyer Name + Referral Code --}}
 @if(isset($referral_code))
-<table width="100%" style="text-align: center; margin-top: 30px; background-color: #f9fafb; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+<table width="100%" style="text-align: center; margin-top: 20px; background-color: #f9fafb; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
 <tr>
 <td>
-<strong style="display: block; margin-bottom: 8px;">🎁 Your Referral Code</strong>
-<p style="font-size: 16px; color: #2d3748; font-weight: bold; margin: 0; text-align: center">
-{{ $referral_code }}
+<p style="font-size: 15px; color: #2d3748; margin: 0; font-weight: bold;">
+{{ $name }}
 </p>
-<p style="font-size: 14px; color: #555; margin-top: 8px; text-align: center">
-Share this code with friends and earn exclusive rewards!
+<p style="font-size: 14px; color: #555; margin: 0;">
+Member’s Referral Code: {{ $referral_code }}
 </p>
 </td>
 </tr>
 </table>
 @endif
-<br>
-<br>
-Thanks,<br>
-Big Perspective Productions
+
+---
+
+✨ Excited to see you at the event in your **gold or champagne** and **navy blue** formal or business attire.
+
+To our shared success and happiness, <br>
+**Big Perspective Productions Family**
 </x-mail::message>

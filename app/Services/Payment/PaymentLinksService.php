@@ -327,6 +327,7 @@ class PaymentLinksService
                 'email' => 'support@bpphp.fun',
             ],
             'customer' => [
+                'first_name' => $user->first_name,
                 'name' => $user->name,
                 'email' => $user->email,
                 'phone' => $user->mobile_no ?? 'N/A',
