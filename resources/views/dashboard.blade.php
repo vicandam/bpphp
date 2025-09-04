@@ -46,7 +46,7 @@
                 </div>
                 <hr class="dark horizontal my-0">
                 <div class="card-footer p-2 ps-3">
-                    <p class="mb-0 text-sm"><span class="text-success font-weight-bolder">+1 </span>for every ₱500 ticket purchase</p>
+                    <p class="mb-0 text-sm"><span class="text-success font-weight-bolder">+1 </span>for every ₱200 ticket purchase</p>
                 </div>
             </div>
         </div>
