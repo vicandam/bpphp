@@ -17,7 +17,7 @@
                 <div class="card-header p-2 ps-3">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <p class="text-sm mb-0 text-capitalize">My BPP Wallet</p>
+                            <p class="text-sm mb-0 text-capitalize">Cash Rewards</p>
                             <h4 class="mb-0">₱{{ number_format(Auth::user()->bpp_wallet_balance, 2) }}</h4>
                         </div>
                         <div class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg">
@@ -36,7 +36,7 @@
                 <div class="card-header p-2 ps-3">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <p class="text-sm mb-0 text-capitalize">My BPP Points</p>
+                            <p class="text-sm mb-0 text-capitalize">Joy Points</p>
                             <h4 class="mb-0">{{ number_format(Auth::user()->bpp_points_balance, 2) }}</h4>
                         </div>
                         <div class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg">
