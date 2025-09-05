@@ -2,6 +2,7 @@
 @push('css')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 @endpush
 @section('content')
     <div class="row">
@@ -68,22 +69,27 @@
                             @method('put')
 
                             <div class="input-group input-group-static mb-4">
-                                <label>Current Password</label>
-                                <input type="password" class="form-control" name="current_password" required>
-                                <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2 text-danger" />
-                            </div>
-
-                            <div class="input-group input-group-static mb-4">
                                 <label>New Password</label>
-                                <input type="password" class="form-control" name="password">
+                                <div class="input-group">
+                                    <input type="password" class="form-control" name="password" id="new_password">
+                                    <span class="input-group-text" onclick="togglePassword('new_password', this)" style="cursor: pointer;">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                </div>
                                 <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2 text-danger" />
                             </div>
 
                             <div class="input-group input-group-static mb-4">
                                 <label>Confirm Password</label>
-                                <input type="password" class="form-control" name="password_confirmation">
+                                <div class="input-group">
+                                    <input type="password" class="form-control" name="password_confirmation" id="confirm_password">
+                                    <span class="input-group-text" onclick="togglePassword('confirm_password', this)" style="cursor: pointer;">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                </div>
                                 <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2 text-danger" />
                             </div>
+
 
                             <button type="submit" class="btn bg-gradient-primary">Save</button>
                         </form>
@@ -109,5 +115,22 @@
             placeholder: "Select a country",
             allowClear: true
         });
+    </script>
+
+    <script>
+        function togglePassword(fieldId, el) {
+            const input = document.getElementById(fieldId);
+            const icon = el.querySelector('i');
+
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = "password";
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
     </script>
 @endpush
