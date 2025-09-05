@@ -321,8 +321,8 @@ class PaymentLinksService
             'currency' => $charge->currency,
             'charge_date' => date('F j, Y H:i A', strtotime($charge->created ?? now())),
             'merchant' => [
-                'name' => 'BPPHP.fun',
-                'address' => 'Metro Manila',
+                'name' => config('app.name'),
+                'address' => 'Cainta, Rizal 1900',
                 'phone' => '+63 971-444-1234',
                 'email' => 'support@bpphp.fun',
             ],
