@@ -30,7 +30,7 @@ class WelcomeNewUserMail extends Mailable
     public function build()
     {
         return $this->to($this->user->email, $this->user->name)
-            ->subject('Welcome to BPPHP Fun! Your Login Details')
+            ->subject('Welcome to ' . config('app.name') . '! Your Login Details')
             ->markdown('emails.welcome-new-user')
             ->with([
                 'user' => $this->user,
