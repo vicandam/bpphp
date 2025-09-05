@@ -112,6 +112,6 @@ class TicketService
      */
     private function calculatePoints(float $amount): int
     {
-        return (int) floor($amount / 200);
+        return (int) floor($amount / 500);
     }
 }
