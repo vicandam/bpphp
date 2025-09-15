@@ -9,7 +9,8 @@ As a member, you will get these **opportunities and privileges valid for 2 years
 2. 15% cash reward for every referred fully paid event sponsor.
 3. Members-only discounts and freebies from partner online businesses, physical stores, and seminars/workshops organized or supported by Big Perspective Productions (after referring at least one ticket buyer to our events).
 4. Members-only privilege to join and win in contests, raffles, and games on our website and during events.
-5. Privilege to earn joy points for every ₱200 worth of event ticket, product, or voucher purchase from Big Perspective Productions and members of the Business Partners Club.
+5. Privilege to earn one (1) joy point for every P500 worth of event ticket of Big Perspective Productions and the products and service vouchers of the members of the Business Club Partners. 1 joy point = ₱1 .
+    Points are not convertible to cash and can only be used to redeem tickets and items under the Business Partners Club on the website of bpphp.fun.
 6. Share in the 10% income of film *Stitched Hearts* to be divided among active members of MMDCI.
 7. Elevation to the Lucky Marketing Agents and Event Catalyst Club after referring an event sponsor with at least ₱10,000 cash sponsorship.
 8. Opportunity to earn unlimitedly from sales of your products and services under our Business Partners Club with our growing MMDCI members. (Business Partners Club Packages available upon request)
