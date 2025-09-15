@@ -10,7 +10,7 @@
                     <div class="d-flex align-items-center">
                         <h5 class="mb-0">{{ $filmProject->title }}</h5>
                         @if(Auth::user() && Auth::user()->is_admin)
-                            <a href="{{ route('film_projects.edit', $filmProject) }}" class="btn btn-primary btn-sm ms-auto">Edit Film Project</a>
+                            <a href="{{ route('film_projects.edit', $filmProject) }}" class="btn btn-primary btn-sm ms-auto">Edit Dream Film Project</a>
                         @endif
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="card-body p-3">
                     @if($filmProject->investments->isEmpty())
-                        <p class="text-muted text-center">No investments recorded for this film project yet.</p>
+                        <p class="text-muted text-center">No investments recorded for this dream film project yet.</p>
                     @else
                         <ul class="list-group">
                             @foreach($filmProject->investments as $investment)

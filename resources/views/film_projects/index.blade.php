@@ -1,7 +1,7 @@
 <!-- resources/views/film_projects/index.blade.php -->
 @extends('layouts.master')
 
-@section('title', 'Film Projects')
+@section('title', 'Dream Film Projects')
 
 @section('content')
     <div class="row">
@@ -9,9 +9,9 @@
             <div class="card my-4">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
-                        <h6 class="text-white text-capitalize ps-3 mb-0">Our Film Projects</h6>
+                        <h6 class="text-white text-capitalize ps-3 mb-0">Our Dream Film Projects</h6>
                         @if(Auth::user() && Auth::user()->is_admin)
-                            <a href="{{ route('film_projects.create') }}" class="btn btn-white btn-sm mb-0 me-3">Add New Film Project</a>
+                            <a href="{{ route('film_projects.create') }}" class="btn btn-white btn-sm mb-0 me-3">Add New Dream Film Project</a>
                         @endif
                     </div>
                 </div>
@@ -60,17 +60,17 @@
                                             <span class="text-secondary text-xs font-weight-bold">₱{{ number_format($project->total_net_theatrical_ticket_sales, 2) }}</span>
                                         </td>
                                         <td class="align-middle">
-                                            <a href="{{ route('film_projects.show', $project) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="View Film Project">
+                                            <a href="{{ route('film_projects.show', $project) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="View Dream Film Project">
                                                 View
                                             </a>
                                             @if(Auth::user() && Auth::user()->is_admin)
-                                                <a href="{{ route('film_projects.edit', $project) }}" class="text-secondary font-weight-bold text-xs ms-3" data-toggle="tooltip" data-original-title="Edit Film Project">
+                                                <a href="{{ route('film_projects.edit', $project) }}" class="text-secondary font-weight-bold text-xs ms-3" data-toggle="tooltip" data-original-title="Edit Dream Film Project">
                                                     Edit
                                                 </a>
                                                 <form action="{{ route('film_projects.destroy', $project) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-link text-danger text-gradient px-3 mb-0" onclick="return confirm('Are you sure you want to delete this film project?')">Delete</button>
+                                                    <button type="submit" class="btn btn-link text-danger text-gradient px-3 mb-0" onclick="return confirm('Are you sure you want to delete this dream film project?')">Delete</button>
                                                 </form>
                                                 <form action="{{ route('film_projects.calculate_shares', $project) }}" method="POST" class="d-inline">
                                                     @csrf

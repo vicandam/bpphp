@@ -113,7 +113,7 @@
             <div class="card z-index-2">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
                     <div class="bg-gradient-info shadow-dark border-radius-lg pt-4 pb-3">
-                        <h6 class="text-white text-capitalize ps-3">Latest Film Projects</h6>
+                        <h6 class="text-white text-capitalize ps-3">Latest Dream Film Projects</h6>
                     </div>
                 </div>
                 <div class="card-body">
@@ -121,7 +121,7 @@
                         Discover new opportunities to invest in dreams.
                     </p>
                     {{-- You can display a list of latest film projects here --}}
-                    <a href="{{ route('film_projects.index') }}" class="btn btn-sm bg-gradient-info mt-3">View All Film Projects</a>
+                    <a href="{{ route('film_projects.index') }}" class="btn btn-sm bg-gradient-info mt-3">View All Dream Film Projects</a>
                 </div>
             </div>
         </div>
