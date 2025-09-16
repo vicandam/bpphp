@@ -81,4 +81,19 @@
             </div>
         </div>
     </div>
+    <div class="card my-4">
+        <div class="card-body text-center">
+            <p class="text-muted mb-3">Or connect with us directly:</p>
+
+            <a href="https://bpphp.fun/investment-call" target="_blank" class="btn btn-outline-primary me-2">
+                Book an Appointment
+            </a>
+
+            <a href="https://bpphp.fun/contact-us"
+               class="btn btn-outline-secondary">
+                Request a Proposal via Email
+            </a>
+        </div>
+    </div>
+
 @endsection
