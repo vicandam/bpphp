@@ -15,7 +15,7 @@
                 <div class="card-body px-0 pb-2">
                     <form method="POST" action="{{ route('investments.store') }}" class="p-4">
                         @csrf
-                        <p class="text-muted mb-4">Minimum investment amount is ₱10,000 for 1 share.</p>
+                        <p class="text-muted mb-4">Minimum investment starts at ₱100,000 per share for dream film and concert projects</p>
 
                         <div class="input-group input-group-outline my-3">
                             <label class="form-label">Investment Amount (PHP)</label>

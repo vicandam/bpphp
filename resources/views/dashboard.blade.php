@@ -5,13 +5,18 @@
 
 @section('content')
     <div class="row">
-        <div class="ms-3">
-            <h3 class="mb-0 h4 font-weight-bolder">Dashboard</h3>
-            <p class="mb-4">
-                Monitor overall BPP Wallet balance, total BPP Points redeemed, Referrals and Tickets Purchased.
-            </p>
-        </div>
+        <div class="col-xl-12 col-sm-12 mb-xl-0">
+            <div class="ms-3">
+                <h3 class="mb-0 h4 font-weight-bolder">Dashboard</h3>
 
+                <div class="alert alert-secondary text-white" role="alert">
+                    <strong>Earn cash rewards</strong> when you refer ticket buyers/new members to the club. Earn joy points for every purchase of event or movie tickets.
+                    Earn more when you refer event and film sponsors. Explore more ways to earn as a business club partner, marketing agent/catalyst and angel investor.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-header p-2 ps-3">
