@@ -32,12 +32,12 @@
 
                             <div class="input-group input-group-static mb-4">
                                 <label>Email</label>
-                                <input type="text" class="form-control" name="email" value="{{old('email', $user->email) }}">
+                                <input type="text" class="form-control" name="email" value="{{ old('email', $user->email) }}">
                             </div>
 
                             <div class="input-group input-group-static mb-4">
                                 <label>Mobile</label>
-                                <input type="text" class="form-control" name="mobile_no" value="{{old('mobile_no', $user->mobile_no) }}">
+                                <input type="text" class="form-control" name="mobile_no" value="{{ old('mobile_no', $user->mobile_no) }}">
                             </div>
 
                             <button type="submit" class="btn bg-gradient-primary">Save</button>
@@ -68,10 +68,23 @@
                             @csrf
                             @method('put')
 
+                            {{-- Current Password --}}
+                            <div class="input-group input-group-static mb-4">
+                                <label>Current Password</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" name="current_password" id="current_password" required>
+                                    <span class="input-group-text" onclick="togglePassword('current_password', this)" style="cursor: pointer;">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                </div>
+                                <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2 text-danger" />
+                            </div>
+
+                            {{-- New Password --}}
                             <div class="input-group input-group-static mb-4">
                                 <label>New Password</label>
                                 <div class="input-group">
-                                    <input type="password" class="form-control" name="password" id="new_password">
+                                    <input type="password" class="form-control" name="password" id="new_password" required>
                                     <span class="input-group-text" onclick="togglePassword('new_password', this)" style="cursor: pointer;">
                                         <i class="fas fa-eye"></i>
                                     </span>
@@ -79,17 +92,17 @@
                                 <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2 text-danger" />
                             </div>
 
+                            {{-- Confirm New Password --}}
                             <div class="input-group input-group-static mb-4">
                                 <label>Confirm Password</label>
                                 <div class="input-group">
-                                    <input type="password" class="form-control" name="password_confirmation" id="confirm_password">
+                                    <input type="password" class="form-control" name="password_confirmation" id="confirm_password" required>
                                     <span class="input-group-text" onclick="togglePassword('confirm_password', this)" style="cursor: pointer;">
                                         <i class="fas fa-eye"></i>
                                     </span>
                                 </div>
                                 <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2 text-danger" />
                             </div>
-
 
                             <button type="submit" class="btn bg-gradient-primary">Save</button>
                         </form>
