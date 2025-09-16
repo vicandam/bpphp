@@ -49,6 +49,7 @@ class EventController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
+            'link' => ['nullable', 'string'],
             'event_date' => ['nullable', 'date'],
             'event_time' => ['nullable', 'date_format:H:i'],
             'venue' => ['nullable', 'string', 'max:255'],
@@ -64,6 +65,7 @@ class EventController extends Controller
             Event::create([
                 'name' => $request->name,
                 'description' => $request->description,
+                'link' => $request->link,
                 'event_date' => $request->event_date,
                 'event_time' => $request->event_time,
                 'venue' => $request->venue,

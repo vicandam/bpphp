@@ -25,6 +25,11 @@
                             <textarea class="form-control" name="description" rows="5">{{ old('description') }}</textarea>
                         </div>
 
+                        <div class="input-group input-group-outline my-3">
+                            <label class="form-label">Link</label>
+                            <input type="text" class="form-control" name="link" value="{{ old('link') }}" required>
+                        </div>
+
 
                         <div class="form-group my-3">
                             <label for="status" class="form-label">Status</label>

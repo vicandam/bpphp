@@ -17,6 +17,7 @@ class FilmProject extends Model
     protected $fillable = [
         'title',
         'description',
+        'link',
         'status',
         'target_fund_amount',
         'total_net_theatrical_ticket_sales',

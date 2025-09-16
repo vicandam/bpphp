@@ -121,7 +121,7 @@
                         Discover new opportunities to invest in dreams.
                     </p>
                     {{-- You can display a list of latest film projects here --}}
-                    <a href="{{ route('film_projects.index') }}" class="btn btn-sm bg-gradient-info mt-3">View All Dream Film Projects</a>
+                    <a href="{{ route('public.film_projects.index') }}" class="btn btn-sm bg-gradient-info mt-3">View All Dream Film Projects</a>
                 </div>
             </div>
         </div>

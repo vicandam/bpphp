@@ -23,6 +23,11 @@
                         </div>
 
                         <div class="input-group input-group-outline my-3">
+                            <label class="form-label">Dream Link</label>
+                            <input type="text" class="form-control" name="link" value="{{ old('link', $filmProject->link) }}">
+                        </div>
+
+                        <div class="input-group input-group-outline my-3">
                             <label class="form-label">Description</label>
                             <textarea class="form-control" name="description" rows="5">{{ old('description', $filmProject->description) }}</textarea>
                         </div>

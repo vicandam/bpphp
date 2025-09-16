@@ -21,6 +21,7 @@
                                 <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Event</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Link</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date & Time</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Venue</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ticket Price</th>
@@ -41,12 +42,20 @@
                                                         @endif
                                                     </i>
                                                 </div>
+
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">{{ $event->name }}</h6>
                                                     <p class="text-xs text-secondary mb-0">{{ Str::limit($event->description, 50) }}</p>
                                                 </div>
                                             </div>
                                         </td>
+
+                                        <td>
+                                            <p class="text-xs text-muted mb-0">
+                                                {!! $event->link ? '<a href="'.$event->link.'" target="_blank">Event Details</a>' : 'N/A' !!}
+                                            </p>
+                                        </td>
+
                                         <td>
                                             <p class="text-xs font-weight-bold mb-0">{{ $event->event_date ? $event->event_date->format('M d, Y') : 'N/A' }}</p>
                                             <p class="text-xs text-secondary mb-0">{{ $event->event_time ? $event->event_time->format('h:i A') : '' }}</p>

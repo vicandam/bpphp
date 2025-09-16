@@ -14,10 +14,19 @@
                 </div>
                 <div class="card-body px-0 pb-2">
                     <div class="row px-4 py-3">
+
                         <div class="col-md-12 mb-3">
                             <label class="form-label">Description</label>
                             <p class="text-muted">{{ $event->description ?? 'N/A' }}</p>
                         </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">Link</label>
+                            <p class="text-muted">
+                                {!! $event->link ? '<a href="'.$event->link.'" target="_blank" class="text-muted">Event Details</a>' : 'N/A' !!}
+                            </p>
+                        </div>
+
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Date</label>
                             <p class="text-muted">{{ $event->event_date ? $event->event_date->format('M d, Y') : 'N/A' }}</p>

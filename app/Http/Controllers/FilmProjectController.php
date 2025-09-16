@@ -50,6 +50,7 @@ class FilmProjectController extends Controller
         $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
+            'link' => ['nullable', 'string'],
             'status' => ['required', 'string', 'in:Pre-production,Production,Post-production,Released'],
             'target_fund_amount' => ['nullable', 'numeric', 'min:0'],
             'total_net_theatrical_ticket_sales' => ['nullable', 'numeric', 'min:0'],
@@ -80,6 +81,7 @@ class FilmProjectController extends Controller
         $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
+            'link' => ['nullable', 'string'],
             'status' => ['required', 'string', 'in:Pre-production,Production,Post-production,Released'],
             'target_fund_amount' => ['nullable', 'numeric', 'min:0'],
             'total_net_theatrical_ticket_sales' => ['nullable', 'numeric', 'min:0'],

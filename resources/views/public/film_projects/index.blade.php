@@ -21,6 +21,7 @@
                                 <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Link</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Target Fund</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Net Sales</th>
@@ -41,6 +42,13 @@
                                                 </div>
                                             </div>
                                         </td>
+
+                                        <td>
+                                            <p class="text-xs mb-0">
+                                                {!! $project->link ? '<a href="'.$project->link.'" target="_blank">Dream Film Details</a>' : 'N/A' !!}
+                                            </p>
+                                        </td>
+
                                         <td>
                                             <p class="text-xs font-weight-bold mb-0">
                                         <span class="badge badge-sm bg-gradient-{{

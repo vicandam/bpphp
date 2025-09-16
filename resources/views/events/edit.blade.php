@@ -37,6 +37,11 @@
                             <textarea class="form-control" name="description" rows="5">{{ old('description', $event->description) }}</textarea>
                         </div>
 
+                        <div class="input-group input-group-outline is-filled my-3">
+                            <label class="form-label">Link</label>
+                            <input type="text" class="form-control" name="link" value="{{ old('link', $event->link) }}">
+                        </div>
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="input-group input-group-outline is-filled my-3">
