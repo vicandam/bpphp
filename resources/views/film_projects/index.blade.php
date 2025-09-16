@@ -45,9 +45,16 @@
                                                 </div>
                                             </div>
                                         </td>
+{{--                                        <td>--}}
+{{--                                            <p class="text-xs font-weight-bold mb-0"><a href="{{ $project->link }}" target="_blank">{{ $project->link }}</a></p>--}}
+{{--                                        </td>--}}
+
                                         <td>
-                                            <p class="text-xs font-weight-bold mb-0"><a href="{{ $project->link }}" target="_blank">{{ $project->link }}</a></p>
+                                            <p class="text-xs mb-0">
+                                                {!! $project->link ? '<a href="'.$project->link.'" target="_blank">Dream Film Details</a>' : 'N/A' !!}
+                                            </p>
                                         </td>
+
                                         <td>
                                             <p class="text-xs font-weight-bold mb-0">
                                         <span class="badge badge-sm bg-gradient-{{

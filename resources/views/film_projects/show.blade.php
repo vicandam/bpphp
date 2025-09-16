@@ -20,10 +20,14 @@
                             <label class="form-label">Description</label>
                             <p class="text-muted">{{ $filmProject->description ?? 'N/A' }}</p>
                         </div>
+
                         <div class="col-md-12 mb-3">
                             <label class="form-label">Link</label>
-                            <p class="text-muted"><a href="{{$filmProject->link}}" target="_blank">{{ $filmProject->link ?? 'N/A' }}</a></p>
+                            <p class="text-muted">
+                                {!! $filmProject->link ? '<a href="'.$filmProject->link.'" target="_blank" class="text-muted">Dream Film Details</a>' : 'N/A' !!}
+                            </p>
                         </div>
+
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Status</label>
                             <p class="text-muted">
