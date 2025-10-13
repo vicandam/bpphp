@@ -24,5 +24,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('manage-partners', function ($user) {
             return $user->isAdmin() || $user->isMarketingAgent();
         });
+
+        // 🧩 add this for Log Viewer access
+        Gate::define('viewLogViewer', function ($user) {
+            return $user->isAdmin();
+        });
     }
 }
