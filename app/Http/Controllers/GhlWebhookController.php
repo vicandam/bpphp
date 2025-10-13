@@ -103,7 +103,7 @@ class GhlWebhookController extends Controller
                 'password' => bcrypt($plainPassword),
             ]);
 
-            Mail::to($user->email)->send(new WelcomeEmailAttendee($user->full_name));
+            Mail::to([$user->email => $user->full_name])->send(new WelcomeEmailAttendee($user->full_name));
 
             return response()->json([
                 'success' => true,
