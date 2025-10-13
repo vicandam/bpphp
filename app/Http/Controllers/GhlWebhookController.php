@@ -89,9 +89,9 @@ class GhlWebhookController extends Controller
 
     public function storeAttendee(AttendeeRegistrationRequest $request)
     {
-        try {
-            Log::info('Received from GHL:', $request->all());
+        Log::info('Received from GHL:', $request->all());
 
+        try {
             $plainPassword = Str::random(12);
             $user = User::create([
                 'type' => 'attendee',
