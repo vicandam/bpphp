@@ -14,5 +14,8 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         '/ghl/webhook',
         '/xendit/*',
+        'register/attendee',
+        'register/vendor',
+        'register/sponsor',
     ];
 }

@@ -44,6 +44,12 @@ class User extends Authenticatable implements MustVerifyEmail
         'bpp_points_balance',
         'virtual_membership_card_qr',
         'membership_type_id',
+        'type',
+        'full_name',
+        'birthday',
+        'company_name', 'brand_name', 'products_to_sell',
+        'product_category', 'contact_person_name', 'office_address',
+        'sponsor_name',
     ];
 
     /**
