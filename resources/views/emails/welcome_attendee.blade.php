@@ -48,10 +48,10 @@ This also qualifies you for a chance to win **cash prizes** in the **Best in Cos
 ## 🧙‍♀️ Need Help or Have Questions?
 Feel free to reply to this email or contact us:
 
-**Program Head & Party Host:**
+## Program Head & Party Host:
 Candy Villongco Hernandez — 0947-9945308 (SMS, Viber)
 
-**Bazaar & Sponsorship Coordinators:**
+## Bazaar & Sponsorship Coordinators:
 Gemma Cruz Navarro — 0927-5290731 (FB, SMS, Viber)
 Maureen Caladiao — 0955-79066 (FB Messenger)
 
@@ -62,7 +62,7 @@ We’re here to make your experience magical from start to finish.
 We can’t wait to see you in costume and in high spirits.
 Let the hauntingly good times begin!
 
-Warmly,
+Warmly,<br>
 **The VSF Halloween Bazaar and Party Team**
 
 </x-mail::message>
