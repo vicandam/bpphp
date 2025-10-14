@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -11,47 +12,25 @@ use Illuminate\Queue\SerializesModels;
 class WelcomeEmailAttendee extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public string $fullName;
-    public ?string $referralCode;
+    public $user;
+    public $referralCode;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(string $fullName, ?string $referralCode = null)
+    public function __construct($user, $referralCode = null)
     {
-        $this->fullName = $fullName;
+        $this->user = $user;
         $this->referralCode = $referralCode;
     }
 
     /**
-     * Get the message envelope.
+     * Build the message.
      */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: '🎃 Welcome to the VSF Halloween Bazaar & Costume Party!'
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            markdown: 'emails.welcome_attendee',
-            with: [
-                'fullName' => $this->fullName,
-            ],
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     */
-    public function attachments(): array
-    {
-        return [];
+        return $this->to($this->user->email, $this->user->first_name)
+            ->subject('🎃 Your Digital Ticket to the VSF Halloween Bazaar & Costume Party')
+            ->markdown('emails.welcome_attendee');
     }
 }

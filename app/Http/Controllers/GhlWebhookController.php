@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AttendeeRegistrationRequest;
 use App\Http\Requests\SponsorRegistrationRequest;
 use App\Http\Requests\VendorRegistrationRequest;
+use App\Mail\WelcomeEmailAttendeeOld;
 use App\Mail\WelcomeEmailAttendee;
-use App\Mail\WelcomeEmailAttendeee;
 use App\Models\Referral;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -97,6 +97,8 @@ class GhlWebhookController extends Controller
             $user = User::create([
                 'type' => 'attendee',
                 'name' => $request->full_name,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
                 'full_name' => $request->full_name,
                 'email' => $request->email,
                 'mobile_number' => $request->mobile_number,
@@ -107,7 +109,9 @@ class GhlWebhookController extends Controller
             Log::info('User: ', [$user]);
 
             //Mail::to([$user->email => $user->full_name])->send(new WelcomeEmailAttendee($user->full_name));
-            Mail::to($user->email)->send(new WelcomeEmailAttendee($user->full_name));
+            //Mail::to($user->email)->send(new WelcomeEmailAttendeeOld($user->full_name));
+
+            Mail::to($user->email)->send(new WelcomeEmailAttendee($user));
 
             return response()->json([
                 'success' => true,
