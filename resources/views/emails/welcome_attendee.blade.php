@@ -6,7 +6,7 @@ Get Ready for a Spooktacular Night of Fun, Frights, and Festive Delights!
 
 ---
 
-**Dear {{ $guestName }},**
+**Dear {{ $fullName }},**
 
 Thank you for registering for the **VSF Halloween Bazaar & Costume Party!**
 We’re thrilled to welcome you to a night of enchantment, eerie elegance, and unforgettable community magic!

@@ -13,13 +13,15 @@ class WelcomeEmailAttendee extends Mailable
     use Queueable, SerializesModels;
 
     public string $fullName;
+    public ?string $referralCode;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(string $fullName)
+    public function __construct(string $fullName, ?string $referralCode = null)
     {
         $this->fullName = $fullName;
+        $this->referralCode = $referralCode;
     }
 
     /**
