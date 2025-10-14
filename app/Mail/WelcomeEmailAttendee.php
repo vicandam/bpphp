@@ -12,8 +12,8 @@ use Illuminate\Queue\SerializesModels;
 class WelcomeEmailAttendee extends Mailable
 {
     use Queueable, SerializesModels;
-    public $user;
-    public $referralCode;
+    protected $user;
+    protected $referralCode;
 
     /**
      * Create a new message instance.
@@ -31,6 +31,7 @@ class WelcomeEmailAttendee extends Mailable
     {
         return $this->to($this->user->email, $this->user->first_name)
             ->subject('🎃 Your Digital Ticket to the VSF Halloween Bazaar & Costume Party')
-            ->markdown('emails.welcome_attendee');
+            ->markdown('emails.welcome_attendee')
+            ->with(['user' => $this->user->first_name, 'referralCode' => $this->referralCode]);
     }
 }
