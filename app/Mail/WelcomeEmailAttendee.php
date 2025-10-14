@@ -32,6 +32,9 @@ class WelcomeEmailAttendee extends Mailable
         return $this->to($this->user->email, $this->user->first_name)
             ->subject('🎃 Your Digital Ticket to the VSF Halloween Bazaar & Costume Party')
             ->markdown('emails.welcome_attendee')
-            ->with(['user' => $this->user->first_name, 'referralCode' => $this->referralCode]);
+            ->with([
+                'firstName' => $this->user->first_name,
+                'referralCode' => $this->referralCode
+            ]);
     }
 }
