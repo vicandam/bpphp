@@ -6,6 +6,7 @@ use App\Http\Requests\AttendeeRegistrationRequest;
 use App\Http\Requests\SponsorRegistrationRequest;
 use App\Http\Requests\VendorRegistrationRequest;
 use App\Mail\WelcomeEmailAttendee;
+use App\Mail\WelcomeEmailAttendeee;
 use App\Models\Referral;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -103,7 +104,10 @@ class GhlWebhookController extends Controller
                 'password' => bcrypt($plainPassword),
             ]);
 
-            Mail::to([$user->email => $user->full_name])->send(new WelcomeEmailAttendee($user->full_name));
+            Log::info('User: ', [$user]);
+
+            //Mail::to([$user->email => $user->full_name])->send(new WelcomeEmailAttendee($user->full_name));
+            Mail::to($user->email)->send(new WelcomeEmailAttendee($user->full_name));
 
             return response()->json([
                 'success' => true,
