@@ -13,41 +13,19 @@ class WelcomeEmailSponsor extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct()
+    public $sponsorName;
+    protected $user;
+
+    public function __construct($sponsorName, $user)
     {
-        //
+        $this->sponsorName = $sponsorName;
+        $this->user = $user;
     }
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Welcome Email Sponsor',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            markdown: 'emails.welcome_sponsor',
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
+        return $this->to($this->user->email, $this->user->first_name)
+            ->subject('🌟 Welcome to the VSF Halloween Bazaar & Costume Party — Event Sponsor')
+            ->markdown('emails.welcome_sponsor');
     }
 }
