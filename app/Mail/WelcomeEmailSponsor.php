@@ -24,7 +24,7 @@ class WelcomeEmailSponsor extends Mailable
 
     public function build()
     {
-        return $this->to($this->user->email, $this->user->first_name)
+        return $this->to($this->user->email, $this->user->contact_person_name)
             ->subject('🌟 Welcome to the VSF Halloween Bazaar & Costume Party — Event Sponsor')
             ->markdown('emails.welcome_sponsor');
     }

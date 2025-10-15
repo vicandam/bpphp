@@ -30,11 +30,11 @@ class WelcomeEmailVendor extends Mailable
      */
     public function build()
     {
-        return $this->to($this->user->email, $this->user->first_name)
+        return $this->to($this->user->email, $this->user->contact_person_name)
             ->subject('🎃 Your Digital Vendor Pass to the VSF Halloween Bazaar & Costume Party')
             ->markdown('emails.welcome_vendor')
             ->with([
-                'vendorName' => $this->user->first_name,
+                'vendorName' => $this->user->contact_person_name,
                 'vendorPassNumber' => $this->user->vendor_pass_number,
             ]);
     }
