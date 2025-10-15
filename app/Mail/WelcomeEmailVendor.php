@@ -13,41 +13,29 @@ class WelcomeEmailVendor extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public string $vendorName;
+    protected $user;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(string $vendorName, $user)
     {
-        //
+        $this->vendorName = $vendorName;
+        $this->user = $user;
     }
 
     /**
-     * Get the message envelope.
+     * Build the message.
      */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Welcome Email Vendor',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            markdown: 'emails.welcome_vendor',
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
+        return $this->to($this->user->email, $this->user->first_name)
+            ->subject('🎃 Your Digital Vendor Pass to the VSF Halloween Bazaar & Costume Party')
+            ->markdown('emails.welcome_vendor')
+            ->with([
+                'vendorName' => $this->user->first_name,
+                'vendorPassNumber' => $this->user->vendor_pass_number,
+            ]);
     }
 }

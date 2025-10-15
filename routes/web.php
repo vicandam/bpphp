@@ -153,7 +153,7 @@ Route::get('/ewallet/failed', function () {
 
 Route::post('/ghl/webhook',[GhlWebhookController::class, 'store'])->name('ghl-webhook');
 Route::any('/register/attendee', [GhlWebhookController::class, 'storeAttendee']);
-Route::post('/register/vendor', [GhlWebhookController::class, 'storeVendor']);
+Route::any('/register/vendor', [GhlWebhookController::class, 'storeVendor']);
 Route::post('/register/sponsor', [GhlWebhookController::class, 'storeSponsor']);
 
 

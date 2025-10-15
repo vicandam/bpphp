@@ -7,6 +7,7 @@ use App\Http\Requests\SponsorRegistrationRequest;
 use App\Http\Requests\VendorRegistrationRequest;
 use App\Mail\WelcomeEmailAttendeeOld;
 use App\Mail\WelcomeEmailAttendee;
+use App\Mail\WelcomeEmailVendor;
 use App\Models\Referral;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -108,9 +109,6 @@ class GhlWebhookController extends Controller
 
             Log::info('User: ', [$user]);
 
-            //Mail::to([$user->email => $user->full_name])->send(new WelcomeEmailAttendee($user->full_name));
-            //Mail::to($user->email)->send(new WelcomeEmailAttendeeOld($user->full_name));
-
             Mail::to($user->email)->send(new WelcomeEmailAttendee($user));
 
             return response()->json([
@@ -124,28 +122,70 @@ class GhlWebhookController extends Controller
             ]);
         }
     }
-
-    public function storeVendor(VendorRegistrationRequest $request)
+    public function storeVendor(Request $request)
     {
-        $plainPassword = Str::random(12);
-        $user = User::create([
-            'type' => 'vendor',
-            'name' => $request->contact_person_name,
-            'email' => $request->email,
-            'company_name' => $request->company_name,
-            'brand_name' => $request->brand_name,
-            'products_to_sell' => $request->products_to_sell,
-            'product_category' => $request->product_category,
-            'contact_person_name' => $request->contact_person_name,
-            'mobile_number' => $request->mobile_number,
-            'birthday' => $request->birthday,
-            'office_address' => $request->office_address,
-            'password' => bcrypt($plainPassword),
-        ]);
+        // flatten the products array if it exists
+        $productsToSell = is_array($request->input('Products To Sell'))
+            ? implode(', ', $request->input('Products To Sell'))
+            : $request->input('Products To Sell');
+
+        // count existing vendor passes (still increment)
+        $nextPassNumber = (User::where('type', 'vendor')->max('vendor_pass_number') ?? 0) + 1;
+
+        $user = User::updateOrCreate(
+            ['email' => $request->input('email')],
+            [
+                'type' => 'vendor',
+                'company_name' => $request->input('Company Name'),
+                'brand_name' => $request->input('Brand Name'),
+                'products_to_sell' => $productsToSell,
+                'other_products' => $request->input('Please specify'),
+                'contact_person_name' => $request->input("Contact Person's Full Name"),
+                'mobile_number' => $request->input('phone'),
+                'birthday' => $request->input('date_of_birth'),
+                'office_address' => $request->input('Office Address') ?? $request->input('full_address'),
+                'city' => $request->input('city'),
+                'country' => $request->input('country'),
+                'timezone' => $request->input('timezone'),
+                'contact_source' => $request->input('contact_source'),
+
+                // only assign new vendor_pass_number if user doesn't have one yet
+                'vendor_pass_number' => $user->vendor_pass_number ?? $nextPassNumber,
+                'name' => $request->input('full_name') ?? '',
+                'first_name' => $request->input('first_name') ?? '',
+                'last_name' => $request->input('last_name') ?? '',
+                'password' => '',
+            ]
+        );
+
+        // Make sure vendor_pass_number is populated even if just created
+        if (empty($user->vendor_pass_number)) {
+            $user->vendor_pass_number = $nextPassNumber;
+            $user->save();
+        }
+
+        // send welcome email
+        if ($user->email) {
+            Mail::to($user->email)->send(
+                new WelcomeEmailVendor(
+                    $user->contact_person_name ?? 'Vendor',
+                    $user
+                )
+            );
+        }
+
+        Log::info('Vendor data:',[
+                'success' => true,
+                'message' => $user->wasRecentlyCreated
+                    ? "Vendor registered successfully with pass #{$nextPassNumber}."
+                    : "Vendor information updated successfully (Pass #{$user->vendor_pass_number}).",
+                'data' => $user->contact_person_name
+            ]
+        );
 
         return response()->json([
             'success' => true,
-            'message' => 'Vendor registered successfully.',
+            'message' => "Vendor registered successfully with pass #{$user->vendor_pass_number}.",
             'data' => $user
         ]);
     }
