@@ -1,5 +1,4 @@
 <x-mail::message>
-# 🎃 Your Digital Vendor Pass to the VSF Halloween Bazaar & Costume Party
 
 Dear {{ $vendorName }},
 
@@ -15,6 +14,7 @@ Let’s make it a night of enchantment, eerie elegance, and unforgettable commun
 **Time:** Whole day Vendor: 7 AM to 10 PM <br>
 **Ingress & Set Up:** October 24 (6PM–9PM) or October 25 (5AM–6:45AM) <br>
 **Afternoon Vendor:** 1 PM to 10 PM <br>
+**Ingress and set up: 11:30AM to 12:45 PM <br>
 **Dismantling & Egress:** 10 PM to 11 PM <br>
 **Location:** Victoria School Foundation 2 P. Valenzuela St., Corner Molave St., Marikina City <br>
 **Dress Code:** Horror, Fairytales, or Superhero
@@ -24,7 +24,7 @@ For Bazaar vendors, please dress up your booths too according to the Halloween t
 ---
 
 ## 🎟️ Your Bazaar Vendor Pass
-Save this image on your mobile phone and present it at the entrance guard for a smooth check-in.
+Save this image on your mobile phone.
 
 <!-- ✅ Your Green Square Vendor Pass -->
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:20px 0;">
@@ -37,7 +37,8 @@ Save this image on your mobile phone and present it at the entrance guard for a 
 <div style="display:table; width:100%; height:100%;">
 <div style="display:table-cell; vertical-align:middle;">
 <span style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size:48px; font-weight:700; color:#ffffff; line-height:1;">
-{{ str_pad($vendorPassNumber, 2, '0', STR_PAD_LEFT) }}
+{{ str_pad($vendorPassNumber, 2, '0', STR_PAD_LEFT) }}<br>
+BVP
 </span>
 </div>
 </div>
