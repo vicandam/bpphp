@@ -43,7 +43,10 @@ class AdminUserController extends Controller
             $query->where('membership_type_id', $filter);
         }
 
-        $users = $query->with('membershipType')->orderBy('id','desc')->paginate(10);
+        $users = $query->with('membershipType')
+            ->where('email', 'NOT LIKE', '%@mailinator.com')
+            ->orderBy('id','desc')
+            ->paginate(10);
 
         $membershipTypes = MembershipType::all(); // For the filter dropdown
 
