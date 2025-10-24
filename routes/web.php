@@ -233,6 +233,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/admin/users', [AdminUserController::class, 'index'])->name('index.users');
     Route::get('/admin/users/{user}', [AdminUserController::class, 'show'])->name('show.users');
+    Route::delete('/admin/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+    Route::delete('/users/bulk-delete', [AdminUserController::class, 'bulkDelete'])->name('users.bulkDelete');
+
 
     // Membership Types
     Route::resource('membership-types', MembershipTypeController::class);

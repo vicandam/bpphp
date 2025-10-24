@@ -44,7 +44,6 @@ class AdminUserController extends Controller
         }
 
         $users = $query->with('membershipType')
-            ->where('email', 'NOT LIKE', '%@mailinator.com')
             ->orderBy('id','desc')
             ->paginate(10);
 
@@ -78,4 +77,22 @@ class AdminUserController extends Controller
 
         return view('admin.users.show', compact('user', 'revenueContributed'));
     }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return redirect()->route('index.users')->with('success', 'User deleted successfully!');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids');
+        if ($ids) {
+            User::whereIn('id', $ids)->delete();
+            return redirect()->route('index.users')->with('success', 'Selected users deleted successfully!');
+        }
+        return redirect()->route('index.users')->with('error', 'No users selected.');
+    }
+
 }
