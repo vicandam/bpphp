@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\CustomVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -78,6 +79,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'bpp_wallet_balance' => 'decimal:2',
         'bpp_points_balance' => 'decimal:2',
     ];
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new CustomVerifyEmail);
+    }
 
     public function isAdmin(): bool
     {
