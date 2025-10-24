@@ -26,12 +26,14 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\XenditController;
 use App\Http\Controllers\XenditWebhookController;
+use App\Mail\VerifyEmailBrevo;
 use Barryvdh\DomPDF\Facade\Pdf;
 use GlennRaya\Xendivel\Xendivel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Spatie\Browsershot\Browsershot;
 
@@ -58,6 +60,27 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
+
+//Route::post('/email/verification-notification', function (Request $request) {
+//    $user = $request->user();
+//
+//    if ($user->hasVerifiedEmail()) {
+//        return response()->json(['message' => 'Already verified.'], 400);
+//    }
+//
+//    // Generate the verification URL manually
+//    $verifyUrl = URL::temporarySignedRoute(
+//        'verification.verify',
+//        now()->addMinutes(60),
+//        ['id' => $user->getKey(), 'hash' => sha1($user->getEmailForVerification())]
+//    );
+//
+//    // Send Brevo-style Mailable (with name + email)
+//    Mail::send(new VerifyEmailBrevo($user, $verifyUrl));
+//
+//    return back()->with('status', 'verification-link-sent');
+//})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 // Xendit Webhook route (POST)
 //Route::post('/xendit/callback', [TicketController::class, 'callback'])->name('xendit.callback');

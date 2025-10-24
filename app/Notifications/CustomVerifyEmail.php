@@ -16,7 +16,6 @@ class CustomVerifyEmail extends BaseVerifyEmail
     {
         $verificationUrl = $this->verificationUrl($notifiable);
 
-        // Instead of ->to(), we modify the "to" field via the mail data
         $mailMessage = new MailMessage;
         $mailMessage->subject('Verify Your Email Address')
             ->greeting('Hello ' . ($notifiable->name ?? $notifiable->first_name ?? 'User') . '!')
@@ -24,7 +23,6 @@ class CustomVerifyEmail extends BaseVerifyEmail
             ->action('Verify Email', $verificationUrl)
             ->line('If you did not create an account, no further action is required.');
 
-        // Add Brevo required "name" to message data (handled automatically by driver)
         $mailMessage->viewData = [
             'name' => $notifiable->name ?? $notifiable->first_name ?? 'User',
             'email' => $notifiable->email,
