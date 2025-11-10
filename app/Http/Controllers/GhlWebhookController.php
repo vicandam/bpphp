@@ -92,7 +92,7 @@ class GhlWebhookController extends Controller
 
     public function storeAttendee(AttendeeRegistrationRequest $request)
     {
-        Log::info('Received from GHL:', $request->all());
+        Log::info('Attendee:', $request->all());
 
         try {
             $plainPassword = Str::random(12);
@@ -100,17 +100,14 @@ class GhlWebhookController extends Controller
                 ['email' => $request->input('email')],
                 [
                 'type' => 'attendee',
-                'name' => $request->full_name,
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'full_name' => $request->full_name,
-                'email' => $request->email,
-                'mobile_number' => $request->mobile_number,
-                'birthday' => $request->birthday,
+                'name' => $request->input('full_name') ?? '',
+                'first_name' => $request->input('first_name') ?? '',
+                'last_name' => $request->input('last_name') ?? '',
+                'email' => $request->input('email'),
+                'mobile_number' => $request->input('phone'),
+                'birthday' => $request->input('date_of_birth'),
                 'password' => bcrypt($plainPassword),
             ]);
-
-            Log::info('User: ', [$user]);
 
             Mail::to($user->email)->send(new WelcomeEmailAttendee($user));
 
