@@ -29,12 +29,13 @@ class AppServiceProvider extends ServiceProvider
             $this->app['request']->server->set('HTTPS', true);
         }
 
+        /* // Register Brevo mail driver with custom transport but not using right now since we are using brevo SMTP
         app(MailManager::class)->extend('brevo', function ($config) {
             return new BrevoTransport(
                 app(HttpClientInterface::class),
                 $config['api_key']
             );
-        });
+        }); */
 
 
         View::composer('*', function ($view) {
@@ -50,7 +51,7 @@ class AppServiceProvider extends ServiceProvider
         LogViewer::auth(function ($request) {
             return $request->user()
                 && in_array($request->user()->email, [
-                    'admin@example.com',
+                    'vicajobs@gmail.com',
                 ]);
         });
     }
