@@ -90,7 +90,7 @@ class GhlWebhookController extends Controller
         }
     }
 
-    public function storeAttendee(AttendeeRegistrationRequest $request)
+    public function storeAttendee(Request $request)
     {
         Log::info('Attendee:', $request->all());
 
