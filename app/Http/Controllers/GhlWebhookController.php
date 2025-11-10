@@ -96,7 +96,7 @@ class GhlWebhookController extends Controller
 
         try {
             $plainPassword = Str::random(12);
-            $user = User::create(
+            $user = User::updateOrCreate(
                 ['email' => $request->input('email')],
                 [
                 'type' => 'attendee',
