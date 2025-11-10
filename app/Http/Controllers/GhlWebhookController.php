@@ -96,7 +96,9 @@ class GhlWebhookController extends Controller
 
         try {
             $plainPassword = Str::random(12);
-            $user = User::create([
+            $user = User::create(
+                ['email' => $request->input('email')],
+                [
                 'type' => 'attendee',
                 'name' => $request->full_name,
                 'first_name' => $request->first_name,
@@ -203,7 +205,9 @@ class GhlWebhookController extends Controller
         try {
             Log::info('Sponsor:', $request->all());
 
-            $user = User::create([
+            $user = User::updateOrCreate(
+                ['email' => $request->input('email')],
+                [
                 'type' => 'sponsor',
                 'email' => $request->input('email'),
                 'company_name' => $request->input('Company Name'),
