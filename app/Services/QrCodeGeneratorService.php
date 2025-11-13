@@ -17,6 +17,8 @@ class QrCodeGeneratorService
      */
     public function generateForTicket(string $ticketCode, $amount = null): string
     {
+        $amount = (int) $amount;
+
         $redeemUrl = url('/redeem-ticket/' . $ticketCode);
         $filePath = "qrcodes/tickets/{$ticketCode}.png";
 
