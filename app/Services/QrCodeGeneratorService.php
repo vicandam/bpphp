@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\File;
+use Opcodes\LogViewer\Logs\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
 
@@ -34,6 +35,8 @@ class QrCodeGeneratorService
         } else {
             $color = [0, 0, 0]; // ⚫ Default black
         }
+
+        logger('ticket color & amount: ', ['amount' => $amount, 'color' => $color]);
 
         // Generate QR code with embedded logo + color
         $qr = QrCode::format('png')
