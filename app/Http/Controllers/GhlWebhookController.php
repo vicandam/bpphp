@@ -20,7 +20,7 @@ use Illuminate\Support\Str;
 
 class GhlWebhookController extends Controller
 {
-    public function store(Request $request)
+    public function storeAttendee(Request $request)
     {
         try {
             Log::info('Received from GHL:', $request->all());
@@ -92,7 +92,7 @@ class GhlWebhookController extends Controller
         }
     }
 
-    public function storeAttendee(Request $request)
+    public function storeAttendeeOld(Request $request)
     {
         Log::info('Attendee:', $request->all());
 

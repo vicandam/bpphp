@@ -174,10 +174,11 @@ Route::get('/ewallet/failed', function () {
     echo "E-wallet failed!";
 });
 
-Route::post('/ghl/webhook',[GhlWebhookController::class, 'store'])->name('ghl-webhook');
-Route::any('/register/attendee', [GhlWebhookController::class, 'storeAttendee']);
-Route::any('/register/vendor', [GhlWebhookController::class, 'storeVendor']);
-Route::any('/register/sponsor', [GhlWebhookController::class, 'storeSponsor']);
+
+//Route::any('/register/attendee', [GhlWebhookController::class, 'storeAttendee']);
+Route::post('/register/attendee',[GhlWebhookController::class, 'storeAttendee'])->name('storeAttendee');
+Route::any('/register/vendor', [GhlWebhookController::class, 'storeVendor'])->name('storeVendor');
+Route::any('/register/sponsor', [GhlWebhookController::class, 'storeSponsor'])->name('storeSponsor');
 
 
 Route::middleware('auth')->group(function () {
