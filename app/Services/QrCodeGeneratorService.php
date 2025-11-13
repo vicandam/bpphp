@@ -14,35 +14,40 @@ class QrCodeGeneratorService
      * @param string $ticketCode The unique ticket code (UUID).
      * @return string The public URL or storage path of the generated QR code.
      */
-    public function generateForTicket(string $ticketCode): string
+    public function generateForTicket(string $ticketCode, $amount = null): string
     {
         $redeemUrl = url('/redeem-ticket/' . $ticketCode);
         $filePath = "qrcodes/tickets/{$ticketCode}.png";
 
-        // Ensure the directory exists under storage/app/public
+        // Ensure directory exists under storage/app/public
         if (!Storage::disk('public')->exists('qrcodes/tickets')) {
             Storage::disk('public')->makeDirectory('qrcodes/tickets');
         }
 
-        // Generate QR code with embedded logo
-//        $qr = QrCode::format('png')
-//            ->size(300)
-//            ->errorCorrection('H')
-//            ->merge(public_path('images/bpphp.png'), 0.3, true)
-//            ->generate($redeemUrl);
+        // Decide QR color based on amount
+        if ($amount === 500) {
+            $color = [255, 0, 0]; // 🔴 Red
+        } elseif ($amount === 850) {
+            $color = [255, 165, 0]; // 🟧 Orange
+        } elseif ($amount < 500 && $amount !== null) {
+            $color = [255, 215, 0]; // 🟡 Gold
+        } else {
+            $color = [0, 0, 0]; // ⚫ Default black
+        }
 
+        // Generate QR code with embedded logo + color
         $qr = QrCode::format('png')
             ->size(300)
-            ->errorCorrection('H') // High error correction to allow logo overlay
-            ->color(255, 165, 0)   // Orange foreground (RGB)
-            ->backgroundColor(255, 255, 255) // White background (optional)
+            ->errorCorrection('H')
+            ->color(...$color) // apply dynamic color
+            ->backgroundColor(255, 255, 255)
             ->merge(public_path('images/bpphp.png'), 0.3, true)
             ->generate($redeemUrl);
 
-        // Save to storage/app/public/qrcodes/tickets/
+        // Save file to disk
         Storage::disk('public')->put($filePath, $qr);
 
-        // Return public URL (via /storage symlink)
+        // Return public URL
         return Storage::url($filePath);
     }
 

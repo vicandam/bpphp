@@ -28,7 +28,7 @@ class TicketService
             $this->processReferralBonus($user);
 
             $points = $this->calculatePoints($amount);
-            $qrCodePath = $this->qrCodeGeneratorService->generateForTicket($externalId);
+            $qrCodePath = $this->qrCodeGeneratorService->generateForTicket($externalId, $amount);
 
             $ticket = Ticket::create([
                 'user_id'                    => $user->id,
