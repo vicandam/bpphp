@@ -206,15 +206,17 @@ class GhlWebhookController extends Controller
                 ? implode(', ', $request->input('Products To Sell'))
                 : $request->input('Products To Sell');
 
-            $eventId = Event::find(1);
+            $event = Event::getActiveCampaignEvent();
 
             // Validate required data
-            if (!$eventId) {
+            if (!$event) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Event ID is required.'
                 ], 422);
             }
+
+            $eventId = $event->id;
 
             // Create or update user
             $user = User::updateOrCreate(
@@ -260,10 +262,13 @@ class GhlWebhookController extends Controller
 
             // Send welcome email (optional)
             if ($user->email) {
+                $vendorPassNumber = $vendorPass->pass_number;
+
                 Mail::to($user->email)->send(
                     new WelcomeEmailVendor(
                         $user->contact_person_name ?? 'Vendor',
-                        $user
+                        $user,
+                        $vendorPassNumber
                     )
                 );
             }

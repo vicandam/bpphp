@@ -200,4 +200,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(TicketRequest::class);
     }
+
+    public function vendorPassNumbers()
+    {
+        return $this->hasMany(VendorPassNumber::class);
+    }
 }

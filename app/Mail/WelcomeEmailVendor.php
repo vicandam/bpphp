@@ -15,14 +15,16 @@ class WelcomeEmailVendor extends Mailable
 
     public string $vendorName;
     protected $user;
+    protected $vendorPassNumber;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(string $vendorName, $user)
+    public function __construct(string $vendorName, $user, $vendorPassNumber)
     {
         $this->vendorName = $vendorName;
         $this->user = $user;
+        $this->vendorPassNumber = $vendorPassNumber;
     }
 
     /**
@@ -35,7 +37,7 @@ class WelcomeEmailVendor extends Mailable
             ->markdown('emails.welcome_vendor')
             ->with([
                 'vendorName' => $this->user->contact_person_name,
-                'vendorPassNumber' => $this->user->vendor_pass_number,
+                'vendorPassNumber' => $this->vendorPassNumber,
             ]);
     }
 }
