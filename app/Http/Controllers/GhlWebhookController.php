@@ -35,7 +35,7 @@ class GhlWebhookController extends Controller
                     'email' => $user->email,
                 ]);
                 $user->save();
-                return; // wala nay JSON response, logging lang
+                return;
             }
 
             if (!empty($referralCode)) {
