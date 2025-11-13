@@ -44,8 +44,8 @@ class QrCodeGeneratorService
         $qr = QrCode::format('png')
             ->size(300)
             ->errorCorrection('H')
-            //->color(...$color) // apply dynamic color
-            ->color(255, 0, 0)
+            ->color(...$color) // apply dynamic color
+//            ->color(255, 0, 0)
             ->backgroundColor(255, 255, 255)
             ->merge(public_path('images/bpphp.png'), 0.3, true)
             ->generate($redeemUrl);
