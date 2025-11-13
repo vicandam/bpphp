@@ -14,7 +14,7 @@ class QrCodeGeneratorService
      * @param string $ticketCode The unique ticket code (UUID).
      * @return string The public URL or storage path of the generated QR code.
      */
-    public function generateForTicketOld(string $ticketCode): string
+    public function generateForTicket(string $ticketCode): string
     {
         $redeemUrl = url('/redeem-ticket/' . $ticketCode);
         $filePath = "qrcodes/tickets/{$ticketCode}.png";
@@ -35,7 +35,7 @@ class QrCodeGeneratorService
         return Storage::url($filePath); // returns a usable public URL
     }
 
-    public function generateForTicket(string $ticketCode): string
+    public function generateForTicketNew(string $ticketCode): string
     {
         // Define directory under storage/app/qrcodes/tickets
         $directory = storage_path('app/qrcodes/tickets');
