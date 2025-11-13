@@ -9,8 +9,10 @@ use App\Mail\WelcomeEmailAttendeeOld;
 use App\Mail\WelcomeEmailAttendee;
 use App\Mail\WelcomeEmailSponsor;
 use App\Mail\WelcomeEmailVendor;
+use App\Models\Event;
 use App\Models\Referral;
 use App\Models\User;
+use App\Models\VendorPassNumber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -122,7 +124,7 @@ class GhlWebhookController extends Controller
             ]);
         }
     }
-    public function storeVendor(Request $request)
+    public function storeVendorOld(Request $request)
     {
         try {
             // flatten the products array if it exists
@@ -194,6 +196,103 @@ class GhlWebhookController extends Controller
             Log::error('Saving vendor failed: ' . $e->getMessage(), [
                 'payload' => $request->all(),
             ]);
+        }
+    }
+    public function storeVendor(Request $request)
+    {
+        try {
+            // Flatten "Products To Sell" array if it exists
+            $productsToSell = is_array($request->input('Products To Sell'))
+                ? implode(', ', $request->input('Products To Sell'))
+                : $request->input('Products To Sell');
+
+            $eventId = Event::find(1);
+
+            // Validate required data
+            if (!$eventId) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Event ID is required.'
+                ], 422);
+            }
+
+            // Create or update user
+            $user = User::updateOrCreate(
+                ['email' => $request->input('email')],
+                [
+                    'type' => 'vendor',
+                    'company_name' => $request->input('Company Name'),
+                    'brand_name' => $request->input('Brand Name'),
+                    'products_to_sell' => $productsToSell,
+                    'other_products' => $request->input('Please specify'),
+                    'contact_person_name' => $request->input("Contact Person's Full Name"),
+                    'mobile_number' => $request->input('phone'),
+                    'birthday' => $request->input('date_of_birth'),
+                    'office_address' => $request->input('Office Address') ?? $request->input('full_address'),
+                    'city' => $request->input('city'),
+                    'country' => $request->input('country'),
+                    'timezone' => $request->input('timezone'),
+                    'contact_source' => $request->input('contact_source'),
+                    'name' => $request->input('full_name') ?? '',
+                    'first_name' => $request->input('first_name') ?? '',
+                    'last_name' => $request->input('last_name') ?? '',
+                    'password' => '',
+                ]
+            );
+
+            // Check if this vendor already has a pass number for this event
+            $existingPass = VendorPassNumber::where('user_id', $user->id)
+                ->where('event_id', $eventId)
+                ->first();
+
+            if (!$existingPass) {
+                // Generate next pass number per event
+                $nextPassNumber = (VendorPassNumber::where('event_id', $eventId)->max('pass_number') ?? 0) + 1;
+
+                $vendorPass = VendorPassNumber::create([
+                    'user_id' => $user->id,
+                    'event_id' => $eventId,
+                    'pass_number' => $nextPassNumber,
+                ]);
+            } else {
+                $vendorPass = $existingPass;
+            }
+
+            // Send welcome email (optional)
+            if ($user->email) {
+                Mail::to($user->email)->send(
+                    new WelcomeEmailVendor(
+                        $user->contact_person_name ?? 'Vendor',
+                        $user
+                    )
+                );
+            }
+
+            Log::info('Vendor data:', [
+                'success' => true,
+                'message' => $user->wasRecentlyCreated
+                    ? "Vendor registered successfully with pass #{$vendorPass->pass_number}."
+                    : "Vendor information updated successfully (Pass #{$vendorPass->pass_number}).",
+                'data' => $user->contact_person_name
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => "Vendor registered successfully with pass #{$vendorPass->pass_number}.",
+                'data' => [
+                    'user' => $user,
+                    'vendor_pass' => $vendorPass
+                ]
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Saving vendor failed: ' . $e->getMessage(), [
+                'payload' => $request->all(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while saving vendor data.',
+            ], 500);
         }
     }
 
