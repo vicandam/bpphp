@@ -29,13 +29,13 @@ class QrCodeGeneratorService
 
         // Decide QR color based on amount
         if ($amount === 500) {
-            $color = [255, 0, 0]; // 🔴 Red
+            $color = [255, 0, 0]; // Red
         } elseif ($amount === 850) {
-            $color = [255, 165, 0]; // 🟧 Orange
+            $color = [255, 165, 0]; // Orange
         } elseif ($amount < 500 && $amount !== null) {
-            $color = [255, 215, 0]; // 🟡 Gold
+            $color = [255, 215, 0]; // Gold
         } else {
-            $color = [0, 0, 0]; // ⚫ Default black
+            $color = [0, 0, 0]; // Default black
         }
 
         logger('ticket color & amount: ', ['amount' => $amount, 'color' => $color]);
@@ -44,7 +44,8 @@ class QrCodeGeneratorService
         $qr = QrCode::format('png')
             ->size(300)
             ->errorCorrection('H')
-            ->color(...$color) // apply dynamic color
+            //->color(...$color) // apply dynamic color
+            ->color(255, 0, 0)
             ->backgroundColor(255, 255, 255)
             ->merge(public_path('images/bpphp.png'), 0.3, true)
             ->generate($redeemUrl);
