@@ -16,8 +16,8 @@ Philippines 🎉
 
 📄 Attached is your sales invoice.
 
-📍 Below is your QR Code/Digital Ticket to **Alive@50** on **November 29, 2025, 6:00 PM**
-at the **11th Floor of The Exchange Square, Exchange Road, Ortigas Center, Pasig City.**
+📍 Below is your QR Code/Digital Ticket to **Alive@50** on **November 29, 2025, 5:00 PM**
+at the **One Cainta Auditorium, Cainta Elementary School A. Bonifacio St. Caintan, Rizal.**
 
 @if($ticket->virtual_membership_card_qr)
 <table width="100%" style="text-align: center; margin-top: 30px;">
@@ -56,8 +56,8 @@ Member’s Referral Code: {{ $referral_code }}
 
 ---
 
-✨ Excited to see you at the event in your **gold or champagne** and **navy blue** formal or business attire.
+✨ Excited to see you at the event in your **gold or champagne** and **navy blue** semi-formal attire or business attire.
 
 To our shared success and happiness, <br>
-**Big Perspective Productions Family**
+**Big Perspective Productions Team**
 </x-mail::message>
