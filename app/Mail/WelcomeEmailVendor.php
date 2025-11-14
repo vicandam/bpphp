@@ -45,57 +45,6 @@ class WelcomeEmailVendor extends Mailable
                 'vendorPassImageUrl' => $vendorPassImageUrl,
             ]);
     }
-    public function generateVendorPassImageOld($vendorPassNumber, $amount)
-    {
-        // COLORS
-        $yellow = [255, 215, 0];     // P1,500 – Entrance Lobby
-        $green = [46, 204, 113];     // P1,000 – Left Side Lobby
-
-        $color = $amount == 1500 ? $yellow : $green;
-
-        // Canvas
-        $width = 600;
-        $height = 350;
-        $img = imagecreatetruecolor($width, $height);
-
-        // Background
-        $bg = imagecolorallocate($img, $color[0], $color[1], $color[2]);
-        imagefilledrectangle($img, 0, 0, $width, $height, $bg);
-
-        // Text color
-        $white = imagecolorallocate($img, 255, 255, 255);
-
-        // Text to display
-        $text = "BVP " . $vendorPassNumber;
-
-        // Use larger built-in font (GD font 5)
-        $font = 24;
-
-        // Calculate center position
-        $textWidth = imagefontwidth($font) * strlen($text);
-        $textHeight = imagefontheight($font);
-
-        $x = ($width - $textWidth) / 2;
-        $y = ($height - $textHeight) / 2;
-
-        // Draw centered text
-        imagestring($img, $font, $x, $y, $text, $white);
-
-        // Ensure directory exists
-        $directory = storage_path('app/public/vendor_pass');
-        if (!file_exists($directory)) {
-            mkdir($directory, 0777, true);
-        }
-
-        // Save image
-        $filename = 'vendor_pass_' . $vendorPassNumber . '.png';
-        $path = $directory . '/' . $filename;
-
-        imagepng($img, $path);
-        imagedestroy($img);
-
-        return asset("storage/vendor_pass/" . $filename);
-    }
     public function generateVendorPassImage($vendorPassNumber, $amount)
     {
         // COLORS
