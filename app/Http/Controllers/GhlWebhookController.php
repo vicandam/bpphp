@@ -198,13 +198,23 @@ class GhlWebhookController extends Controller
             ]);
         }
     }
+
+    public function normalizeAmount($value)
+    {
+        return match(true) {
+            str_contains($value, '1,500') => 1500,
+            str_contains($value, '1,000') => 1000,
+            default => null
+        };
+    }
+
     public function storeVendor(Request $request)
     {
         try {
+            logger('Vendor Params:', $request->all());
+
             // Flatten "Products To Sell" array if it exists
-            $productsToSell = is_array($request->input('Products To Sell'))
-                ? implode(', ', $request->input('Products To Sell'))
-                : $request->input('Products To Sell');
+            $productsToSell = is_array($request->input('Products To Sell')) ? implode(', ', $request->input('Products To Sell')) : $request->input('Products To Sell');
 
             $event = Event::getActiveCampaignEvent();
 
@@ -251,10 +261,15 @@ class GhlWebhookController extends Controller
                 // Generate next pass number per event
                 $nextPassNumber = (VendorPassNumber::where('event_id', $eventId)->max('pass_number') ?? 0) + 1;
 
+                $rawAmount = $request->input('Vendor Pass Amount');
+
+                $amount = $this->normalizeAmount($rawAmount);
+
                 $vendorPass = VendorPassNumber::create([
                     'user_id' => $user->id,
                     'event_id' => $eventId,
                     'pass_number' => $nextPassNumber,
+                    'vendor_pass_amount' => $amount
                 ]);
             } else {
                 $vendorPass = $existingPass;
@@ -268,7 +283,8 @@ class GhlWebhookController extends Controller
                     new WelcomeEmailVendor(
                         $user->contact_person_name ?? 'Vendor',
                         $user,
-                        $vendorPassNumber
+                        $vendorPassNumber,
+                        $vendorPass->vendor_pass_amount
                     )
                 );
             }
@@ -278,7 +294,8 @@ class GhlWebhookController extends Controller
                 'message' => $user->wasRecentlyCreated
                     ? "Vendor registered successfully with pass #{$vendorPass->pass_number}."
                     : "Vendor information updated successfully (Pass #{$vendorPass->pass_number}).",
-                'data' => $user->contact_person_name
+                'data' => $user->contact_person_name,
+                'vendor_pass_amount' => $vendorPass->vendor_pass_amount
             ]);
 
             return response()->json([

@@ -9,5 +9,5 @@ class VendorPassNumber extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'event_id', 'pass_number'];
+    protected $fillable = ['user_id', 'event_id', 'pass_number','vendor_pass_amount'];
 }
