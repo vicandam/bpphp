@@ -201,11 +201,15 @@ class GhlWebhookController extends Controller
 
     public function normalizeAmount($value)
     {
-        return match(true) {
-            str_contains($value, '1,500') => 1500,
-            str_contains($value, '1,000') => 1000,
-            default => null
-        };
+        // Extract number pattern like 1,000 or 500 or 25,000 etc.
+        if (preg_match('/\b\d{1,3}(?:,\d{3})*\b/', $value, $matches)) {
+            // Remove comma(s)
+            $clean = str_replace(',', '', $matches[0]);
+
+            return (int) $clean;
+        }
+
+        return 0;
     }
 
     public function storeVendor(Request $request)
