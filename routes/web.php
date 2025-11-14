@@ -180,6 +180,14 @@ Route::post('/register/attendee',[GhlWebhookController::class, 'storeAttendee'])
 Route::any('/register/vendor', [GhlWebhookController::class, 'storeVendor'])->name('storeVendor');
 Route::any('/register/sponsor', [GhlWebhookController::class, 'storeSponsor'])->name('storeSponsor');
 
+Route::get('/download/vendor-pass/{file}', function ($file) {
+    $path = storage_path("app/public/vendor_pass/" . $file);
+
+    if (!file_exists($path)) abort(404);
+
+    return response()->download($path);
+});
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

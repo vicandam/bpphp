@@ -31,11 +31,19 @@ Save this image on your mobile phone.
 <td align="center">
 
 @if (!empty($vendorPassImageUrl))
-<img src="{{ $vendorPassImageUrl }}" alt="Vendor Pass" style="max-width:260px; border-radius:8px;">
+<img src="{{ $vendorPassImageUrl }}" alt="Vendor Pass" style="max-width:260px; border-radius:8px; margin-bottom:16px;">
+@php
+$downloadUrl = url('/download/vendor-pass/' . basename($vendorPassImageUrl));
+@endphp
+
+{{-- Download Button --}}
+<x-mail::button :url="$downloadUrl" color="success">
+Download Vendor Pass
+</x-mail::button>
 @endif
 
 <div style="margin-top:12px; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size:14px; color:#333333;">
-    Present this Bazaar Vendor Pass to the gate guard and the registration table for a smooth check-in.
+Present this Bazaar Vendor Pass to the gate guard and the registration table for a smooth check-in.
 </div>
 
 </td>
@@ -60,7 +68,7 @@ Feel free to reply to this email or contact us:
 
 May this be the start of more event partnerships with you and your brand in the years to come.
 
-Love,<br>
+Love,
 **The BPPHP.FUN Team**
 
 </x-mail::message>
