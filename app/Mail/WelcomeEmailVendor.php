@@ -35,6 +35,8 @@ class WelcomeEmailVendor extends Mailable
     public function build()
     {
         $vendorPassImageUrl = $this->generateVendorPassImage($this->vendorPassNumber, $this->vendorPassAmount);
+        $filename = 'vendor_pass_' . $this->vendorPassNumber . '.png';
+        $downloadUrl = url("/download/vendor-pass/" . $filename);
 
         return $this->to($this->user->email, $this->user->contact_person_name)
             ->subject('Your Digital Vendor Pass to Alive 2025 Heal As One Nationwide Love Tour')
@@ -43,6 +45,7 @@ class WelcomeEmailVendor extends Mailable
                 'vendorName' => $this->user->contact_person_name,
                 'vendorPassNumber' => $this->vendorPassNumber,
                 'vendorPassImageUrl' => $vendorPassImageUrl,
+                'downloadUrl' => $downloadUrl,
             ]);
     }
     public function generateVendorPassImage($vendorPassNumber, $amount)

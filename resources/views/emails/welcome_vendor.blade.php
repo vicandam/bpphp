@@ -32,9 +32,6 @@ Save this image on your mobile phone.
 
 @if (!empty($vendorPassImageUrl))
 <img src="{{ $vendorPassImageUrl }}" alt="Vendor Pass" style="max-width:260px; border-radius:8px; margin-bottom:16px;">
-@php
-$downloadUrl = url('/download/vendor-pass/' . basename($vendorPassImageUrl));
-@endphp
 
 {{-- Download Button --}}
 <x-mail::button :url="$downloadUrl" color="success">
