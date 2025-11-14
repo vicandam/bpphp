@@ -205,8 +205,8 @@ class GhlWebhookController extends Controller
         if (preg_match('/\b\d{1,3}(?:,\d{3})*\b/', $value, $matches)) {
             // Remove comma(s)
             $clean = str_replace(',', '', $matches[0]);
-
-            return (int) $clean;
+            Log::info('Cleaned Amount:', [$clean]);
+            return (int) $clean ?? 0;
         }
 
         return 0;
