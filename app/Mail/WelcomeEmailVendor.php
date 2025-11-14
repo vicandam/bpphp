@@ -102,7 +102,7 @@ class WelcomeEmailVendor extends Mailable
         $yellow = [255, 215, 0];     // P1,500 – Entrance Lobby
         $green = [46, 204, 113];     // P1,000 – Left Side Lobby
 
-        $color = $amount == 1500 ? $yellow : $green;
+        $color = $amount == 1000 ? $yellow : $green;
 
         // Canvas
         $width = 600;
