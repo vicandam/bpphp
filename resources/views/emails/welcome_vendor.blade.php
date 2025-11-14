@@ -68,7 +68,7 @@ Feel free to reply to this email or contact us:
 
 May this be the start of more event partnerships with you and your brand in the years to come.
 
-Love,
+Love,<br>
 **The BPPHP.FUN Team**
 
 </x-mail::message>
