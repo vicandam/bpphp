@@ -10,10 +10,11 @@ As a member, you will get these **opportunities and privileges valid for 2 years
 3. Members-only discounts soon and freebies from partner online businesses, physical stores, and seminars/workshops organized or supported by Big Perspective Productions (after referring at least one ticket buyer to our events). Watch out for announcements soon.
 4. Members-only privilege to join and win in contests, raffles, and games on our website and during events.
 5. Privilege to earn one (1) joy point for every P500 worth of event ticket from Big Perspective Productions. 1 joy point = ₱1. Points are not convertible to cash and can only be used to redeem tickets and items under the Business Partners Club on the website of bpphp.fun.
-6. Elevation to the Lucky Marketing Agents and Event Catalyst Club after referring an event sponsor with at least ₱10,000 cash sponsorship.
-7. Opportunity to earn unlimitedly from sales of your products and services under our Business Partners Club with our growing MMDCI members. (Business Partners Club Packages available upon request)
-8. 30% income from the net theatrical ticket sales of a film nationwide and worldwide (as a signed-up Member of the Angel Investors Circle). Details upon request.
-9. Privilege to be part of a solution towards a common vision — **A Poverty-free and Happy Philippines and World.**
+6. 10% share in the net theatrical sales of the film “Stitched Hearts” provided you have bought at least 20 event or movie tickets from BPPHP.FUN worth ₱500 each.
+7. Elevation to the Lucky Marketing Agents and Event Catalyst Club after referring an event sponsor with at least ₱10,000 cash sponsorship.
+8. Opportunity to earn unlimitedly from sales of your products and services under our Business Partners Club with our growing MMDCI members. (Business Partners Club Packages available upon request)
+9. 30% income from the net theatrical ticket sales of a film nationwide and worldwide (as a signed-up Member of the Angel Investors Circle). Details upon request.
+10. Privilege to be part of a solution towards a common vision — **A Poverty-free and Happy Philippines and World.**
 
 ---
 
